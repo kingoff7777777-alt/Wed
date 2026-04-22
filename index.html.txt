@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>부이뒤칸 - Personal Profile</title>
+<meta name="description" content="Trang cá nhân của 부이뒤칸 từ Việt Nam">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+}
+#intro {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  cursor: pointer;
+  animation: glow 1.5s infinite alternate;
+}
+@keyframes glow {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+.hidden { display: none; }
+.card {
+  width: 320px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 40px rgba(0,255,200,0.3);
+  text-align: center;
+}
+.card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+.lang button {
+  margin: 5px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: black;
+  color: #00ffe1;
+  border: 1px solid #00ffe1;
+}
+.music-btn {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(45deg, #00ffe1, #00c3ff);
+  cursor: pointer;
+  font-weight: bold;
+}
+.copy {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <h1>Tap to Enter</h1>
+</div>
+
+<div class="card hidden" id="main">
+  <img src="https://i.imgur.com/4AcFg90.webp">
+  <h1>부이뒤칸</h1>
+  <p id="desc"></p>
+
+  <h2 id="friendTitle"></h2>
+  <p id="friend"></p>
+
+  <p>📧 duykhanhkr@copyright-limited.com</p>
+
+  <div class="lang">
+    <button onclick="setLang('vi')">🇻🇳</button>
+    <button onclick="setLang('kr')">🇰🇷</button>
+    <button onclick="setLang('en')">🇺🇸</button>
+  </div>
+
+  <button onclick="toggleMusic()" class="music-btn" id="musicBtn">
+    🎧 Play Music
+  </button>
+
+  <p class="copy" id="copy"></p>
+</div>
+
+<audio id="music" loop>
+  <source src="https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const data = {
+  vi: {
+    desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
+    friendTitle: "Bạn của tôi",
+    friend: "문준우 (2011, Hàn Quốc)",
+    copy: "Bản quyền thuộc sở hữu của 부이뒤칸 - Cấm sao chép"
+  },
+  kr: {
+    desc: "저는 부이뒤칸, 2010년생, 베트남 출신입니다.",
+    friendTitle: "내 친구",
+    friend: "문준우 (2011, 한국)",
+    copy: "저작권: 부이뒤칸 - 복제 금지"
+  },
+  en: {
+    desc: "I am 부이뒤칸, born in 2010, from Vietnam.",
+    friendTitle: "My friend",
+    friend: "문준우 (2011, Korea)",
+    copy: "Copyright by 부이뒤칸 - No copying"
+  }
+};
+
+function setLang(lang) {
+  document.getElementById("desc").innerText = data[lang].desc;
+  document.getElementById("friendTitle").innerText = data[lang].friendTitle;
+  document.getElementById("friend").innerText = data[lang].friend;
+  document.getElementById("copy").innerText = data[lang].copy;
+}
+
+function toggleMusic() {
+  const music = document.getElementById("music");
+  const btn = document.getElementById("musicBtn");
+
+  if (music.paused) {
+    music.play();
+    btn.innerText = "⏸ Pause Music";
+  } else {
+    music.pause();
+    btn.innerText = "🎧 Play Music";
+  }
+}
+
+document.getElementById("intro").addEventListener("click", () => {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("main").classList.remove("hidden");
+  document.getElementById("music").play();
+  setLang("vi");
+});
+</script>
+
+</body>
+</html>
