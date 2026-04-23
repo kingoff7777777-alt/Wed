@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>부이뒤칸 - Website</title>
-<meta name="description" content="Trang cá nhân của 부이뒤칸">
 
 <style>
-
-/* ===== BODY ===== */
 body {
   margin: 0;
   font-family: Arial;
   background: black;
   color: white;
-  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* 🌈 RGB */
@@ -36,133 +36,84 @@ body::before {
   100% { background-position: 0% }
 }
 
-/* NAV */
-.nav {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-  background: rgba(0,0,0,0.5);
-  padding: 10px 20px;
-  border-radius: 20px;
-  z-index: 999;
-}
-.nav a {
-  color: #00ffe1;
-  text-decoration: none;
-}
-
-/* SECTION */
-.section {
-  display: none;
-  padding: 100px 20px;
-  text-align: center;
-}
-.active {
-  display: block;
-}
-
 /* CARD */
 .card {
-  max-width: 350px;
-  margin: auto;
-  background: rgba(255,255,255,0.05);
+  width: 380px;
+  max-width: 90%;
   padding: 20px;
   border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  text-align: center;
 }
 
-/* IMG */
 img {
   width: 100%;
   border-radius: 15px;
-}
-
-/* GALLERY */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
 }
 
 /* VISUALIZER */
 .audio-box {
   display: flex;
   justify-content: center;
+  align-items: flex-end;
   gap: 4px;
   height: 40px;
 }
+
 .bar {
-  width: 5px;
-  background: cyan;
+  width: 6px;
+  height: 5px;
+  border-radius: 3px;
 }
 
-/* LANG */
+/* 🌈 7 màu */
+.bar:nth-child(1){background:red;}
+.bar:nth-child(2){background:orange;}
+.bar:nth-child(3){background:yellow;}
+.bar:nth-child(4){background:lime;}
+.bar:nth-child(5){background:cyan;}
+.bar:nth-child(6){background:blue;}
+.bar:nth-child(7){background:violet;}
+
 .lang button {
   margin: 5px;
   cursor: pointer;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- NAV -->
-<div class="nav">
-  <a onclick="show('home')">🏠 Home</a>
-  <a onclick="show('about')">👤 About</a>
-  <a onclick="show('gallery')">🖼 Gallery</a>
-</div>
+<div class="card">
 
-<!-- HOME -->
-<div id="home" class="section active">
-  <div class="card">
+  <img src="https://i.imgur.com/4AcFg90.webp">
 
-    <img src="https://i.imgur.com/4AcFg90.webp">
+  <h1>부이뒤칸</h1>
+  <p id="desc"></p>
 
-    <h1>부이뒤칸</h1>
-    <p id="desc"></p>
+  <!-- 👤 FRIEND -->
+  <h3 id="friendTitle"></h3>
+  <p id="friend"></p>
 
-    <h3 id="friendTitle"></h3>
-    <p id="friend"></p>
-
-    <!-- LANG -->
-    <div class="lang">
-      <button onclick="setLang('vi')">🇻🇳</button>
-      <button onclick="setLang('kr')">🇰🇷</button>
-      <button onclick="setLang('en')">🇺🇸</button>
-    </div>
-
-    <button onclick="toggleMusic()">🎧 Play</button>
-
-    <!-- VISUAL -->
-    <div class="audio-box">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
-
-    <!-- TIME -->
-    <p id="countup"></p>
-    <p id="koreaTime"></p>
-
+  <!-- 🌐 LANG -->
+  <div class="lang">
+    <button onclick="setLang('vi')">🇻🇳</button>
+    <button onclick="setLang('kr')">🇰🇷</button>
+    <button onclick="setLang('en')">🇺🇸</button>
   </div>
-</div>
 
-<!-- ABOUT -->
-<div id="about" class="section">
-  <h1>Giới thiệu</h1>
-  <p>Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.</p>
-</div>
+  <button onclick="toggleMusic()">🎧 Play</button>
 
-<!-- GALLERY -->
-<div id="gallery" class="section">
-  <h1>Hình ảnh</h1>
-  <div class="gallery">
-    <img src="https://i.imgur.com/4AcFg90.webp">
-    <img src="https://i.imgur.com/4AcFg90.webp">
+  <!-- 🎵 VISUAL -->
+  <div class="audio-box">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div>
   </div>
+
+  <p id="countup"></p>
+  <p id="koreaTime"></p>
+
 </div>
 
 <audio id="music" crossorigin="anonymous" loop>
@@ -171,44 +122,38 @@ img {
 
 <script>
 
-/* NAV SWITCH */
-function show(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* LANGUAGE */
+/* 🌐 LANGUAGE */
 const data = {
   vi: {
-    desc: "Tôi là 부이뒤칸",
+    desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
     friendTitle: "Bạn của tôi",
-    friend: "문준우 (2011)"
+    friend: "문준우, sinh năm 2011, đến từ Hàn Quốc"
   },
   kr: {
-    desc: "저는 부이뒤칸입니다",
+    desc: "저는 부이뒤칸입니다. 2010년생, 베트남 출신입니다.",
     friendTitle: "내 친구",
-    friend: "문준우"
+    friend: "문준우, 2011년생, 한국 출신"
   },
   en: {
-    desc: "I am 부이뒤칸",
+    desc: "I am 부이뒤칸, born in 2010, from Vietnam.",
     friendTitle: "My friend",
-    friend: "Joonwoo"
+    friend: "Moon Joonwoo, born in 2011, from Korea"
   }
 };
 
-function setLang(l){
-  document.getElementById("desc").innerText = data[l].desc;
-  document.getElementById("friendTitle").innerText = data[l].friendTitle;
-  document.getElementById("friend").innerText = data[l].friend;
+function setLang(lang){
+  document.getElementById("desc").innerText = data[lang].desc;
+  document.getElementById("friendTitle").innerText = data[lang].friendTitle;
+  document.getElementById("friend").innerText = data[lang].friend;
 }
 
-/* AUDIO */
+/* 🎵 AUDIO */
 const audio = document.getElementById("music");
 let ctx, analyser, src;
 
 function initAudio(){
   if(ctx) return;
-  ctx = new AudioContext();
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
   analyser = ctx.createAnalyser();
   src = ctx.createMediaElementSource(audio);
   src.connect(analyser);
@@ -216,33 +161,48 @@ function initAudio(){
   analyser.fftSize = 64;
 }
 
+/* 👆 CHẠM MÀN LÀ PHÁT */
+document.body.addEventListener("click", () => {
+  if(audio.paused){
+    initAudio();
+    audio.play();
+    ctx.resume();
+  }
+}, { once: true });
+
 function toggleMusic(){
   initAudio();
   if(audio.paused){
     audio.play();
     ctx.resume();
-  } else audio.pause();
+  } else {
+    audio.pause();
+  }
 }
 
-/* VISUAL */
+/* 🎶 VISUAL FIX KHÔNG NGƯỢC */
 const bars = document.querySelectorAll(".bar");
 
-function anim(){
-  requestAnimationFrame(anim);
+function animate(){
+  requestAnimationFrame(animate);
   if(!analyser) return;
-  const data = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(data);
-  bars.forEach((b,i)=> b.style.height = (data[i]/255*40)+"px");
-}
-anim();
 
-/* TIME */
+  const dataArr = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(dataArr);
+
+  bars.forEach((bar, i)=>{
+    bar.style.height = (dataArr[dataArr.length - i - 1] / 255 * 40) + "px";
+  });
+}
+animate();
+
+/* ⏳ TIME */
 const start = new Date("2026-03-05");
 
 setInterval(()=>{
   let now = new Date();
   let d = Math.floor((now-start)/86400000);
-  document.getElementById("countup").innerText = d+" ngày";
+  document.getElementById("countup").innerText = d + " ngày";
 
   const kr = new Intl.DateTimeFormat("vi-VN", {
     timeZone:"Asia/Seoul",
