@@ -91,11 +91,9 @@ img {
   <h1>부이뒤칸</h1>
   <p id="desc"></p>
 
-  <!-- 👤 FRIEND -->
   <h3 id="friendTitle"></h3>
   <p id="friend"></p>
 
-  <!-- 🌐 LANG -->
   <div class="lang">
     <button onclick="setLang('vi')">🇻🇳</button>
     <button onclick="setLang('kr')">🇰🇷</button>
@@ -104,7 +102,6 @@ img {
 
   <button onclick="toggleMusic()">🎧 Play</button>
 
-  <!-- 🎵 VISUAL -->
   <div class="audio-box">
     <div class="bar"></div><div class="bar"></div><div class="bar"></div>
     <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -147,51 +144,52 @@ function setLang(lang){
   document.getElementById("friend").innerText = data[lang].friend;
 }
 
-/* 🎵 AUDIO */
+/* 🎵 AUDIO FIX CHUẨN */
 const audio = document.getElementById("music");
-let ctx, analyser, src;
+const bars = document.querySelectorAll(".bar");
 
-function initAudio(){
-  if(ctx) return;
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = ctx.createAnalyser();
-  src = ctx.createMediaElementSource(audio);
-  src.connect(analyser);
-  analyser.connect(ctx.destination);
-  analyser.fftSize = 64;
-}
+let ctx, analyser, source;
 
-/* 👆 CHẠM MÀN LÀ PHÁT */
-document.body.addEventListener("click", () => {
-  if(audio.paused){
-    initAudio();
-    audio.play();
-    ctx.resume();
+/* 👆 click 1 lần để unlock audio */
+document.body.addEventListener("click", async () => {
+  if (!ctx) {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = ctx.createAnalyser();
+
+    source = ctx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+
+    analyser.fftSize = 64;
   }
+
+  await ctx.resume();
+  audio.play();
+
 }, { once: true });
 
 function toggleMusic(){
-  initAudio();
-  if(audio.paused){
+  if (!ctx) return;
+
+  if (audio.paused) {
     audio.play();
-    ctx.resume();
   } else {
     audio.pause();
   }
 }
 
-/* 🎶 VISUAL FIX KHÔNG NGƯỢC */
-const bars = document.querySelectorAll(".bar");
-
+/* 🎶 VISUALIZER FIX CHẠY 100% */
 function animate(){
   requestAnimationFrame(animate);
-  if(!analyser) return;
 
-  const dataArr = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(dataArr);
+  if (!analyser) return;
+
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(dataArray);
 
   bars.forEach((bar, i)=>{
-    bar.style.height = (dataArr[dataArr.length - i - 1] / 255 * 40) + "px";
+    const val = dataArray[i] || 0;
+    bar.style.height = (val / 255 * 40) + "px";
   });
 }
 animate();
