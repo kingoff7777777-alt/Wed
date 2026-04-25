@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>부이뒤칸 - Trang cá nhân chính thức</title>
+<!-- 🔥 DMCA VERIFY -->
+<meta name='dmca-site-verification' content='WkRsWFNMWU1CWHNPREFONmRnUzBGZz090' />
 
+<title>부이뒤칸 - Trang cá nhân chính thức</title>
 <meta name="description" content="Website cá nhân của 부이뒤칸">
 
 <link rel="icon" href="favicon.png">
@@ -157,7 +159,7 @@ img {
   <p id="countup"></p>
   <p id="koreaTime"></p>
 
-  <!-- 🔥 DMCA -->
+  <!-- 🔥 DMCA BADGE -->
   <div class="dmca">
     <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
       <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png?ID=efd67f43-296b-44e1-9844-2a172838a3cf">
@@ -172,7 +174,6 @@ img {
 
 <script>
 
-/* LANGUAGE */
 const data = {
   vi: {
     desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
@@ -182,7 +183,7 @@ const data = {
   kr: {
     desc: "저는 부이뒤칸입니다.",
     friendTitle: "내 친구",
-    friend: "문준우, 2011년생"
+    friend: "문준우"
   },
   en: {
     desc: "I am 부이뒤칸",
@@ -197,7 +198,6 @@ function setLang(lang){
   document.getElementById("friend").innerText = data[lang].friend;
 }
 
-/* AUDIO */
 const audio = document.getElementById("music");
 const bars = document.querySelectorAll(".bar");
 
@@ -225,7 +225,6 @@ function toggleMusic(){
   else audio.pause();
 }
 
-/* VISUAL */
 function animate(){
   requestAnimationFrame(animate);
   if (!analyser) return;
@@ -239,7 +238,6 @@ function animate(){
 }
 animate();
 
-/* TIME */
 const start = new Date("2026-03-05");
 
 setInterval(()=>{
