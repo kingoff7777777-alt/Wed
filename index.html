@@ -1,36 +1,66 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<meta name='dmca-site-verification' content='WkRsWFNMWU1CWHNPREFONmRnUzBGZz090' />
+
 <title>부이뒤칸 & 문준우 | Profile</title>
+
 <meta name="description" content="부이뒤칸 (2010, Vietnam) và 문준우 (2011, Korea). Personal website.">
+<meta name="keywords" content="부이뒤칸, 문준우, buiduykhan, moon joonwoo">
 
 <meta property="og:title" content="부이뒤칸 & 문준우">
 <meta property="og:description" content="Profile của 부이뒤칸 và 문준우">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": ["부이뒤칸","문준우"],
+  "alternateName": ["Bui Duy Khan","Moon Joonwoo"],
+  "url": "https://iprights.asia"
+}
+</script>
+
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family: Arial;
+  background: black;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100vh; /* 🔥 FIX LỆCH */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
+  background-size: 400% 400%;
+  animation: rgb 10s infinite;
+  opacity: 0.12;
+  z-index: -1;
+}
+@keyframes rgb {
+  0% { background-position: 0% }
+  50% { background-position: 100% }
+  100% { background-position: 0% }
 }
 
 .card {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  width: 380px;
+  max-width: 90%;
   padding: 20px;
-  width: 90%;
-  max-width: 400px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
   text-align: center;
-  color: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  margin: auto; /* 🔥 FIX LỆCH */
 }
 
 img {
@@ -38,102 +68,216 @@ img {
   border-radius: 15px;
 }
 
-h1 {
-  font-size: 22px;
-  margin: 15px 0;
+.audio-box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
 }
 
-.lang-btn button {
+.bar {
+  width: 6px;
+  height: 5px;
+}
+
+.bar:nth-child(1){background:red;}
+.bar:nth-child(2){background:orange;}
+.bar:nth-child(3){background:yellow;}
+.bar:nth-child(4){background:lime;}
+.bar:nth-child(5){background:cyan;}
+.bar:nth-child(6){background:blue;}
+.bar:nth-child(7){background:violet;}
+
+.lang button {
   margin: 5px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: none;
   cursor: pointer;
 }
 
-.play-btn {
-  margin-top: 10px;
-  padding: 8px 15px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
+#welcome {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-.footer {
-  margin-top: 15px;
-  font-size: 12px;
-  opacity: 0.8;
+.box {
+  background: black;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  cursor: pointer;
 }
 
 .dmca {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
+.copyright {
+  font-size: 12px;
+  margin-top: 10px;
+  opacity: 0.8;
+}
 </style>
 </head>
 
 <body>
 
+<!-- 🔥 SEO FIX -->
+<h1 style="opacity:0;position:absolute;">
+부이뒤칸 문준우 부이뒤칸 2010 Việt Nam 문준우 2011 Korea
+</h1>
+
+<div id="welcome">
+  <div class="box">
+    <span class="close" onclick="startSite()">✖</span>
+    <h2>Welcome 👋</h2>
+    <p>Tap to enter the website</p>
+  </div>
+</div>
+
 <div class="card">
 
-<img src="https://i.imgur.com/your-image.jpg">
+  <img src="https://i.imgur.com/4AcFg90.webp">
 
-<h1 id="title">부이뒤칸 & 문준우</h1>
+  <!-- 🔥 FIX TITLE HIỂN THỊ -->
+  <h1>부이뒤칸 & 문준우</h1>
 
-<p id="desc">
-Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.<br>
-Bạn của tôi 문준우, sinh năm 2011, đến từ Hàn Quốc.
-</p>
+  <p id="desc"></p>
 
-<div class="lang-btn">
-<button onclick="setLang('vi')">🇻🇳</button>
-<button onclick="setLang('kr')">🇰🇷</button>
-<button onclick="setLang('en')">🇺🇸</button>
+  <h3 id="friendTitle"></h3>
+  <p id="friend"></p>
+
+  <div class="lang">
+    <button onclick="setLang('vi')">🇻🇳</button>
+    <button onclick="setLang('kr')">🇰🇷</button>
+    <button onclick="setLang('en')">🇺🇸</button>
+  </div>
+
+  <button onclick="toggleMusic()">🎧 Play</button>
+
+  <div class="audio-box">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <p id="countup"></p>
+  <p id="koreaTime"></p>
+
+  <div class="dmca">
+    <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
+      <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:80px;">
+    </a>
+  </div>
+
+  <div class="copyright">
+    © 2026 부이뒤칸 - All Rights Reserved<br>
+    (Unauthorized copying, reproduction or distribution is strictly prohibited)<br><br>
+    Owner: 부이뒤칸<br>
+    Email: duykhanhneflickr@copyright-limited.com
+  </div>
+
 </div>
 
-<button class="play-btn" onclick="playMusic()">Play</button>
-
-<audio id="music">
-<source src="https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3">
+<audio id="music" crossorigin="anonymous" loop>
+  <source src="https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3">
 </audio>
 
-<div class="dmca">
-<a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf">
-<img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:80px;">
-</a>
-</div>
-
-<div class="footer">
-© 2026 부이뒤칸 - All Rights Reserved<br>
-(Unauthorized copying is prohibited)<br><br>
-Owner: 부이뒤칸<br>
-Email: duykhanhneflickr@copyright-limited.com
-</div>
-
-</div>
-
 <script>
+const data = {
+  vi: {
+    desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
+    friendTitle: "Bạn của tôi",
+    friend: "문준우, sinh năm 2011, đến từ Hàn Quốc"
+  },
+  kr: {
+    desc: "저는 부이뒤칸입니다. 2010년생, 베트남 출신입니다.",
+    friendTitle: "내 친구",
+    friend: "문준우, 2011년생, 한국 출신"
+  },
+  en: {
+    desc: "I am 부이뒤칸, born in 2010, from Vietnam.",
+    friendTitle: "My friend",
+    friend: "Moon Joonwoo, born in 2011, from Korea"
+  }
+};
 
 function setLang(lang){
-  let desc = document.getElementById("desc");
-
-  if(lang === "vi"){
-    desc.innerHTML = "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.<br>Bạn của tôi 문준우, sinh năm 2011, đến từ Hàn Quốc.";
-  }
-
-  if(lang === "kr"){
-    desc.innerHTML = "저는 부이뒤칸이며 2010년생, 베트남 출신입니다.<br>제 친구 문준우는 2011년생, 한국 출신입니다.";
-  }
-
-  if(lang === "en"){
-    desc.innerHTML = "I am 부이뒤칸, born in 2010, from Vietnam.<br>My friend 문준우, born in 2011, from Korea.";
-  }
+  document.getElementById("desc").innerText = data[lang].desc;
+  document.getElementById("friendTitle").innerText = data[lang].friendTitle;
+  document.getElementById("friend").innerText = data[lang].friend;
 }
 
-function playMusic(){
-  document.getElementById("music").play();
+const audio = document.getElementById("music");
+const bars = document.querySelectorAll(".bar");
+
+let ctx, analyser, source;
+
+function startSite(){
+  document.getElementById("welcome").style.display = "none";
+
+  if (!ctx) {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = ctx.createAnalyser();
+    source = ctx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+    analyser.fftSize = 64;
+  }
+
+  ctx.resume();
+  audio.play();
 }
 
+function toggleMusic(){
+  if (!ctx) return;
+  if (audio.paused) audio.play();
+  else audio.pause();
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if (!analyser) return;
+
+  const dataArr = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(dataArr);
+
+  bars.forEach((bar, i)=>{
+    bar.style.height = (dataArr[i] / 255 * 40) + "px";
+  });
+}
+animate();
+
+const start = new Date("2026-03-05");
+
+setInterval(()=>{
+  let now = new Date();
+  let d = Math.floor((now-start)/86400000);
+  document.getElementById("countup").innerText = d + " days";
+
+  const kr = new Intl.DateTimeFormat("en-US", {
+    timeZone:"Asia/Seoul",
+    dateStyle:"medium",
+    timeStyle:"medium"
+  }).format(new Date());
+
+  document.getElementById("koreaTime").innerText = kr;
+
+},1000);
+
+setLang("vi");
 </script>
 
 </body>
