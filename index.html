@@ -4,13 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- 🔥 DMCA VERIFY -->
 <meta name='dmca-site-verification' content='WkRsWFNMWU1CWHNPREFONmRnUzBGZz090' />
 
-<title>부이뒤칸 - Trang cá nhân chính thức</title>
-<meta name="description" content="Website cá nhân của 부이뒤칸">
+<title>부이뒤칸 & 문준우 - Trang cá nhân chính thức</title>
 
-<link rel="icon" href="favicon.png">
+<meta name="description" content="Website cá nhân của 부이뒤칸 và 문준우">
+<meta name="keywords" content="부이뒤칸, 문준우, buiduykhan, moon joonwoo">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": ["부이뒤칸","문준우"],
+  "alternateName": ["Bui Duy Khan","Moon Joonwoo"],
+  "url": "https://iprights.asia"
+}
+</script>
 
 <style>
 body {
@@ -24,7 +33,6 @@ body {
   height: 100vh;
 }
 
-/* RGB */
 body::before {
   content: "";
   position: fixed;
@@ -42,7 +50,6 @@ body::before {
   100% { background-position: 0% }
 }
 
-/* CARD */
 .card {
   width: 380px;
   max-width: 90%;
@@ -57,7 +64,6 @@ img {
   border-radius: 15px;
 }
 
-/* AUDIO */
 .audio-box {
   display: flex;
   justify-content: center;
@@ -69,7 +75,6 @@ img {
 .bar {
   width: 6px;
   height: 5px;
-  border-radius: 3px;
 }
 
 .bar:nth-child(1){background:red;}
@@ -85,7 +90,6 @@ img {
   cursor: pointer;
 }
 
-/* POPUP */
 #welcome {
   position: fixed;
   width: 100%;
@@ -112,18 +116,20 @@ img {
   cursor: pointer;
 }
 
-/* DMCA */
 .dmca {
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
+}
+
+.copyright {
+  font-size: 12px;
+  margin-top: 10px;
+  opacity: 0.8;
 }
 </style>
 </head>
 
 <body>
 
-<!-- POPUP -->
 <div id="welcome">
   <div class="box">
     <span class="close" onclick="startSite()">✖</span>
@@ -159,11 +165,19 @@ img {
   <p id="countup"></p>
   <p id="koreaTime"></p>
 
-  <!-- 🔥 DMCA BADGE -->
+  <!-- DMCA -->
   <div class="dmca">
     <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
-      <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png?ID=efd67f43-296b-44e1-9844-2a172838a3cf">
+      <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png">
     </a>
+  </div>
+
+  <!-- 🔥 COPYRIGHT -->
+  <div class="copyright">
+    © 2026 부이뒤칸 - All Rights Reserved<br>
+    (Unauthorized copying, reproduction or distribution is strictly prohibited)<br><br>
+    Owner: 부이뒤칸<br>
+    Email: duykhanhneflickr@copyright-limited.com
   </div>
 
 </div>
@@ -173,7 +187,6 @@ img {
 </audio>
 
 <script>
-
 const data = {
   vi: {
     desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
@@ -181,14 +194,14 @@ const data = {
     friend: "문준우, sinh năm 2011, đến từ Hàn Quốc"
   },
   kr: {
-    desc: "저는 부이뒤칸입니다.",
+    desc: "저는 부이뒤칸입니다. 2010년생, 베트남 출신입니다.",
     friendTitle: "내 친구",
-    friend: "문준우"
+    friend: "문준우, 2011년생, 한국 출신"
   },
   en: {
-    desc: "I am 부이뒤칸",
+    desc: "I am 부이뒤칸, born in 2010, from Vietnam.",
     friendTitle: "My friend",
-    friend: "Moon Joonwoo"
+    friend: "Moon Joonwoo, born in 2011, from Korea"
   }
 };
 
@@ -256,7 +269,6 @@ setInterval(()=>{
 },1000);
 
 setLang("vi");
-
 </script>
 
 </body>
