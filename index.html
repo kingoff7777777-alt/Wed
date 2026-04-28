@@ -1,207 +1,333 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <meta name='dmca-site-verification' content='WkRsWFNMWU1CWHNPREFONmRnUzBGZz090' />
-
 <title>부이뒤칸 & 문준우 | Profile</title>
-
 <meta name="description" content="부이뒤칸 (2010, Vietnam) và 문준우 (2011, Korea). Personal website.">
 <meta name="keywords" content="부이뒤칸, 문준우, buiduykhan, moon joonwoo">
-
 <meta property="og:title" content="부이뒤칸 & 문준우">
 <meta property="og:description" content="Profile của 부이뒤칸 và 문준우">
-
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": ["부이뒤칸","문준우"],
-  "alternateName": ["Bui Duy Khan","Moon Joonwoo"],
-  "url": "https://iprights.asia"
-}
+{"@context":"https://schema.org","@type":"Person","name":["부이뒤칸","문준우"],"alternateName":["Bui Duy Khan","Moon Joonwoo"],"url":"https://iprights.asia"}
 </script>
-
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+:root {
+  --pink:#ff6eb4; --purple:#a855f7; --blue:#38bdf8;
+  --green:#34d399; --yellow:#fbbf24; --orange:#fb923c;
+  --bg:#0f0a1e; --card:#16112b; --border:rgba(255,255,255,0.08);
+  --text:#f0eaff; --muted:rgba(240,234,255,0.5);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+
 body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  font-family:'Nunito',sans-serif;
+  background:var(--bg); color:var(--text);
+  min-height:100vh;
+  display:flex; justify-content:center; align-items:flex-start;
+  padding:80px 16px 60px;
+  overflow-x:hidden;
 }
-
 body::before {
-  content: "";
-  position: fixed;
-  width: 300%;
-  height: 300%;
-  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
-  background-size: 400% 400%;
-  animation: rgb 10s infinite;
-  opacity: 0.12;
-  z-index: -1;
+  content:''; position:fixed;
+  width:500px; height:500px; border-radius:50%;
+  background:var(--purple); filter:blur(120px); opacity:0.1;
+  top:-200px; left:-200px; pointer-events:none; z-index:0;
 }
-@keyframes rgb {
-  0% { background-position: 0% }
-  50% { background-position: 100% }
-  100% { background-position: 0% }
+body::after {
+  content:''; position:fixed;
+  width:400px; height:400px; border-radius:50%;
+  background:var(--pink); filter:blur(100px); opacity:0.1;
+  bottom:-150px; right:-150px; pointer-events:none; z-index:0;
 }
 
-.card {
-  width: 380px;
-  max-width: 90%;
-  padding: 20px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.05);
-  text-align: center;
-  margin: auto;
+.seo-hidden { position:absolute; opacity:0; pointer-events:none; height:0; overflow:hidden; }
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:900;
+  display:flex; justify-content:center; gap:4px;
+  padding:10px 16px;
+  background:rgba(15,10,30,0.88);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-a {
+  color:var(--muted); text-decoration:none;
+  font-size:12px; font-weight:800;
+  padding:7px 16px; border-radius:50px;
+  transition:all .25s; border:1px solid transparent;
+}
+.nav-a:hover { color:var(--text); background:rgba(255,255,255,0.07); }
+.nav-a.active {
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  box-shadow:0 4px 20px rgba(168,85,247,0.4);
 }
 
-img {
-  width: 100%;
-  border-radius: 15px;
-}
-
-.audio-box {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 4px;
-  height: 40px;
-}
-
-.bar {
-  width: 6px;
-  height: 5px;
-}
-
-.bar:nth-child(1){background:red;}
-.bar:nth-child(2){background:orange;}
-.bar:nth-child(3){background:yellow;}
-.bar:nth-child(4){background:lime;}
-.bar:nth-child(5){background:cyan;}
-.bar:nth-child(6){background:blue;}
-.bar:nth-child(7){background:violet;}
-
-.lang button {
-  margin: 5px;
-  cursor: pointer;
-}
-
+/* WELCOME */
 #welcome {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(10,6,20,0.95);
+  backdrop-filter:blur(10px);
+  display:flex; justify-content:center; align-items:center;
+  transition:opacity 0.4s;
+}
+.w-box {
+  background:var(--card);
+  border:1px solid rgba(168,85,247,0.3);
+  border-radius:24px; padding:40px 44px;
+  text-align:center; max-width:320px; width:90%;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,0.5);
+  animation:popIn .5s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes popIn {
+  from { opacity:0; transform:scale(0.92) translateY(20px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.w-close {
+  position:absolute; top:14px; right:18px;
+  background:none; border:none; color:var(--muted);
+  font-size:18px; cursor:pointer; transition:color .2s;
+}
+.w-close:hover { color:var(--text); }
+.w-box h2 {
+  font-size:28px; font-weight:900;
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; margin-bottom:10px;
+}
+.w-sub { color:var(--muted); font-size:14px; line-height:1.6; margin-bottom:24px; }
+.w-sub strong { color:var(--text); }
+.w-btn {
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff; border:none; padding:13px 32px; border-radius:50px;
+  font-family:'Nunito',sans-serif; font-size:15px; font-weight:800;
+  cursor:pointer; box-shadow:0 8px 24px rgba(168,85,247,0.45);
+  transition:transform .2s, box-shadow .2s;
+}
+.w-btn:hover { transform:translateY(-2px); }
+
+/* CARD */
+.card {
+  position:relative; z-index:1;
+  width:420px; max-width:96vw;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:28px; overflow:hidden;
+  padding:0 0 28px;
+  box-shadow:0 40px 80px rgba(0,0,0,0.5);
+  animation:riseUp .8s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes riseUp {
+  from { opacity:0; transform:translateY(50px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.avatar { width:100%; display:block; transition:transform .5s; }
+.card:hover .avatar { transform:scale(1.02); }
+.card-body { padding:0 24px; }
+
+.card h1 { font-size:26px; font-weight:900; padding:16px 0 4px; line-height:1.2; }
+.amp {
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.bio { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:4px; }
+.friend-label {
+  font-size:11px; font-weight:800; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--purple);
+  margin-top:14px; margin-bottom:5px;
+}
+.friend-val { font-size:14px; color:var(--muted); line-height:1.7; }
+
+/* LANG */
+.lang-row { display:flex; gap:8px; padding:16px 0 8px; }
+.lang-btn {
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:12px; padding:8px 16px;
+  font-size:18px; cursor:pointer;
+  transition:all .2s; line-height:1;
+}
+.lang-btn:hover { transform:translateY(-3px) scale(1.1); border-color:rgba(168,85,247,0.4); }
+.lang-btn.active-l {
+  background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(255,110,180,0.25));
+  border-color:rgba(168,85,247,0.5);
 }
 
-.box {
-  background: black;
-  padding: 25px;
-  border-radius: 15px;
-  text-align: center;
-  position: relative;
+/* PLAYER */
+.player {
+  margin:8px 0 0;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:20px; padding:16px 18px;
 }
+.track-dots { display:flex; gap:6px; justify-content:center; margin-bottom:10px; }
+.track-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--border); transition:background .3s, transform .3s;
+}
+.track-dot.active {
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  transform:scale(1.3);
+}
+.track-name {
+  text-align:center; font-size:13px; font-weight:800;
+  color:var(--text); margin-bottom:12px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.player-controls { display:flex; gap:8px; justify-content:center; margin-bottom:12px; }
+.ctrl-btn {
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);
+  color:var(--text); padding:9px 20px; border-radius:50px;
+  font-family:'Nunito',sans-serif; font-size:13px; font-weight:800;
+  cursor:pointer; transition:all .2s;
+}
+.ctrl-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(168,85,247,0.4); }
+.ctrl-btn.playing {
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  border-color:transparent;
+  box-shadow:0 4px 16px rgba(168,85,247,0.4);
+}
+.ctrl-btn.skip:hover { border-color:var(--blue); color:var(--blue); }
 
-.close {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  cursor: pointer;
-}
+/* VISUALIZER */
+.viz { display:flex; align-items:flex-end; gap:4px; height:32px; justify-content:center; }
+.bar { width:6px; height:4px; border-radius:3px; transition:height .05s; }
+.bar:nth-child(1){background:var(--pink);}
+.bar:nth-child(2){background:var(--orange);}
+.bar:nth-child(3){background:var(--yellow);}
+.bar:nth-child(4){background:var(--green);}
+.bar:nth-child(5){background:var(--blue);}
+.bar:nth-child(6){background:var(--purple);}
+.bar:nth-child(7){background:var(--pink);}
 
-.dmca {
-  margin-top: 20px;
+/* STATS */
+.stats { display:flex; gap:12px; margin:16px 0 0; }
+.stat-box {
+  flex:1; background:rgba(255,255,255,0.04);
+  border:1px solid var(--border); border-radius:16px; padding:14px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
 }
+.stat-n {
+  font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; line-height:1;
+}
+.stat-n.small {
+  font-size:15px;
+  background:linear-gradient(135deg,var(--blue),var(--green));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.stat-l { font-size:11px; color:var(--muted); font-weight:600; }
 
-.copyright {
-  font-size: 12px;
-  margin-top: 10px;
-  opacity: 0.8;
+.dmca { text-align:center; margin:20px 0 0; }
+.dmca img { opacity:.75; transition:opacity .2s; }
+.dmca img:hover { opacity:1; }
+
+.footer {
+  font-size:11px; color:var(--muted); line-height:1.8;
+  text-align:center; border-top:1px solid var(--border);
+  padding:16px 0 0; margin-top:16px;
 }
+.footer span { opacity:.55; font-size:10px; }
 </style>
 </head>
-
 <body>
 
-<!-- 🔥 MENU (THÊM DUY NHẤT) -->
-<div style="position:fixed; top:10px; width:100%; text-align:center; z-index:999;">
-  <a href="index.html" style="color:white; margin-right:10px;">🏠 Home</a>
-  <a href="album.html" style="color:white;">📸 Album</a>
-</div>
+<h1 class="seo-hidden">부이뒤칸 문준우 부이뒤칸 2010 Việt Nam 문준우 2011 Korea</h1>
 
-<!-- 🔥 SEO FIX -->
-<h1 style="opacity:0;position:absolute;">
-부이뒤칸 문준우 부이뒤칸 2010 Việt Nam 문준우 2011 Korea
-</h1>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-a active">🏠 Home</a>
+  <a href="album.html" class="nav-a">📸 Album</a>
+</nav>
 
+<!-- WELCOME -->
 <div id="welcome">
-  <div class="box">
-    <span class="close" onclick="startSite()">✖</span>
+  <div class="w-box">
+    <button class="w-close" onclick="startSite()">✕</button>
     <h2>Welcome 👋</h2>
-    <p>Tap to enter the website</p>
+    <p class="w-sub">Trang cá nhân của<br><strong>부이뒤칸 & 문준우</strong></p>
+    <button class="w-btn" onclick="startSite()">Vào trang ✨</button>
   </div>
 </div>
 
+<!-- CARD -->
 <div class="card">
 
-  <img src="https://i.imgur.com/4AcFg90.webp">
+  <img class="avatar" src="https://i.imgur.com/4AcFg90.webp" alt="부이뒤칸 & 문준우">
 
-  <h1>부이뒤칸 & 문준우</h1>
+  <div class="card-body">
 
-  <p id="desc"></p>
+    <h1>부이뒤칸 <span class="amp">&</span> 문준우</h1>
 
-  <h3 id="friendTitle"></h3>
-  <p id="friend"></p>
+    <p class="bio" id="desc"></p>
+    <p class="friend-label" id="friendTitle"></p>
+    <p class="friend-val" id="friend"></p>
 
-  <div class="lang">
-    <button onclick="setLang('vi')">🇻🇳</button>
-    <button onclick="setLang('kr')">🇰🇷</button>
-    <button onclick="setLang('en')">🇺🇸</button>
+    <div class="lang-row">
+      <button class="lang-btn active-l" id="btn-vi" onclick="setLang('vi')">🇻🇳</button>
+      <button class="lang-btn" id="btn-kr" onclick="setLang('kr')">🇰🇷</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇺🇸</button>
+    </div>
+
+    <!-- PLAYER -->
+    <div class="player">
+      <div class="track-dots">
+        <div class="track-dot active" id="dot0"></div>
+        <div class="track-dot" id="dot1"></div>
+      </div>
+      <div class="track-name" id="trackName">🎵 See Tình</div>
+      <div class="player-controls">
+        <button class="ctrl-btn" id="playBtn" onclick="toggleMusic()">▶ Play</button>
+        <button class="ctrl-btn skip" onclick="nextTrack()">⏭ Change Song</button>
+      </div>
+      <div class="viz">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-box">
+        <span class="stat-n" id="countup">0</span>
+        <span class="stat-l">Days 💫</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-n small" id="koreaTime">--:--</span>
+        <span class="stat-l">Seoul 🇰🇷</span>
+      </div>
+    </div>
+
+    <!-- DMCA -->
+    <div class="dmca">
+      <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
+        <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:72px;" alt="DMCA Protected">
+      </a>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      © 2026 부이뒤칸 — All Rights Reserved<br>
+      <span>Owner: 부이뒤칸 · duykhanhneflickr@copyright-limited.com</span>
+    </div>
+
   </div>
-
-  <button onclick="toggleMusic()">🎧 Play</button>
-
-  <div class="audio-box">
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div>
-  </div>
-
-  <p id="countup"></p>
-  <p id="koreaTime"></p>
-
-  <div class="dmca">
-    <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
-      <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:80px;">
-    </a>
-  </div>
-
-  <div class="copyright">
-    © 2026 부이뒤칸 - All Rights Reserved<br>
-    (Unauthorized copying, reproduction or distribution is strictly prohibited)<br><br>
-    Owner: 부이뒤칸<br>
-    Email: duykhanhneflickr@copyright-limited.com
-  </div>
-
 </div>
 
-<audio id="music" crossorigin="anonymous" loop>
-  <source src="https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3">
-</audio>
+<audio id="music" crossorigin="anonymous"></audio>
 
 <script>
-const data = {
+// ── LANGUAGE ────────────────────────────────
+const langData = {
   vi: {
     desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
     friendTitle: "Bạn của tôi",
@@ -219,71 +345,132 @@ const data = {
   }
 };
 
-function setLang(lang){
-  document.getElementById("desc").innerText = data[lang].desc;
-  document.getElementById("friendTitle").innerText = data[lang].friendTitle;
-  document.getElementById("friend").innerText = data[lang].friend;
+function setLang(lang) {
+  document.getElementById("desc").innerText = langData[lang].desc;
+  document.getElementById("friendTitle").innerText = langData[lang].friendTitle;
+  document.getElementById("friend").innerText = langData[lang].friend;
+  ['vi','kr','en'].forEach(l =>
+    document.getElementById('btn-'+l).classList.toggle('active-l', l === lang)
+  );
+  localStorage.setItem("lang", lang);
 }
 
-const audio = document.getElementById("music");
-const bars = document.querySelectorAll(".bar");
-
-let ctx, analyser, source;
-
-function startSite(){
-  document.getElementById("welcome").style.display = "none";
-
-  if (!ctx) {
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = ctx.createAnalyser();
-    source = ctx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
-    analyser.fftSize = 64;
+// ── MUSIC PLAYER ────────────────────────────
+const tracks = [
+  {
+    src:  "https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3",
+    name: "🎵 See Tình"
+  },
+  {
+    src:  "https://raw.githubusercontent.com/kingoff7777777-alt/music/refs/heads/main/Don%20Miguelo%20-%20Y%20Que%20Fue%3F%20%5BAudio%20Oficial%5D-482307798.mp3",
+    name: "🎵 Y Que Fue?"
   }
+];
 
-  ctx.resume();
-  audio.play();
+const audio     = document.getElementById("music");
+const bars      = document.querySelectorAll(".bar");
+const playBtn   = document.getElementById("playBtn");
+const trackName = document.getElementById("trackName");
+let ctx, analyser, source;
+let currentTrack = 0;
+let unlocked = false;
+
+function loadTrack(idx) {
+  currentTrack = idx;
+  audio.src = tracks[idx].src;
+  trackName.textContent = tracks[idx].name;
+  document.querySelectorAll(".track-dot").forEach((d, i) =>
+    d.classList.toggle("active", i === idx)
+  );
 }
 
-function toggleMusic(){
-  if (!ctx) return;
-  if (audio.paused) audio.play();
-  else audio.pause();
+function startSite() {
+  const wel = document.getElementById("welcome");
+  wel.style.opacity = '0';
+  setTimeout(() => wel.style.display = "none", 400);
+  unlockAudio();
 }
 
-function animate(){
+function unlockAudio() {
+  if (unlocked) return;
+  unlocked = true;
+
+  ctx      = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = ctx.createAnalyser();
+  source   = ctx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(ctx.destination);
+  analyser.fftSize = 64;
+
+  loadTrack(0);
+
+  ctx.resume().then(() => {
+    audio.play().then(() => {
+      playBtn.textContent = '⏸ Pause';
+      playBtn.classList.add('playing');
+    }).catch(() => {
+      playBtn.textContent = '▶ Play';
+    });
+  });
+}
+
+// Hết bài → tự chuyển bài tiếp
+audio.addEventListener("ended", () => {
+  const next = (currentTrack + 1) % tracks.length;
+  loadTrack(next);
+  ctx.resume().then(() => audio.play());
+});
+
+function toggleMusic() {
+  if (!unlocked) { unlockAudio(); return; }
+  if (audio.paused) {
+    ctx.resume().then(() => audio.play());
+    playBtn.textContent = '⏸ Pause';
+    playBtn.classList.add('playing');
+  } else {
+    audio.pause();
+    playBtn.textContent = '▶ Play';
+    playBtn.classList.remove('playing');
+  }
+}
+
+function nextTrack() {
+  if (!unlocked) { unlockAudio(); return; }
+  const next = (currentTrack + 1) % tracks.length;
+  loadTrack(next);
+  ctx.resume().then(() => {
+    audio.play().then(() => {
+      playBtn.textContent = '⏸ Pause';
+      playBtn.classList.add('playing');
+    });
+  });
+}
+
+// Visualizer
+function animate() {
   requestAnimationFrame(animate);
   if (!analyser) return;
-
-  const dataArr = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(dataArr);
-
-  bars.forEach((bar, i)=>{
-    bar.style.height = (dataArr[i] / 255 * 40) + "px";
-  });
+  const arr = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(arr);
+  bars.forEach((b, i) => { b.style.height = (arr[i] / 255 * 30 + 4) + 'px'; });
 }
 animate();
 
+// Counter + Seoul time
 const start = new Date("2026-03-05");
+setInterval(() => {
+  document.getElementById("countup").innerText =
+    Math.floor((new Date() - start) / 86400000);
+  document.getElementById("koreaTime").innerText =
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Seoul",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    }).format(new Date());
+}, 1000);
 
-setInterval(()=>{
-  let now = new Date();
-  let d = Math.floor((now-start)/86400000);
-  document.getElementById("countup").innerText = d + " days";
-
-  const kr = new Intl.DateTimeFormat("en-US", {
-    timeZone:"Asia/Seoul",
-    dateStyle:"medium",
-    timeStyle:"medium"
-  }).format(new Date());
-
-  document.getElementById("koreaTime").innerText = kr;
-
-},1000);
-
-setLang("vi");
+// Init
+const savedLang = localStorage.getItem("lang") || "vi";
+setLang(savedLang);
 </script>
-
 </body>
 </html>
