@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Album | iprights.asia</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff6eb4;--purple:#a855f7;--blue:#38bdf8;--green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--bg:#0f0a1e;--card:#16112b;--border:rgba(255,255,255,0.08);--text:#f0eaff;--muted:rgba(240,234,255,0.5);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:80px 16px 60px;overflow-x:hidden;}
+body::before{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--purple);filter:blur(120px);opacity:0.1;top:-200px;left:-200px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;width:400px;height:400px;border-radius:50%;background:var(--pink);filter:blur(100px);opacity:0.1;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:4px;padding:10px 16px;background:rgba(15,10,30,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:800;padding:7px 16px;border-radius:50px;transition:all .25s;border:1px solid transparent;}
+.nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 4px 20px rgba(168,85,247,0.4);}
+.nav-user{font-size:12px;font-weight:800;color:var(--green);padding:6px 14px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);border-radius:50px;margin-left:8px;}
+.nav-out{font-size:11px;font-weight:800;color:var(--muted);padding:6px 12px;background:none;border:1px solid var(--border);border-radius:50px;cursor:pointer;transition:all .2s;}
+.nav-out:hover{color:var(--pink);border-color:var(--pink);}
+.wrap{max-width:640px;margin:0 auto;position:relative;z-index:1;}
+.hero{text-align:center;margin-bottom:24px;}
+.hero h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.hero p{color:var(--muted);font-size:14px;}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.count{font-size:13px;color:var(--muted);font-weight:600;}
+.btn-post{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:10px 20px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(168,85,247,0.4);transition:all .2s;}
+.btn-post:hover{transform:translateY(-1px);}
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px;animation:fadeUp .4s ease both;transition:border-color .2s,transform .2s;}
+.post-card:hover{border-color:rgba(168,85,247,0.3);transform:translateY(-2px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.post-img{width:100%;max-height:400px;object-fit:cover;display:block;cursor:zoom-in;}
+.post-body{padding:16px;}
+.post-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.post-author{font-size:13px;font-weight:800;color:var(--purple);background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.2);padding:4px 12px;border-radius:50px;}
+.post-author.admin-badge{color:var(--yellow);background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.3);}
+.post-date{font-size:11px;color:var(--muted);}
+.post-caption{font-size:16px;font-weight:800;margin-bottom:6px;}
+.post-text{font-size:14px;color:var(--muted);line-height:1.7;white-space:pre-wrap;margin-bottom:10px;}
+.post-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.like-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:50px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;}
+.like-btn:hover,.like-btn.liked{border-color:var(--pink);color:var(--pink);background:rgba(255,110,180,0.1);}
+.del-btn{background:none;border:1px solid rgba(255,100,100,0.3);color:rgba(255,100,100,0.7);padding:6px 14px;border-radius:50px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;}
+.del-btn:hover{border-color:var(--pink);color:var(--pink);background:rgba(255,110,180,0.1);}
+.post-warn{font-size:10px;color:rgba(255,100,100,0.5);margin-top:8px;font-weight:700;}
+.loading{text-align:center;padding:40px;color:var(--muted);}
+.spinner{width:36px;height:36px;border:3px solid rgba(168,85,247,0.2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:9999;flex-direction:column;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(8px);cursor:zoom-out;}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:94vw;max-height:78vh;border-radius:16px;object-fit:contain;}
+#lb-close{position:fixed;top:18px;right:22px;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-a">🏠 Home</a>
+  <a href="album.html" class="nav-a active">📸 Album</a>
+  <a href="chat.html" class="nav-a">💬 Chat</a>
+  <span id="navRight"></span>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>📸 Album</h1>
+    <p>Kỷ niệm của 부이뒤칸 & 문준우</p>
+  </div>
+  <div class="toolbar">
+    <span class="count" id="count">0 bài đăng</span>
+    <button class="btn-post" onclick="gotoPost()">✏️ Đăng bài</button>
+  </div>
+  <div id="loading" class="loading"><div class="spinner"></div><p>Đang tải...</p></div>
+  <div id="empty" class="empty" style="display:none"><div class="empty-icon">📭</div><p>Chưa có bài đăng. Hãy là người đầu tiên! 🌟</p></div>
+  <div id="feed"></div>
+</div>
+
+<div id="lightbox" onclick="closeLb()">
+  <button id="lb-close" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",
+  authDomain:"ipright-album.firebaseapp.com",
+  projectId:"ipright-album",
+  storageBucket:"ipright-album.firebasestorage.app",
+  messagingSenderId:"920853312130",
+  appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const ADMIN = "duykhanhneflickr@copyright-limited.com";
+
+let currentUser = null;
+let isAdmin = false;
+
+onAuthStateChanged(auth, async u => {
+  currentUser = u;
+  isAdmin = u && u.email === ADMIN;
+  const nr = document.getElementById("navRight");
+  if (u) {
+    nr.innerHTML = `<span class="nav-user">👤 ${u.displayName||u.email}${isAdmin?' 👑':''}</span><button class="nav-out" onclick="window.doLogout()">Đăng xuất</button>`;
+  } else {
+    nr.innerHTML = `<a href="login.html" class="nav-a">🔐 Đăng nhập</a>`;
+  }
+  loadFeed();
+});
+
+window.doLogout = () => signOut(auth).then(() => location.reload());
+window.gotoPost = () => currentUser ? location.href="post.html" : location.href="login.html";
+
+function loadFeed() {
+  const q = query(collection(db,"posts"), orderBy("createdAt","desc"));
+  onSnapshot(q, snap => {
+    document.getElementById("loading").style.display = "none";
+    const feed = document.getElementById("feed");
+    feed.innerHTML = "";
+    if (snap.empty) { document.getElementById("empty").style.display="block"; return; }
+    document.getElementById("empty").style.display="none";
+    document.getElementById("count").textContent = snap.size + " bài đăng";
+    snap.forEach(d => renderPost(d.id, d.data()));
+  });
+}
+
+function renderPost(id, d) {
+  const feed = document.getElementById("feed");
+  const div = document.createElement("div");
+  div.className = "post-card";
+  div.id = "post-"+id;
+
+  const date = d.createdAt?.toDate
+    ? d.createdAt.toDate().toLocaleString("vi-VN",{timeZone:"Asia/Ho_Chi_Minh",dateStyle:"medium",timeStyle:"short"})
+    : "Vừa đăng";
+
+  const isOwner = currentUser && (currentUser.uid === d.uid);
+  const canDelete = isAdmin || isOwner;
+  const liked = currentUser && d.likes && d.likes.includes(currentUser.uid);
+  const likeCount = d.likes ? d.likes.length : 0;
+
+  div.innerHTML = `
+    ${d.imageUrl ? `<img class="post-img" src="${d.imageUrl}" onclick="openLb('${d.imageUrl}')" alt="">` : ""}
+    <div class="post-body">
+      <div class="post-header">
+        <span class="post-author ${d.authorEmail===ADMIN?'admin-badge':''}">
+          ${d.authorEmail===ADMIN?'👑':'👤'} ${d.author||'Ẩn danh'}
+        </span>
+        <span class="post-date">🕐 ${date}</span>
+      </div>
+      ${d.caption?`<div class="post-caption">${d.caption}</div>`:''}
+      ${d.text?`<p class="post-text">${d.text}</p>`:''}
+      <div class="post-actions">
+        <button class="like-btn ${liked?'liked':''}" onclick="toggleLike('${id}',${liked})">
+          ❤️ ${likeCount>0?likeCount+' ':''} ${liked?'Đã thích':'Thích'}
+        </button>
+        ${canDelete?`<button class="del-btn" onclick="deletePost('${id}')">🗑️ Xoá</button>`:''}
+      </div>
+      <div class="post-warn">⚠️ Nghiêm cấm sao chép</div>
+    </div>`;
+  feed.appendChild(div);
+}
+
+window.toggleLike = async (id, liked) => {
+  if (!currentUser) { location.href="login.html"; return; }
+  const ref = doc(db,"posts",id);
+  if (liked) await updateDoc(ref, { likes: arrayRemove(currentUser.uid) });
+  else await updateDoc(ref, { likes: arrayUnion(currentUser.uid) });
+};
+
+window.deletePost = async (id) => {
+  if (!confirm("Xoá bài này?")) return;
+  await deleteDoc(doc(db,"posts",id));
+};
+
+window.openLb = src => { document.getElementById("lbImg").src=src; document.getElementById("lightbox").classList.add("show"); };
+window.closeLb = () => document.getElementById("lightbox").classList.remove("show");
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeLb(); });
+</script>
+</body>
+</html>
