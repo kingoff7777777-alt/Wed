@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập | iprights.asia</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff6eb4;--purple:#a855f7;--blue:#38bdf8;--green:#34d399;--bg:#0f0a1e;--card:#16112b;--border:rgba(255,255,255,0.08);--text:#f0eaff;--muted:rgba(240,234,255,0.5);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:80px 16px 60px;overflow-x:hidden;}
+body::before{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--purple);filter:blur(120px);opacity:0.1;top:-200px;left:-200px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;width:400px;height:400px;border-radius:50%;background:var(--pink);filter:blur(100px);opacity:0.1;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;gap:4px;padding:10px 16px;background:rgba(15,10,30,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:800;padding:7px 16px;border-radius:50px;transition:all .25s;border:1px solid transparent;}
+.nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 4px 20px rgba(168,85,247,0.4);}
+.wrap{position:relative;z-index:1;width:100%;max-width:420px;}
+.hero{text-align:center;margin-bottom:24px;}
+.hero h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.hero p{color:var(--muted);font-size:14px;}
+.card{background:var(--card);border:1px solid rgba(168,85,247,0.2);border-radius:20px;padding:28px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;}
+.tab{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);padding:10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;}
+.tab.on{background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(255,110,180,0.2));border-color:rgba(168,85,247,0.4);color:var(--purple);}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+.field input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:var(--text);padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.field input:focus{border-color:rgba(168,85,247,0.5);}
+.btn{width:100%;border:none;padding:14px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-p{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 6px 20px rgba(168,85,247,0.4);}
+.btn-g{background:linear-gradient(135deg,#10b981,#34d399);color:#fff;box-shadow:0 6px 20px rgba(16,185,129,0.35);}
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.msg{font-size:13px;font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:14px;text-align:center;display:none;}
+.msg.ok{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3);display:block;}
+.msg.err{background:rgba(255,110,180,0.15);color:var(--pink);border:1px solid rgba(255,110,180,0.3);display:block;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-a">🏠 Home</a>
+  <a href="album.html" class="nav-a">📸 Album</a>
+  <a href="chat.html" class="nav-a">💬 Chat</a>
+  <a href="login.html" class="nav-a active">🔐 Login</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>🔐 Tài khoản</h1>
+    <p>Tham gia cộng đồng iprights.asia</p>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab on" id="t1" onclick="showTab('login')">Đăng nhập</button>
+      <button class="tab" id="t2" onclick="showTab('reg')">Đăng ký</button>
+    </div>
+    <div id="msg" class="msg"></div>
+
+    <div id="f-login">
+      <div class="field"><label>Email</label><input type="email" id="lEmail" placeholder="email@example.com"></div>
+      <div class="field"><label>Mật khẩu</label><input type="password" id="lPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-p" id="lBtn" onclick="doLogin()">Đăng nhập</button>
+    </div>
+
+    <div id="f-reg" style="display:none">
+      <div class="field"><label>Tên hiển thị</label><input type="text" id="rName" placeholder="Tên của bạn..."></div>
+      <div class="field"><label>Email</label><input type="email" id="rEmail" placeholder="email@example.com"></div>
+      <div class="field"><label>Mật khẩu</label><input type="password" id="rPw" placeholder="Tối thiểu 6 ký tự" onkeydown="if(event.key==='Enter')doReg()"></div>
+      <button class="btn btn-g" id="rBtn" onclick="doReg()">Đăng ký</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",
+  authDomain:"ipright-album.firebaseapp.com",
+  projectId:"ipright-album",
+  storageBucket:"ipright-album.firebasestorage.app",
+  messagingSenderId:"920853312130",
+  appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const ADMIN = "duykhanhneflickr@copyright-limited.com";
+
+onAuthStateChanged(auth, u => { if(u) location.href="album.html"; });
+
+function msg(type, text){ const e=document.getElementById("msg"); e.className="msg "+type; e.textContent=text; }
+
+window.showTab = (tab) => {
+  document.getElementById("f-login").style.display = tab==="login"?"block":"none";
+  document.getElementById("f-reg").style.display   = tab==="reg"?"block":"none";
+  document.getElementById("t1").classList.toggle("on", tab==="login");
+  document.getElementById("t2").classList.toggle("on", tab==="reg");
+  document.getElementById("msg").className="msg";
+};
+
+window.doLogin = async () => {
+  const email=document.getElementById("lEmail").value.trim();
+  const pw=document.getElementById("lPw").value;
+  if(!email||!pw){ msg("err","⚠️ Nhập đủ thông tin!"); return; }
+  const btn=document.getElementById("lBtn"); btn.disabled=true; btn.textContent="⏳ Đang đăng nhập...";
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+    msg("ok","✅ Thành công! Đang chuyển trang...");
+  } catch(e) {
+    msg("err","❌ Email hoặc mật khẩu không đúng!");
+    btn.disabled=false; btn.textContent="Đăng nhập";
+  }
+};
+
+window.doReg = async () => {
+  const name=document.getElementById("rName").value.trim();
+  const email=document.getElementById("rEmail").value.trim();
+  const pw=document.getElementById("rPw").value;
+  if(!name){ msg("err","⚠️ Nhập tên hiển thị!"); return; }
+  if(!email){ msg("err","⚠️ Nhập email!"); return; }
+  if(pw.length<6){ msg("err","⚠️ Mật khẩu tối thiểu 6 ký tự!"); return; }
+  const btn=document.getElementById("rBtn"); btn.disabled=true; btn.textContent="⏳ Đang tạo tài khoản...";
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pw);
+    await updateProfile(cred.user, { displayName: name });
+    await setDoc(doc(db,"users",cred.user.uid), {
+      name, email,
+      role: email===ADMIN ? "admin" : "user",
+      createdAt: new Date().toISOString(),
+      banned: false
+    });
+    msg("ok","✅ Đăng ký thành công!");
+  } catch(e) {
+    msg("err","❌ " + (e.code==="auth/email-already-in-use"?"Email đã được dùng!":"Lỗi: "+e.message));
+    btn.disabled=false; btn.textContent="Đăng ký";
+  }
+};
+</script>
+</body>
+</html>
