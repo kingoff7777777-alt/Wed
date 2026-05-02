@@ -164,71 +164,70 @@ const I18N={
 };
 
 function setLang(l){
-localStorage.setItem(“site_lang”,l);
-const t=I18N[l];
-document.getElementById(“nt-home”).textContent=t.nav_home;
-document.getElementById(“nt-album”).textContent=t.nav_album;
-document.getElementById(“nt-chat”).textContent=t.nav_chat;
-document.getElementById(“nt-login”).textContent=t.nav_login;
-document.getElementById(“w-sub”).innerHTML=t.w_sub;
-document.getElementById(“w-btn”).textContent=t.w_btn;
-document.getElementById(“desc”).textContent=t.desc;
-document.getElementById(“friendTitle”).textContent=t.friend_title;
-document.getElementById(“friend”).textContent=t.friend;
-document.getElementById(“days-label”).textContent=t.days;
-document.getElementById(“changeBtn”).textContent=t.change_song;
-[“vi”,“kr”,“en”].forEach(x=>document.getElementById(“lf-”+x).classList.toggle(“on”,x===l));
+  localStorage.setItem("site_lang",l);
+  const t=I18N[l];
+  document.getElementById("nt-home").textContent=t.nav_home;
+  document.getElementById("nt-album").textContent=t.nav_album;
+  document.getElementById("nt-chat").textContent=t.nav_chat;
+  document.getElementById("nt-login").textContent=t.nav_login;
+  document.getElementById("w-sub").innerHTML=t.w_sub;
+  document.getElementById("w-btn").textContent=t.w_btn;
+  document.getElementById("desc").textContent=t.desc;
+  document.getElementById("friendTitle").textContent=t.friend_title;
+  document.getElementById("friend").textContent=t.friend;
+  document.getElementById("days-label").textContent=t.days;
+  document.getElementById("changeBtn").textContent=t.change_song;
+  ["vi","kr","en"].forEach(x=>document.getElementById("lf-"+x).classList.toggle("on",x===l));
 }
 
 const tracks=[
-{src:“https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3”,name:“🎵 See Tình”},
-{src:“https://raw.githubusercontent.com/kingoff7777777-alt/music/refs/heads/main/Don%20Miguelo%20-%20Y%20Que%20Fue%3F%20%5BAudio%20Oficial%5D-482307798.mp3”,name:“🎵 Y Que Fue?”}
+  {src:"https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3",name:"🎵 See Tình"},
+  {src:"https://raw.githubusercontent.com/kingoff7777777-alt/music/refs/heads/main/Don%20Miguelo%20-%20Y%20Que%20Fue%3F%20%5BAudio%20Oficial%5D-482307798.mp3",name:"🎵 Y Que Fue?"}
 ];
-const audio=document.getElementById(“music”);
-const bars=document.querySelectorAll(”.bar”);
-const playBtn=document.getElementById(“playBtn”);
+const audio=document.getElementById("music");
+const bars=document.querySelectorAll(".bar");
+const playBtn=document.getElementById("playBtn");
 let ctx,analyser,source,cur=0,unlocked=false;
 
-function loadTrack(i){cur=i;audio.src=tracks[i].src;document.getElementById(“trackName”).textContent=tracks[i].name;document.querySelectorAll(”.track-dot”).forEach((d,j)=>d.classList.toggle(“active”,j===i));}
+function loadTrack(i){cur=i;audio.src=tracks[i].src;document.getElementById("trackName").textContent=tracks[i].name;document.querySelectorAll(".track-dot").forEach((d,j)=>d.classList.toggle("active",j===i));}
 
 function startSite(){
-const w=document.getElementById(“welcome”);w.style.opacity=“0”;setTimeout(()=>w.style.display=“none”,400);
-if(unlocked)return;unlocked=true;
-ctx=new(window.AudioContext||window.webkitAudioContext)();
-analyser=ctx.createAnalyser();source=ctx.createMediaElementSource(audio);
-source.connect(analyser);analyser.connect(ctx.destination);analyser.fftSize=64;
-loadTrack(0);
-ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}).catch(()=>{}));
+  const w=document.getElementById("welcome");w.style.opacity="0";setTimeout(()=>w.style.display="none",400);
+  if(unlocked)return;unlocked=true;
+  ctx=new(window.AudioContext||window.webkitAudioContext)();
+  analyser=ctx.createAnalyser();source=ctx.createMediaElementSource(audio);
+  source.connect(analyser);analyser.connect(ctx.destination);analyser.fftSize=64;
+  loadTrack(0);
+  ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent="⏸ Pause";playBtn.classList.add("playing");}).catch(()=>{}));
 }
 
-audio.addEventListener(“ended”,()=>{const n=(cur+1)%tracks.length;loadTrack(n);ctx.resume().then(()=>audio.play());});
+audio.addEventListener("ended",()=>{const n=(cur+1)%tracks.length;loadTrack(n);ctx.resume().then(()=>audio.play());});
 
 function toggleMusic(){
-if(!unlocked){startSite();return;}
-if(audio.paused){ctx.resume().then(()=>audio.play());playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}
-else{audio.pause();playBtn.textContent=“▶ Play”;playBtn.classList.remove(“playing”);}
+  if(!unlocked){startSite();return;}
+  if(audio.paused){ctx.resume().then(()=>audio.play());playBtn.textContent="⏸ Pause";playBtn.classList.add("playing");}
+  else{audio.pause();playBtn.textContent="▶ Play";playBtn.classList.remove("playing");}
 }
 
 function nextTrack(){
-if(!unlocked){startSite();return;}
-const n=(cur+1)%tracks.length;loadTrack(n);
-ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}));
+  if(!unlocked){startSite();return;}
+  const n=(cur+1)%tracks.length;loadTrack(n);
+  ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent="⏸ Pause";playBtn.classList.add("playing");}));
 }
 
-function animate(){requestAnimationFrame(animate);if(!analyser)return;const a=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(a);bars.forEach((b,i)=>{b.style.height=(a[i]/255*28+3)+“px”;});}
+function animate(){requestAnimationFrame(animate);if(!analyser)return;const a=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(a);bars.forEach((b,i)=>{b.style.height=(a[i]/255*28+3)+"px";});}
 animate();
 
-const start=new Date(“2026-03-05”);
+const start=new Date("2026-03-05");
 setInterval(()=>{
-document.getElementById(“countup”).innerText=Math.floor((new Date()-start)/86400000);
-document.getElementById(“koreaTime”).innerText=new Intl.DateTimeFormat(“en-US”,{timeZone:“Asia/Seoul”,hour:“2-digit”,minute:“2-digit”,second:“2-digit”}).format(new Date());
+  document.getElementById("countup").innerText=Math.floor((new Date()-start)/86400000);
+  document.getElementById("koreaTime").innerText=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(new Date());
 },1000);
 
-setLang(localStorage.getItem(“site_lang”)||“vi”);
+setLang(localStorage.getItem("site_lang")||"vi");
 </script>
 
 <!-- FLOATING CHAT BUTTON -->
-
 <div id="chatFloat" onclick="openChat()" style="
   position:fixed; bottom:24px; right:20px; z-index:800;
   width:54px; height:54px; border-radius:50%;
