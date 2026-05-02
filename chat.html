@@ -98,11 +98,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);disp
 .login-wall-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:11px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;}
 
 /* MOBILE */
-@media(max-width:520px){
-  .sidebar{position:fixed;left:-200px;top:0;bottom:0;z-index:100;transition:left .25s;}
-  .sidebar.open{left:0;box-shadow:4px 0 20px rgba(0,0,0,0.5);}
-  .mob-menu-btn{display:flex!important;}
-}
+/* Mobile: sidebar ẩn mặc định, toggle bằng nút ☰ */
+.sidebar{position:fixed;left:-210px;top:0;bottom:0;z-index:200;transition:left .25s;width:200px;min-width:200px;}
+.sidebar.open{left:0;box-shadow:6px 0 24px rgba(0,0,0,0.7);}
+.mob-menu-btn{display:flex!important;}
+/* Overlay khi sidebar mở */
+#sbOverlay{display:none;position:fixed;inset:0;z-index:199;background:rgba(0,0,0,0.5);}
+#sbOverlay.show{display:block;}
 </style>
 </head>
 <body>
@@ -127,6 +129,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);disp
 
 <div class="layout" id="mainLayout">
   <!-- SIDEBAR -->
+  <div id="sbOverlay" onclick="toggleSb()"></div>
   <div class="sidebar" id="sidebar">
     <div class="sb-head">
       <div class="sb-me" id="sbMe"></div>
