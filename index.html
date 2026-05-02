@@ -5,199 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name='dmca-site-verification' content='WkRsWFNMWU1CWHNPREFONmRnUzBGZz090' />
 <title>부이뒤칸 & 문준우 | Profile</title>
-<meta name="description" content="부이뒤칸 (2010, Vietnam) và 문준우 (2011, Korea). Personal website.">
+<meta name="description" content="부이뒤칸 (2010, Vietnam) và 문준우 (2011, Korea).">
 <meta name="keywords" content="부이뒤칸, 문준우, buiduykhan, moon joonwoo">
-<meta property="og:title" content="부이뒤칸 & 문준우">
-<meta property="og:description" content="Profile của 부이뒤칸 và 문준우">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":["부이뒤칸","문준우"],"alternateName":["Bui Duy Khan","Moon Joonwoo"],"url":"https://iprights.asia"}
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --pink:#ff6eb4; --purple:#a855f7; --blue:#38bdf8;
-  --green:#34d399; --yellow:#fbbf24; --orange:#fb923c;
-  --bg:#0f0a1e; --card:#16112b; --border:rgba(255,255,255,0.08);
-  --text:#f0eaff; --muted:rgba(240,234,255,0.5);
-}
-* { box-sizing:border-box; margin:0; padding:0; }
-
-body {
-  font-family:'Nunito',sans-serif;
-  background:var(--bg); color:var(--text);
-  min-height:100vh;
-  display:flex; justify-content:center; align-items:flex-start;
-  padding:80px 16px 60px;
-  overflow-x:hidden;
-}
-body::before {
-  content:''; position:fixed;
-  width:500px; height:500px; border-radius:50%;
-  background:var(--purple); filter:blur(120px); opacity:0.1;
-  top:-200px; left:-200px; pointer-events:none; z-index:0;
-}
-body::after {
-  content:''; position:fixed;
-  width:400px; height:400px; border-radius:50%;
-  background:var(--pink); filter:blur(100px); opacity:0.1;
-  bottom:-150px; right:-150px; pointer-events:none; z-index:0;
-}
-
-.seo-hidden { position:absolute; opacity:0; pointer-events:none; height:0; overflow:hidden; }
-
-/* NAV */
-nav {
-  position:fixed; top:0; left:0; right:0; z-index:900;
-  display:flex; justify-content:center; gap:4px;
-  padding:10px 16px;
-  background:rgba(15,10,30,0.88);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
-.nav-a {
-  color:var(--muted); text-decoration:none;
-  font-size:12px; font-weight:800;
-  padding:7px 16px; border-radius:50px;
-  transition:all .25s; border:1px solid transparent;
-}
-.nav-a:hover { color:var(--text); background:rgba(255,255,255,0.07); }
-.nav-a.active {
-  color:#fff;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  box-shadow:0 4px 20px rgba(168,85,247,0.4);
-}
-
-/* WELCOME */
-#welcome {
-  position:fixed; inset:0; z-index:9999;
-  background:rgba(10,6,20,0.95);
-  backdrop-filter:blur(10px);
-  display:flex; justify-content:center; align-items:center;
-  transition:opacity 0.4s;
-}
-.w-box {
-  background:var(--card);
-  border:1px solid rgba(168,85,247,0.3);
-  border-radius:24px; padding:40px 44px;
-  text-align:center; max-width:320px; width:90%;
-  position:relative;
-  box-shadow:0 30px 60px rgba(0,0,0,0.5);
-  animation:popIn .5s cubic-bezier(.2,.8,.3,1) both;
-}
-@keyframes popIn {
-  from { opacity:0; transform:scale(0.92) translateY(20px); }
-  to   { opacity:1; transform:scale(1) translateY(0); }
-}
-.w-close {
-  position:absolute; top:14px; right:18px;
-  background:none; border:none; color:var(--muted);
-  font-size:18px; cursor:pointer; transition:color .2s;
-}
-.w-close:hover { color:var(--text); }
-.w-box h2 {
-  font-size:28px; font-weight:900;
-  background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text; margin-bottom:10px;
-}
-.w-sub { color:var(--muted); font-size:14px; line-height:1.6; margin-bottom:24px; }
-.w-sub strong { color:var(--text); }
-.w-btn {
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  color:#fff; border:none; padding:13px 32px; border-radius:50px;
-  font-family:'Nunito',sans-serif; font-size:15px; font-weight:800;
-  cursor:pointer; box-shadow:0 8px 24px rgba(168,85,247,0.45);
-  transition:transform .2s, box-shadow .2s;
-}
-.w-btn:hover { transform:translateY(-2px); }
-
-/* CARD */
-.card {
-  position:relative; z-index:1;
-  width:420px; max-width:96vw;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:28px; overflow:hidden;
-  padding:0 0 28px;
-  box-shadow:0 40px 80px rgba(0,0,0,0.5);
-  animation:riseUp .8s cubic-bezier(.2,.8,.3,1) both;
-}
-@keyframes riseUp {
-  from { opacity:0; transform:translateY(50px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-.avatar { width:100%; display:block; transition:transform .5s; }
-.card:hover .avatar { transform:scale(1.02); }
-.card-body { padding:0 24px; }
-
-.card h1 { font-size:26px; font-weight:900; padding:16px 0 4px; line-height:1.2; }
-.amp {
-  background:linear-gradient(135deg,var(--pink),var(--purple));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.bio { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:4px; }
-.friend-label {
-  font-size:11px; font-weight:800; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--purple);
-  margin-top:14px; margin-bottom:5px;
-}
-.friend-val { font-size:14px; color:var(--muted); line-height:1.7; }
-
-/* LANG */
-.lang-row { display:flex; gap:8px; padding:16px 0 8px; }
-.lang-btn {
-  background:rgba(255,255,255,0.05);
-  border:1px solid var(--border);
-  border-radius:12px; padding:8px 16px;
-  font-size:18px; cursor:pointer;
-  transition:all .2s; line-height:1;
-}
-.lang-btn:hover { transform:translateY(-3px) scale(1.1); border-color:rgba(168,85,247,0.4); }
-.lang-btn.active-l {
-  background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(255,110,180,0.25));
-  border-color:rgba(168,85,247,0.5);
-}
-
-/* PLAYER */
-.player {
-  margin:8px 0 0;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--border);
-  border-radius:20px; padding:16px 18px;
-}
-.track-dots { display:flex; gap:6px; justify-content:center; margin-bottom:10px; }
-.track-dot {
-  width:8px; height:8px; border-radius:50%;
-  background:var(--border); transition:background .3s, transform .3s;
-}
-.track-dot.active {
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  transform:scale(1.3);
-}
-.track-name {
-  text-align:center; font-size:13px; font-weight:800;
-  color:var(--text); margin-bottom:12px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.player-controls { display:flex; gap:8px; justify-content:center; margin-bottom:12px; }
-.ctrl-btn {
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);
-  color:var(--text); padding:9px 20px; border-radius:50px;
-  font-family:'Nunito',sans-serif; font-size:13px; font-weight:800;
-  cursor:pointer; transition:all .2s;
-}
-.ctrl-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(168,85,247,0.4); }
-.ctrl-btn.playing {
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  border-color:transparent;
-  box-shadow:0 4px 16px rgba(168,85,247,0.4);
-}
-.ctrl-btn.skip:hover { border-color:var(--blue); color:var(--blue); }
-
-/* VISUALIZER */
-.viz { display:flex; align-items:flex-end; gap:4px; height:32px; justify-content:center; }
-.bar { width:6px; height:4px; border-radius:3px; transition:height .05s; }
+:root{--pink:#ff6eb4;--purple:#a855f7;--blue:#38bdf8;--green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--bg:#0f0a1e;--card:#16112b;--border:rgba(255,255,255,0.08);--text:#f0eaff;--muted:rgba(240,234,255,0.5);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:65px 16px 60px;overflow-x:hidden;}
+body::before{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--purple);filter:blur(120px);opacity:0.1;top:-200px;left:-200px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;width:400px;height:400px;border-radius:50%;background:var(--pink);filter:blur(100px);opacity:0.1;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
+.seo-hidden{position:absolute;opacity:0;pointer-events:none;height:0;overflow:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:5px 11px;border-radius:50px;transition:all .25s;border:1px solid transparent;white-space:nowrap;}
+.nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 3px 14px rgba(168,85,247,0.4);}
+.lang-float{display:flex;gap:4px;margin-left:6px;}
+.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;}
+.lf-btn:hover{border-color:var(--purple);transform:scale(1.1);}
+.lf-btn.on{border-color:var(--purple);background:rgba(168,85,247,0.2);}
+#welcome{position:fixed;inset:0;z-index:9999;background:rgba(10,6,20,0.95);backdrop-filter:blur(10px);display:flex;justify-content:center;align-items:center;transition:opacity 0.4s;}
+.w-box{background:var(--card);border:1px solid rgba(168,85,247,0.3);border-radius:24px;padding:38px 42px;text-align:center;max-width:310px;width:90%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,0.5);animation:popIn .5s cubic-bezier(.2,.8,.3,1) both;}
+@keyframes popIn{from{opacity:0;transform:scale(0.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.w-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;}
+.w-close:hover{color:var(--text);}
+.w-box h2{font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.w-sub{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:22px;}
+.w-sub strong{color:var(--text);}
+.w-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:12px 30px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(168,85,247,0.4);transition:transform .2s;}
+.w-btn:hover{transform:translateY(-2px);}
+.card{position:relative;z-index:1;width:410px;max-width:96vw;background:var(--card);border:1px solid var(--border);border-radius:26px;overflow:hidden;padding:0 0 26px;box-shadow:0 40px 80px rgba(0,0,0,0.5);animation:riseUp .8s cubic-bezier(.2,.8,.3,1) both;}
+@keyframes riseUp{from{opacity:0;transform:translateY(50px);}to{opacity:1;transform:translateY(0);}}
+.avatar{width:100%;display:block;transition:transform .5s;}
+.card:hover .avatar{transform:scale(1.02);}
+.card-body{padding:0 22px;}
+.card h1{font-size:24px;font-weight:900;padding:14px 0 4px;line-height:1.2;}
+.amp{background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.bio{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:4px;}
+.friend-label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-top:12px;margin-bottom:4px;}
+.friend-val{font-size:13px;color:var(--muted);line-height:1.7;}
+.player{margin:14px 0 0;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:18px;padding:14px 16px;}
+.track-dots{display:flex;gap:6px;justify-content:center;margin-bottom:8px;}
+.track-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s,transform .3s;}
+.track-dot.active{background:linear-gradient(135deg,var(--purple),var(--pink));transform:scale(1.3);}
+.track-name{text-align:center;font-size:12px;font-weight:800;color:var(--text);margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.player-controls{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
+.ctrl-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;}
+.ctrl-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(168,85,247,0.4);}
+.ctrl-btn.playing{background:linear-gradient(135deg,var(--purple),var(--pink));border-color:transparent;box-shadow:0 3px 14px rgba(168,85,247,0.4);}
+.ctrl-btn.skip:hover{border-color:var(--blue);color:var(--blue);}
+.viz{display:flex;align-items:flex-end;gap:3px;height:28px;justify-content:center;}
+.bar{width:5px;height:3px;border-radius:3px;transition:height .05s;}
 .bar:nth-child(1){background:var(--pink);}
 .bar:nth-child(2){background:var(--orange);}
 .bar:nth-child(3){background:var(--yellow);}
@@ -205,79 +62,44 @@ nav {
 .bar:nth-child(5){background:var(--blue);}
 .bar:nth-child(6){background:var(--purple);}
 .bar:nth-child(7){background:var(--pink);}
-
-/* STATS */
-.stats { display:flex; gap:12px; margin:16px 0 0; }
-.stat-box {
-  flex:1; background:rgba(255,255,255,0.04);
-  border:1px solid var(--border); border-radius:16px; padding:14px;
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-}
-.stat-n {
-  font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700;
-  background:linear-gradient(135deg,var(--yellow),var(--orange));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text; line-height:1;
-}
-.stat-n.small {
-  font-size:15px;
-  background:linear-gradient(135deg,var(--blue),var(--green));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.stat-l { font-size:11px; color:var(--muted); font-weight:600; }
-
-.dmca { text-align:center; margin:20px 0 0; }
-.dmca img { opacity:.75; transition:opacity .2s; }
-.dmca img:hover { opacity:1; }
-
-.footer {
-  font-size:11px; color:var(--muted); line-height:1.8;
-  text-align:center; border-top:1px solid var(--border);
-  padding:16px 0 0; margin-top:16px;
-}
-.footer span { opacity:.55; font-size:10px; }
+.stats{display:flex;gap:10px;margin:14px 0 0;}
+.stat-box{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.stat-n.small{font-size:14px;background:linear-gradient(135deg,var(--blue),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{font-size:10px;color:var(--muted);font-weight:600;}
+.dmca{text-align:center;margin:18px 0 0;}
+.dmca img{opacity:.75;}
+.footer{font-size:10px;color:var(--muted);line-height:1.8;text-align:center;border-top:1px solid var(--border);padding:14px 0 0;margin-top:14px;}
 </style>
 </head>
 <body>
-
-<h1 class="seo-hidden">부이뒤칸 문준우 부이뒤칸 2010 Việt Nam 문준우 2011 Korea</h1>
-
-<!-- NAV -->
+<h1 class="seo-hidden">부이뒤칸 문준우 2010 Việt Nam 문준우 2011 Korea</h1>
 <nav>
-  <a href="index.html" class="nav-a active">🏠 Home</a>
-  <a href="album.html" class="nav-a">📸 Album</a>
+  <a href="index.html" class="nav-a active" id="nt-home">🏠 Home</a>
+  <a href="album.html" class="nav-a" id="nt-album">📸 Album</a>
+  <a href="chat.html" class="nav-a" id="nt-chat">💬 Chat</a>
+  <a href="login.html" class="nav-a" id="nt-login">🔐 Login</a>
+  <div class="lang-float">
+    <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
+    <button class="lf-btn" onclick="setLang('kr')" id="lf-kr">🇰🇷</button>
+    <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
+  </div>
 </nav>
-
-<!-- WELCOME -->
 <div id="welcome">
   <div class="w-box">
     <button class="w-close" onclick="startSite()">✕</button>
     <h2>Welcome 👋</h2>
-    <p class="w-sub">Trang cá nhân của<br><strong>부이뒤칸 & 문준우</strong></p>
-    <button class="w-btn" onclick="startSite()">Vào trang ✨</button>
+    <p class="w-sub" id="w-sub">Trang cá nhân của<br><strong>부이뒤칸 & 문준우</strong></p>
+    <button class="w-btn" id="w-btn" onclick="startSite()">Vào trang ✨</button>
   </div>
 </div>
-
-<!-- CARD -->
 <div class="card">
-
   <img class="avatar" src="https://i.imgur.com/4AcFg90.webp" alt="부이뒤칸 & 문준우">
-
   <div class="card-body">
-
     <h1>부이뒤칸 <span class="amp">&</span> 문준우</h1>
-
     <p class="bio" id="desc"></p>
     <p class="friend-label" id="friendTitle"></p>
     <p class="friend-val" id="friend"></p>
-
-    <div class="lang-row">
-      <button class="lang-btn active-l" id="btn-vi" onclick="setLang('vi')">🇻🇳</button>
-      <button class="lang-btn" id="btn-kr" onclick="setLang('kr')">🇰🇷</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇺🇸</button>
-    </div>
-
-    <!-- PLAYER -->
     <div class="player">
       <div class="track-dots">
         <div class="track-dot active" id="dot0"></div>
@@ -286,7 +108,7 @@ nav {
       <div class="track-name" id="trackName">🎵 See Tình</div>
       <div class="player-controls">
         <button class="ctrl-btn" id="playBtn" onclick="toggleMusic()">▶ Play</button>
-        <button class="ctrl-btn skip" onclick="nextTrack()">⏭ Change Song</button>
+        <button class="ctrl-btn skip" id="changeBtn" onclick="nextTrack()">⏭ Change Song</button>
       </div>
       <div class="viz">
         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -294,183 +116,143 @@ nav {
         <div class="bar"></div>
       </div>
     </div>
-
-    <!-- STATS -->
     <div class="stats">
       <div class="stat-box">
         <span class="stat-n" id="countup">0</span>
-        <span class="stat-l">Days 💫</span>
+        <span class="stat-l" id="days-label">Ngày bên nhau 💫</span>
       </div>
       <div class="stat-box">
         <span class="stat-n small" id="koreaTime">--:--</span>
         <span class="stat-l">Seoul 🇰🇷</span>
       </div>
     </div>
-
-    <!-- DMCA -->
     <div class="dmca">
       <a href="//www.dmca.com/Protection/Status.aspx?ID=efd67f43-296b-44e1-9844-2a172838a3cf" target="_blank">
-        <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:72px;" alt="DMCA Protected">
+        <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png" style="width:68px;" alt="DMCA">
       </a>
     </div>
-
-    <!-- FOOTER -->
     <div class="footer">
       © 2026 부이뒤칸 — All Rights Reserved<br>
       <span>Owner: 부이뒤칸 · duykhanhneflickr@copyright-limited.com</span>
     </div>
-
   </div>
 </div>
-
 <audio id="music" crossorigin="anonymous"></audio>
-
 <script>
-// ── LANGUAGE ────────────────────────────────
-const langData = {
-  vi: {
-    desc: "Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
-    friendTitle: "Bạn của tôi",
-    friend: "문준우, sinh năm 2011, đến từ Hàn Quốc"
+const I18N={
+  vi:{
+    nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Đăng nhập",
+    w_sub:"Trang cá nhân của<br><strong>부이뒤칸 & 문준우</strong>",w_btn:"Vào trang ✨",
+    desc:"Tôi là 부이뒤칸, sinh năm 2010, đến từ Việt Nam.",
+    friend_title:"Bạn của tôi",friend:"문준우, sinh năm 2011, đến từ Hàn Quốc",
+    days:"Ngày bên nhau 💫",change_song:"⏭ Đổi bài"
   },
-  kr: {
-    desc: "저는 부이뒤칸입니다. 2010년생, 베트남 출신입니다.",
-    friendTitle: "내 친구",
-    friend: "문준우, 2011년생, 한국 출신"
+  kr:{
+    nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_login:"🔐 로그인",
+    w_sub:"부이뒤칸 & 문준우의<br><strong>개인 페이지</strong>",w_btn:"입장하기 ✨",
+    desc:"저는 부이뒤칸입니다. 2010년생, 베트남 출신입니다.",
+    friend_title:"내 친구",friend:"문준우, 2011년생, 한국 출신",
+    days:"함께한 날 💫",change_song:"⏭ 다음 곡"
   },
-  en: {
-    desc: "I am 부이뒤칸, born in 2010, from Vietnam.",
-    friendTitle: "My friend",
-    friend: "Moon Joonwoo, born in 2011, from Korea"
+  en:{
+    nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Login",
+    w_sub:"Personal page of<br><strong>부이뒤칸 & 문준우</strong>",w_btn:"Enter ✨",
+    desc:"I am 부이뒤칸, born in 2010, from Vietnam.",
+    friend_title:"My friend",friend:"Moon Joonwoo, born in 2011, from Korea",
+    days:"Days together 💫",change_song:"⏭ Change Song"
   }
 };
 
-function setLang(lang) {
-  document.getElementById("desc").innerText = langData[lang].desc;
-  document.getElementById("friendTitle").innerText = langData[lang].friendTitle;
-  document.getElementById("friend").innerText = langData[lang].friend;
-  ['vi','kr','en'].forEach(l =>
-    document.getElementById('btn-'+l).classList.toggle('active-l', l === lang)
-  );
-  localStorage.setItem("lang", lang);
+function setLang(l){
+localStorage.setItem(“site_lang”,l);
+const t=I18N[l];
+document.getElementById(“nt-home”).textContent=t.nav_home;
+document.getElementById(“nt-album”).textContent=t.nav_album;
+document.getElementById(“nt-chat”).textContent=t.nav_chat;
+document.getElementById(“nt-login”).textContent=t.nav_login;
+document.getElementById(“w-sub”).innerHTML=t.w_sub;
+document.getElementById(“w-btn”).textContent=t.w_btn;
+document.getElementById(“desc”).textContent=t.desc;
+document.getElementById(“friendTitle”).textContent=t.friend_title;
+document.getElementById(“friend”).textContent=t.friend;
+document.getElementById(“days-label”).textContent=t.days;
+document.getElementById(“changeBtn”).textContent=t.change_song;
+[“vi”,“kr”,“en”].forEach(x=>document.getElementById(“lf-”+x).classList.toggle(“on”,x===l));
 }
 
-// ── MUSIC PLAYER ────────────────────────────
-const tracks = [
-  {
-    src:  "https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3",
-    name: "🎵 See Tình"
-  },
-  {
-    src:  "https://raw.githubusercontent.com/kingoff7777777-alt/music/refs/heads/main/Don%20Miguelo%20-%20Y%20Que%20Fue%3F%20%5BAudio%20Oficial%5D-482307798.mp3",
-    name: "🎵 Y Que Fue?"
-  }
+const tracks=[
+{src:“https://raw.githubusercontent.com/kingoff7777777-alt/music/main/see-tinh-taivideoaz.mp3”,name:“🎵 See Tình”},
+{src:“https://raw.githubusercontent.com/kingoff7777777-alt/music/refs/heads/main/Don%20Miguelo%20-%20Y%20Que%20Fue%3F%20%5BAudio%20Oficial%5D-482307798.mp3”,name:“🎵 Y Que Fue?”}
 ];
+const audio=document.getElementById(“music”);
+const bars=document.querySelectorAll(”.bar”);
+const playBtn=document.getElementById(“playBtn”);
+let ctx,analyser,source,cur=0,unlocked=false;
 
-const audio     = document.getElementById("music");
-const bars      = document.querySelectorAll(".bar");
-const playBtn   = document.getElementById("playBtn");
-const trackName = document.getElementById("trackName");
-let ctx, analyser, source;
-let currentTrack = 0;
-let unlocked = false;
+function loadTrack(i){cur=i;audio.src=tracks[i].src;document.getElementById(“trackName”).textContent=tracks[i].name;document.querySelectorAll(”.track-dot”).forEach((d,j)=>d.classList.toggle(“active”,j===i));}
 
-function loadTrack(idx) {
-  currentTrack = idx;
-  audio.src = tracks[idx].src;
-  trackName.textContent = tracks[idx].name;
-  document.querySelectorAll(".track-dot").forEach((d, i) =>
-    d.classList.toggle("active", i === idx)
-  );
+function startSite(){
+const w=document.getElementById(“welcome”);w.style.opacity=“0”;setTimeout(()=>w.style.display=“none”,400);
+if(unlocked)return;unlocked=true;
+ctx=new(window.AudioContext||window.webkitAudioContext)();
+analyser=ctx.createAnalyser();source=ctx.createMediaElementSource(audio);
+source.connect(analyser);analyser.connect(ctx.destination);analyser.fftSize=64;
+loadTrack(0);
+ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}).catch(()=>{}));
 }
 
-function startSite() {
-  const wel = document.getElementById("welcome");
-  wel.style.opacity = '0';
-  setTimeout(() => wel.style.display = "none", 400);
-  unlockAudio();
+audio.addEventListener(“ended”,()=>{const n=(cur+1)%tracks.length;loadTrack(n);ctx.resume().then(()=>audio.play());});
+
+function toggleMusic(){
+if(!unlocked){startSite();return;}
+if(audio.paused){ctx.resume().then(()=>audio.play());playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}
+else{audio.pause();playBtn.textContent=“▶ Play”;playBtn.classList.remove(“playing”);}
 }
 
-function unlockAudio() {
-  if (unlocked) return;
-  unlocked = true;
-
-  ctx      = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = ctx.createAnalyser();
-  source   = ctx.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(ctx.destination);
-  analyser.fftSize = 64;
-
-  loadTrack(0);
-
-  ctx.resume().then(() => {
-    audio.play().then(() => {
-      playBtn.textContent = '⏸ Pause';
-      playBtn.classList.add('playing');
-    }).catch(() => {
-      playBtn.textContent = '▶ Play';
-    });
-  });
+function nextTrack(){
+if(!unlocked){startSite();return;}
+const n=(cur+1)%tracks.length;loadTrack(n);
+ctx.resume().then(()=>audio.play().then(()=>{playBtn.textContent=“⏸ Pause”;playBtn.classList.add(“playing”);}));
 }
 
-// Hết bài → tự chuyển bài tiếp
-audio.addEventListener("ended", () => {
-  const next = (currentTrack + 1) % tracks.length;
-  loadTrack(next);
-  ctx.resume().then(() => audio.play());
-});
-
-function toggleMusic() {
-  if (!unlocked) { unlockAudio(); return; }
-  if (audio.paused) {
-    ctx.resume().then(() => audio.play());
-    playBtn.textContent = '⏸ Pause';
-    playBtn.classList.add('playing');
-  } else {
-    audio.pause();
-    playBtn.textContent = '▶ Play';
-    playBtn.classList.remove('playing');
-  }
-}
-
-function nextTrack() {
-  if (!unlocked) { unlockAudio(); return; }
-  const next = (currentTrack + 1) % tracks.length;
-  loadTrack(next);
-  ctx.resume().then(() => {
-    audio.play().then(() => {
-      playBtn.textContent = '⏸ Pause';
-      playBtn.classList.add('playing');
-    });
-  });
-}
-
-// Visualizer
-function animate() {
-  requestAnimationFrame(animate);
-  if (!analyser) return;
-  const arr = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(arr);
-  bars.forEach((b, i) => { b.style.height = (arr[i] / 255 * 30 + 4) + 'px'; });
-}
+function animate(){requestAnimationFrame(animate);if(!analyser)return;const a=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(a);bars.forEach((b,i)=>{b.style.height=(a[i]/255*28+3)+“px”;});}
 animate();
 
-// Counter + Seoul time
-const start = new Date("2026-03-05");
-setInterval(() => {
-  document.getElementById("countup").innerText =
-    Math.floor((new Date() - start) / 86400000);
-  document.getElementById("koreaTime").innerText =
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Seoul",
-      hour: "2-digit", minute: "2-digit", second: "2-digit"
-    }).format(new Date());
-}, 1000);
+const start=new Date(“2026-03-05”);
+setInterval(()=>{
+document.getElementById(“countup”).innerText=Math.floor((new Date()-start)/86400000);
+document.getElementById(“koreaTime”).innerText=new Intl.DateTimeFormat(“en-US”,{timeZone:“Asia/Seoul”,hour:“2-digit”,minute:“2-digit”,second:“2-digit”}).format(new Date());
+},1000);
 
-// Init
-const savedLang = localStorage.getItem("lang") || "vi";
-setLang(savedLang);
+setLang(localStorage.getItem(“site_lang”)||“vi”);
+</script>
+
+<!-- FLOATING CHAT BUTTON -->
+
+<div id="chatFloat" onclick="openChat()" style="
+  position:fixed; bottom:24px; right:20px; z-index:800;
+  width:54px; height:54px; border-radius:50%;
+  background:linear-gradient(135deg,#a855f7,#ff6eb4);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; box-shadow:0 6px 24px rgba(168,85,247,0.5);
+  transition:transform .2s; animation:pulse 2s infinite;
+" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <span style="font-size:22px;">💬</span>
+  <div id="chatBadge" style="
+    display:none; position:absolute; top:-2px; right:-2px;
+    background:#ff6eb4; color:#fff; font-size:10px; font-weight:900;
+    width:18px; height:18px; border-radius:50%;
+    align-items:center; justify-content:center;
+    font-family:'Nunito',sans-serif; border:2px solid #0f0a1e;
+  ">!</div>
+</div>
+<style>
+@keyframes pulse{0%,100%{box-shadow:0 6px 24px rgba(168,85,247,0.5);}50%{box-shadow:0 6px 32px rgba(168,85,247,0.8);}}
+</style>
+<script>
+function openChat(){
+  window.location.href='chat.html';
+}
 </script>
 </body>
 </html>
