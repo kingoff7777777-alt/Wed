@@ -11,23 +11,22 @@
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:65px 16px 60px;overflow-x:hidden;}
 body::before{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--purple);filter:blur(120px);opacity:0.1;top:-200px;left:-200px;pointer-events:none;z-index:0;}
 body::after{content:'';position:fixed;width:400px;height:400px;border-radius:50%;background:var(--pink);filter:blur(100px);opacity:0.1;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
-nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-wrap:wrap;}
 .nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:5px 11px;border-radius:50px;transition:all .25s;border:1px solid transparent;white-space:nowrap;}
 .nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
-.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 3px 14px rgba(168,85,247,0.4);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));}
 .nav-user{font-size:11px;font-weight:800;color:var(--green);padding:5px 10px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);border-radius:50px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .lang-float{display:flex;gap:4px;margin-left:4px;}
-.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;}
-.lf-btn:hover{border-color:var(--purple);}
+.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
 .lf-btn.on{border-color:var(--purple);background:rgba(168,85,247,0.2);}
 .wrap{max-width:520px;margin:0 auto;position:relative;z-index:1;}
 .hero{text-align:center;margin-bottom:18px;}
 .hero h1{font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
 .hero p{color:var(--muted);font-size:13px;}
 .card{background:var(--card);border:1px solid rgba(168,85,247,0.2);border-radius:18px;padding:22px;}
-.field{margin-bottom:13px;}
+.field{margin-bottom:14px;}
 .field label{display:block;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:5px;}
-.field input,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:11px;color:var(--text);padding:10px 13px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.field input,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:11px;color:var(--text);padding:11px 13px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
 .field input:focus,.field textarea:focus{border-color:rgba(168,85,247,0.5);}
 .field textarea{resize:vertical;min-height:100px;}
 .drop-zone{position:relative;border:2px dashed rgba(168,85,247,0.3);border-radius:13px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px;}
@@ -36,16 +35,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 .dz-icon{font-size:26px;margin-bottom:6px;}
 .dz-text{font-size:12px;color:var(--muted);}
 .dz-text span{color:var(--purple);font-weight:700;}
-#previewImg{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;display:none;}
+#previewImg{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;display:none;}
+.size-note{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;}
 .btn{width:100%;border:none;padding:13px;border-radius:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;}
 .btn-p{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 5px 18px rgba(168,85,247,0.4);}
-.btn-p:hover{transform:translateY(-1px);}
-.btn-p:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-p:disabled{opacity:.5;cursor:not-allowed;}
 .msg{font-size:12px;font-weight:700;padding:9px 13px;border-radius:10px;margin-top:11px;text-align:center;display:none;}
 .msg.ok{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3);display:block;}
 .msg.err{background:rgba(255,110,180,0.15);color:var(--pink);border:1px solid rgba(255,110,180,0.3);display:block;}
-.prog{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:10px;display:none;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));width:0%;transition:width .3s;}
+.prog{height:5px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:10px;display:none;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));width:0%;transition:width .4s;}
 </style>
 </head>
 <body>
@@ -61,14 +60,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
   </div>
 </nav>
+
 <div class="wrap">
   <div class="hero">
     <h1 id="page-title">✏️ Đăng bài mới</h1>
     <p id="page-sub">Chia sẻ kỷ niệm của bạn</p>
   </div>
   <div class="card">
-    <div class="field"><label id="lbl-caption">Tiêu đề</label><input type="text" id="caption" placeholder="Tiêu đề bài..."></div>
-    <div class="field"><label id="lbl-text">Nội dung</label><textarea id="text" placeholder="Viết gì đó... 📝"></textarea></div>
+    <div class="field">
+      <label id="lbl-caption">Tiêu đề</label>
+      <input type="text" id="caption" placeholder="Tiêu đề bài...">
+    </div>
+    <div class="field">
+      <label id="lbl-text">Nội dung</label>
+      <textarea id="text" placeholder="Viết gì đó... 📝"></textarea>
+    </div>
     <div class="field">
       <label id="lbl-photo">Ảnh (tùy chọn)</label>
       <img id="previewImg" alt="preview">
@@ -77,35 +83,37 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
         <div class="dz-icon">🖼️</div>
         <div class="dz-text" id="dzText">Kéo thả ảnh hoặc <span>chọn file</span></div>
       </div>
+      <div class="size-note" id="sizeNote">Ảnh sẽ tự động nén — không giới hạn kích thước 📦</div>
     </div>
     <button class="btn btn-p" id="submitBtn" onclick="doPost()">🚀 Đăng bài</button>
     <div class="prog" id="prog"><div class="prog-fill" id="progFill"></div></div>
     <div class="msg" id="msg"></div>
   </div>
 </div>
+
+<canvas id="canvas" style="display:none"></canvas>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const fc={apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",authDomain:"ipright-album.firebaseapp.com",projectId:"ipright-album",storageBucket:"ipright-album.firebasestorage.app",messagingSenderId:"920853312130",appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"};
 const app=initializeApp(fc);
 const auth=getAuth(app);
 const db=getFirestore(app);
-const storage=getStorage(app);
 const ADMIN="duykhanhneflickr@copyright-limited.com";
 
 const I18N={
-  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_post:"✏️ Đăng bài",page_title:"✏️ Đăng bài mới",page_sub:"Chia sẻ kỷ niệm của bạn",lbl_caption:"Tiêu đề",lbl_text:"Nội dung",lbl_photo:"Ảnh (tùy chọn)",btn_submit:"🚀 Đăng bài",dz_text:'Kéo thả ảnh hoặc <span>chọn file</span>',err_empty:"⚠️ Nhập tiêu đề hoặc nội dung!",err_size:"⚠️ Ảnh tối đa 5MB!",ok_post:"✅ Đăng thành công!"},
-  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_post:"✏️ 게시하기",page_title:"✏️ 새 게시물",page_sub:"추억을 공유해보세요",lbl_caption:"제목",lbl_text:"내용",lbl_photo:"사진 (선택)",btn_submit:"🚀 게시하기",dz_text:'이미지를 드래그하거나 <span>파일 선택</span>',err_empty:"⚠️ 제목 또는 내용을 입력하세요!",err_size:"⚠️ 이미지 최대 5MB!",ok_post:"✅ 게시 완료!"},
-  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_post:"✏️ New Post",page_title:"✏️ New Post",page_sub:"Share your memories",lbl_caption:"Title",lbl_text:"Content",lbl_photo:"Photo (optional)",btn_submit:"🚀 Post",dz_text:'Drag & drop or <span>choose file</span>',err_empty:"⚠️ Enter a title or content!",err_size:"⚠️ Image max 5MB!",ok_post:"✅ Posted successfully!"}
+  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_post:"✏️ Đăng bài",page_title:"✏️ Đăng bài mới",page_sub:"Chia sẻ kỷ niệm của bạn",lbl_caption:"Tiêu đề",lbl_text:"Nội dung",lbl_photo:"Ảnh (tùy chọn)",btn_submit:"🚀 Đăng bài",dz_text:'Kéo thả ảnh hoặc <span>chọn file</span>',size_note:"Ảnh sẽ tự động nén — không giới hạn kích thước 📦",err_empty:"⚠️ Nhập tiêu đề hoặc nội dung!",ok_post:"✅ Đăng thành công!"},
+  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_post:"✏️ 게시",page_title:"✏️ 새 게시물",page_sub:"추억을 공유해보세요",lbl_caption:"제목",lbl_text:"내용",lbl_photo:"사진 (선택)",btn_submit:"🚀 게시하기",dz_text:'드래그하거나 <span>파일 선택</span>',size_note:"이미지는 자동으로 압축됩니다 📦",err_empty:"⚠️ 제목 또는 내용을 입력하세요!",ok_post:"✅ 게시 완료!"},
+  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_post:"✏️ Post",page_title:"✏️ New Post",page_sub:"Share your memories",lbl_caption:"Title",lbl_text:"Content",lbl_photo:"Photo (optional)",btn_submit:"🚀 Post",dz_text:'Drag & drop or <span>choose file</span>',size_note:"Image auto-compressed — no size limit 📦",err_empty:"⚠️ Enter title or content!",ok_post:"✅ Posted successfully!"}
 };
 
-let me=null,selectedFile=null,lang="vi";
+let me=null, selectedFile=null, lang="vi";
 
 window.setLang=l=>{
-  lang=l;localStorage.setItem("site_lang",l);
+  lang=l; localStorage.setItem("site_lang",l);
   const t=I18N[l];
   document.getElementById("nt-home").textContent=t.nav_home;
   document.getElementById("nt-album").textContent=t.nav_album;
@@ -118,6 +126,7 @@ window.setLang=l=>{
   document.getElementById("lbl-photo").textContent=t.lbl_photo;
   document.getElementById("submitBtn").textContent=t.btn_submit;
   document.getElementById("dzText").innerHTML=t.dz_text;
+  document.getElementById("sizeNote").textContent=t.size_note;
   ["vi","kr","en"].forEach(x=>document.getElementById("lf-"+x).classList.toggle("on",x===l));
   if(me){
     const name=me.displayName||me.email.split("@")[0];
@@ -134,7 +143,6 @@ onAuthStateChanged(auth,u=>{
 window.previewFile=input=>{
   if(!input.files[0])return;
   selectedFile=input.files[0];
-  if(selectedFile.size>5*1024*1024){showMsg("err",I18N[lang].err_size);selectedFile=null;return;}
   const r=new FileReader();
   r.onload=e=>{
     document.getElementById("previewImg").src=e.target.result;
@@ -142,6 +150,81 @@ window.previewFile=input=>{
     document.getElementById("dzText").textContent=selectedFile.name;
   };
   r.readAsDataURL(selectedFile);
+};
+
+// Nén ảnh xuống base64 nhỏ hơn 900KB
+function compressImage(file, maxWidth=1200, quality=0.75) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.getElementById("canvas");
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        // Nén xuống nhỏ hơn 900KB
+        let q = quality;
+        let result = canvas.toDataURL("image/jpeg", q);
+        while (result.length > 900000 && q > 0.3) {
+          q -= 0.1;
+          result = canvas.toDataURL("image/jpeg", q);
+        }
+        resolve(result);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function showMsg(type,text){const e=document.getElementById("msg");e.className="msg "+type;e.textContent=text;}
+function setProg(pct){document.getElementById("prog").style.display="block";document.getElementById("progFill").style.width=pct+"%";}
+
+window.doPost=async()=>{
+  const caption=document.getElementById("caption").value.trim();
+  const text=document.getElementById("text").value.trim();
+  const t=I18N[lang];
+  if(!caption&&!text){showMsg("err",t.err_empty);return;}
+
+  const btn=document.getElementById("submitBtn");
+  btn.disabled=true; btn.textContent="⏳..."; setProg(10);
+
+  try{
+    let imageBase64=null;
+    if(selectedFile){
+      btn.textContent="🗜️ Đang nén ảnh...";
+      setProg(30);
+      imageBase64 = await compressImage(selectedFile);
+      setProg(70);
+    }
+
+    btn.textContent="💾 Đang lưu...";
+    const authorName=me.displayName||me.email.split("@")[0];
+
+    await addDoc(collection(db,"posts"),{
+      caption, text,
+      imageUrl: imageBase64, // Lưu base64 thẳng
+      author: authorName,
+      authorEmail: me.email,
+      uid: me.uid,
+      likes: [],
+      createdAt: serverTimestamp()
+    });
+
+    setProg(100);
+    showMsg("ok", t.ok_post);
+    setTimeout(()=>location.href="album.html", 900);
+
+  }catch(e){
+    console.error(e);
+    showMsg("err","❌ "+e.message);
+    btn.disabled=false;
+    btn.textContent=I18N[lang].btn_submit;
+    document.getElementById("prog").style.display="none";
+  }
 };
 
 const dz=document.getElementById("dz");
@@ -152,51 +235,6 @@ dz.addEventListener("drop",e=>{
   const f=e.dataTransfer.files[0];
   if(f){document.getElementById("fileInput").files=e.dataTransfer.files;previewFile(document.getElementById("fileInput"));}
 });
-
-function showMsg(type,text){const e=document.getElementById("msg");e.className="msg "+type;e.textContent=text;}
-function setProg(pct){document.getElementById("prog").style.display="block";document.getElementById("progFill").style.width=pct+"%";}
-
-window.doPost=async()=>{
-  const caption=document.getElementById("caption").value.trim();
-  const text=document.getElementById("text").value.trim();
-  const t=I18N[lang];
-  if(!caption&&!text){showMsg("err",t.err_empty);return;}
-  const btn=document.getElementById("submitBtn");
-  btn.disabled=true;btn.textContent="⏳...";setProg(10);
-  try{
-    let imageUrl=null;
-    if(selectedFile){
-      btn.textContent="📤 Uploading...";
-      const sRef=ref(storage,`posts/${Date.now()}_${selectedFile.name.replace(/[^a-zA-Z0-9.]/g,"_")}`);
-      await new Promise((res,rej)=>{
-        const task=uploadBytesResumable(sRef,selectedFile);
-        task.on("state_changed",
-          s=>{setProg(Math.round(s.bytesTransferred/s.totalBytes*60)+10);},
-          rej,
-          async()=>{imageUrl=await getDownloadURL(task.snapshot.ref);res();}
-        );
-      });
-    }
-    setProg(85);
-    // Lưu displayName thật vào bài đăng
-    const authorName=me.displayName||me.email.split("@")[0];
-    await addDoc(collection(db,"posts"),{
-      caption,text,imageUrl,
-      author:authorName,
-      authorEmail:me.email,
-      uid:me.uid,
-      likes:[],
-      createdAt:serverTimestamp()
-    });
-    setProg(100);
-    showMsg("ok",t.ok_post);
-    setTimeout(()=>location.href="album.html",900);
-  }catch(e){
-    showMsg("err","❌ "+e.message);
-    btn.disabled=false;btn.textContent=I18N[lang].btn_submit;
-    document.getElementById("prog").style.display="none";
-  }
-};
 </script>
 </body>
 </html>
