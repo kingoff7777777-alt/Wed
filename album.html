@@ -90,6 +90,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
   <a href="index.html" class="nav-a" id="nt-home">🏠 Home</a>
   <a href="album.html" class="nav-a active" id="nt-album">📸 Album</a>
   <a href="chat.html" class="nav-a" id="nt-chat">💬 Chat</a>
+  <a href="profile.html" class="nav-a" id="nt-profile">👤 Profile</a>
   <span id="navRight"></span>
   <div class="lang-float">
     <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
@@ -162,6 +163,12 @@ function updateNavUser(t){
 
 onAuthStateChanged(auth,async u=>{
   me=u;isAdmin=u&&u.email===ADMIN;
+    if(u){
+      // Cũng check role từ Firestore
+      const uRef=doc(db,"users",u.uid);
+      const uSnap=await getDoc(uRef);
+      if(uSnap.exists()&&uSnap.data().role==="admin") isAdmin=true;
+    }
   if(u){
     const snap=await getDocs(collection(db,"users"));
     snap.forEach(d=>{usersMap[d.data().email]=d.id;});
