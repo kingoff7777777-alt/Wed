@@ -13,152 +13,154 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);disp
 
 /* TOPBAR */
 .topbar{display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(15,10,30,0.98);border-bottom:1px solid var(--border);flex-shrink:0;}
+.topbar-left{display:flex;align-items:center;gap:6px;flex:1;min-width:0;}
 .back-btn{background:rgba(255,255,255,0.07);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.topbar-info{flex:1;min-width:0;}
+.sb-toggle{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.topbar-info{min-width:0;}
 .topbar-title{font-size:13px;font-weight:900;}
-.topbar-sub{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.nav-links{display:flex;gap:3px;align-items:center;flex-shrink:0;}
-.nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:4px 9px;border-radius:50px;border:1px solid transparent;white-space:nowrap;}
-.nav-a:hover{background:rgba(255,255,255,0.07);}
-.nav-user-badge{font-size:10px;font-weight:800;color:var(--green);padding:4px 8px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:50px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.lang-row{display:flex;gap:3px;}
+.topbar-sub{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px;}
+.topbar-right{display:flex;gap:3px;align-items:center;flex-shrink:0;}
+.nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:4px 8px;border-radius:50%;border:none;white-space:nowrap;display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:rgba(255,255,255,0.05);}
+.nav-a:hover{background:rgba(255,255,255,0.1);}
+.nav-user-badge{font-size:10px;font-weight:800;color:var(--green);padding:3px 7px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:50px;max-width:75px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:24px;height:24px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;}
 .lf-btn.on{border-color:var(--purple);background:rgba(168,85,247,0.2);}
 
-/* LAYOUT */
-.layout{display:flex;flex:1;overflow:hidden;height:0;}
+/* MAIN LAYOUT */
+.main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
 
-/* SIDEBAR */
-.sidebar{width:185px;min-width:185px;background:rgba(10,6,20,0.99);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
-.sb-head{padding:9px 8px;border-bottom:1px solid var(--border);}
-.sb-me{font-size:11px;font-weight:800;color:var(--green);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.sb-tabs{display:flex;gap:4px;margin-bottom:7px;}
-.sb-tab{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:5px 3px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s;}
+/* SLIDE PANEL - thay sidebar thành panel trượt từ trên xuống trên mobile */
+.panel{position:absolute;top:0;left:0;right:0;z-index:100;background:rgba(10,6,22,0.98);border-bottom:1px solid rgba(168,85,247,0.3);transform:translateY(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:65%;display:flex;flex-direction:column;backdrop-filter:blur(20px);}
+.panel.open{transform:translateY(0);}
+.panel-head{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.panel-title{font-size:12px;font-weight:900;color:var(--purple);flex:1;}
+.panel-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0;}
+.sb-tabs{display:flex;gap:6px;margin-bottom:0;}
+.sb-tab{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:6px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s;}
 .sb-tab.on{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:var(--purple);}
-/* font-size 16px để tránh iOS zoom */
-.search{width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:20px;color:var(--text);padding:6px 10px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;}
+.panel-search{padding:8px 12px;border-bottom:1px solid var(--border);}
+.search{width:100%;background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:20px;color:var(--text);padding:8px 14px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;}
 .search:focus{border-color:rgba(168,85,247,0.5);}
-.user-list{flex:1;overflow-y:auto;padding:5px;}
-.user-item{display:flex;align-items:center;gap:7px;padding:8px 7px;border-radius:10px;cursor:pointer;transition:background .15s;}
-.user-item:hover{background:rgba(255,255,255,0.05);}
+.search::placeholder{color:var(--muted);}
+.user-list{overflow-y:auto;max-height:280px;padding:6px;}
+.user-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;cursor:pointer;transition:background .15s;}
+.user-item:hover{background:rgba(255,255,255,0.06);}
 .user-item.sel{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.2);}
-.u-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
+.u-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;}
 .u-info{min-width:0;flex:1;}
-.u-name{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.u-last{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.empty-sb{padding:14px 8px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7;}
+.u-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.u-uid{font-size:10px;color:var(--purple);font-weight:700;}
+.u-last{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.empty-sb{padding:16px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7;}
 
-/* CHAT AREA */
-.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.chat-head{padding:9px 12px;background:rgba(22,17,43,0.98);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.chat-head-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
+/* OVERLAY */
+#overlay{display:none;position:absolute;inset:0;z-index:99;background:rgba(0,0,0,0.5);}
+#overlay.show{display:block;}
+
+/* CHAT AREA - full width */
+.chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.chat-head{padding:10px 14px;background:rgba(22,17,43,0.98);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-head-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.chat-head-info{flex:1;min-width:0;}
 .chat-head-name{font-size:13px;font-weight:900;}
+.chat-head-uid{font-size:10px;color:var(--purple);font-weight:700;}
 .chat-head-status{font-size:10px;color:var(--green);}
-.mob-menu-btn{display:none;background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:2px 5px;flex-shrink:0;}
-.msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:5px;}
-.msg-row{display:flex;align-items:flex-end;gap:5px;animation:msgIn .2s ease;}
+.msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:6px;}
+.msg-row{display:flex;align-items:flex-end;gap:6px;animation:msgIn .2s ease;}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 .msg-row.me{flex-direction:row-reverse;}
-.m-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0;}
+.m-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0;}
 .m-av.me{background:linear-gradient(135deg,var(--purple),var(--pink));}
-.bw{display:flex;flex-direction:column;max-width:72%;}
+.bw{display:flex;flex-direction:column;max-width:74%;}
 .msg-row.me .bw{align-items:flex-end;}
-.bubble{padding:7px 11px;border-radius:15px;font-size:13px;line-height:1.5;word-break:break-word;}
+.bubble{padding:8px 13px;border-radius:16px;font-size:14px;line-height:1.5;word-break:break-word;}
 .bubble.them{background:var(--card2);border-bottom-left-radius:3px;}
 .bubble.me{background:linear-gradient(135deg,var(--purple),var(--pink));border-bottom-right-radius:3px;}
 .b-time{font-size:9px;color:var(--muted);margin-top:2px;padding:0 3px;}
 
-/* INPUT AREA */
-.input-area{padding:7px 10px;background:rgba(10,6,20,0.99);border-top:1px solid var(--border);flex-shrink:0;}
-.emoji-picker{display:none;flex-wrap:wrap;gap:2px;padding:7px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;max-height:96px;overflow-y:auto;}
+/* INPUT - font 16px chống iOS zoom */
+.input-area{padding:8px 12px;background:rgba(10,6,20,0.99);border-top:1px solid var(--border);flex-shrink:0;}
+.emoji-picker{display:none;flex-wrap:wrap;gap:3px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:7px;max-height:100px;overflow-y:auto;}
 .emoji-picker.show{display:flex;}
-.e-item{font-size:18px;cursor:pointer;padding:3px;border-radius:5px;}
+.e-item{font-size:20px;cursor:pointer;padding:3px;border-radius:5px;}
 .e-item:hover{background:rgba(255,255,255,0.1);}
-.input-row{display:flex;align-items:center;gap:6px;}
-.emoji-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:2px;flex-shrink:0;}
-/* font-size 16px: tránh iOS Safari tự zoom khi focus */
-.msg-in{
-  flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border);
-  border-radius:50px;color:var(--text);padding:9px 15px;
-  font-family:'Nunito',sans-serif;font-size:16px;
-  outline:none;-webkit-appearance:none;
-  transition:border-color .2s;
-}
+.input-row{display:flex;align-items:center;gap:7px;}
+.emoji-btn{background:none;border:none;font-size:22px;cursor:pointer;padding:2px;flex-shrink:0;}
+.msg-in{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:50px;color:var(--text);padding:10px 16px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;transition:border-color .2s;}
 .msg-in:focus{border-color:rgba(168,85,247,0.5);}
-.send-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 12px rgba(168,85,247,0.4);}
+.send-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 12px rgba(168,85,247,0.4);}
 
 /* NO CHAT */
-.no-chat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:10px;}
-.no-chat-icon{font-size:44px;opacity:.5;}
+.no-chat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:12px;padding:20px;}
+.no-chat-icon{font-size:52px;opacity:.4;}
 
 /* LOGIN WALL */
 .login-wall{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;}
-.login-wall h2{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.login-wall h2{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .login-wall p{color:var(--muted);font-size:13px;}
-.login-wall-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:11px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;}
-
-/* MOBILE */
-/* Mobile: sidebar ẩn mặc định, toggle bằng nút ☰ */
-.sidebar{position:fixed;left:-210px;top:0;bottom:0;z-index:200;transition:left .25s;width:200px;min-width:200px;}
-.sidebar.open{left:0;box-shadow:6px 0 24px rgba(0,0,0,0.7);}
-.mob-menu-btn{display:flex!important;}
-/* Overlay khi sidebar mở */
-#sbOverlay{display:none;position:fixed;inset:0;z-index:199;background:rgba(0,0,0,0.5);}
-#sbOverlay.show{display:block;}
+.login-wall-btn{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:12px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <button class="back-btn" onclick="history.back()">←</button>
-  <div class="topbar-info">
-    <div class="topbar-title">💬 Chat</div>
-    <div class="topbar-sub" id="topSub">iprights.asia</div>
-  </div>
-  <div class="nav-links">
-    <a href="index.html" class="nav-a">🏠</a>
-    <a href="album.html" class="nav-a">📸</a>
-    <span class="nav-user-badge" id="navUser" style="display:none"></span>
-    <div class="lang-row">
-      <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
-      <button class="lf-btn" onclick="setLang('kr')" id="lf-kr">🇰🇷</button>
-      <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
+  <div class="topbar-left">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <button class="sb-toggle" onclick="togglePanel()" title="Danh sách chat">☰</button>
+    <div class="topbar-info">
+      <div class="topbar-title">💬 Chat</div>
+      <div class="topbar-sub" id="topSub">iprights.asia</div>
     </div>
+  </div>
+  <div class="topbar-right">
+    <a href="index.html" class="nav-a" title="Home">🏠</a>
+    <a href="album.html" class="nav-a" title="Album">📸</a>
+    <span class="nav-user-badge" id="navUser" style="display:none"></span>
+    <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
+    <button class="lf-btn" onclick="setLang('kr')" id="lf-kr">🇰🇷</button>
+    <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
   </div>
 </div>
 
-<div class="layout" id="mainLayout">
-  <!-- SIDEBAR -->
-  <div id="sbOverlay" onclick="toggleSb()"></div>
-  <div class="sidebar" id="sidebar">
-    <div class="sb-head">
-      <div class="sb-me" id="sbMe"></div>
-      <!-- Tab: Tin nhắn / Tìm bạn -->
+<!-- MAIN -->
+<div class="main-wrap" id="mainWrap">
+
+  <!-- OVERLAY -->
+  <div id="overlay" onclick="closePanel()"></div>
+
+  <!-- SLIDE PANEL -->
+  <div class="panel" id="panel">
+    <div class="panel-head">
       <div class="sb-tabs">
         <button class="sb-tab on" id="tab-recent" onclick="switchTab('recent')">💬 <span id="tab-recent-lbl">Tin nhắn</span></button>
-        <button class="sb-tab" id="tab-search" onclick="switchTab('search')">🔍 <span id="tab-search-lbl">Tìm bạn</span></button>
+        <button class="sb-tab" id="tab-find" onclick="switchTab('find')">🔍 <span id="tab-find-lbl">Tìm bạn</span></button>
       </div>
-      <!-- Ô tìm kiếm (chỉ hiện khi tab Tìm bạn) -->
-      <input class="search" id="searchBox" placeholder="Nhập tên hoặc email..." oninput="searchUsers(this.value)" style="display:none">
+      <button class="panel-close" onclick="closePanel()">✕</button>
     </div>
-    <div class="user-list" id="userList"></div>
+    <div class="panel-search" id="searchWrap" style="display:none">
+      <input class="search" id="searchBox" placeholder="Nhập @username hoặc tên..." oninput="doSearch(this.value)">
+    </div>
+    <div class="user-list" id="userList">
+      <div class="empty-sb">Đang tải...</div>
+    </div>
   </div>
 
-  <!-- CHAT MAIN -->
-  <div class="chat-main" id="chatMain">
+  <!-- CHAT AREA -->
+  <div class="chat-area" id="chatArea">
     <div class="no-chat" id="noChat">
       <div class="no-chat-icon">💬</div>
-      <p id="no-chat-txt" style="font-size:13px;font-weight:700;">Chọn người để bắt đầu nhắn tin</p>
+      <p id="no-chat-txt" style="font-size:14px;font-weight:700;text-align:center;">Bấm ☰ để chọn người nhắn tin</p>
     </div>
 
     <div id="chatBox" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
       <div class="chat-head">
-        <button class="mob-menu-btn" onclick="toggleSb()">☰</button>
         <div class="chat-head-av" id="peerAv"></div>
-        <div>
+        <div class="chat-head-info">
           <div class="chat-head-name" id="peerName"></div>
-          <div class="chat-head-status" id="online-txt">● Online</div>
+          <div class="chat-head-uid" id="peerUid"></div>
         </div>
+        <div class="chat-head-status" id="online-txt">● Online</div>
       </div>
       <div class="msgs" id="msgs"></div>
       <div class="input-area">
@@ -177,7 +179,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);disp
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDocs, addDoc, query, orderBy, onSnapshot, serverTimestamp, setDoc, limit, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, getDocs, addDoc, query, orderBy, onSnapshot, serverTimestamp, setDoc, limit, getDoc, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const fc={apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",authDomain:"ipright-album.firebaseapp.com",projectId:"ipright-album",storageBucket:"ipright-album.firebasestorage.app",messagingSenderId:"920853312130",appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"};
 const app=initializeApp(fc);
@@ -187,113 +189,106 @@ const ADMIN="duykhanhneflickr@copyright-limited.com";
 
 const EMOJIS=["😊","😂","🥰","😍","😎","🤩","😜","🥳","😢","😭","🔥","❤️","💜","💙","👍","👏","🙏","✨","🎉","💯","🌟","😤","💪","🤣","😋","🫶","🤗","😏","👀","🥹","💀","😅","🫠","🤭","😇","🥺","😱","🤯","🎶","🍜","🍕","🎮","📸"];
 
-// I18N
 const I18N={
-  vi:{tab_recent:"Tin nhắn",tab_search:"Tìm bạn",no_chat:"Chọn người để bắt đầu nhắn tin",online:"● Online",send_ph:"Nhắn tin...",search_ph:"Nhập tên hoặc email...",empty_recent:"Chưa có tin nhắn nào.\nBấm 'Tìm bạn' để nhắn!",empty_search:"Không tìm thấy người dùng",login_title:"Chat riêng",login_sub:"Đăng nhập để nhắn tin",login_btn:"🔐 Đăng nhập"},
-  kr:{tab_recent:"메시지",tab_search:"친구 찾기",no_chat:"대화할 사람을 선택하세요",online:"● 온라인",send_ph:"메시지 입력...",search_ph:"이름 또는 이메일 입력...",empty_recent:"메시지가 없습니다.\n'친구 찾기'를 눌러보세요!",empty_search:"사용자를 찾을 수 없습니다",login_title:"개인 채팅",login_sub:"로그인하여 메시지를 보내세요",login_btn:"🔐 로그인"},
-  en:{tab_recent:"Messages",tab_search:"Find",no_chat:"Select someone to start chatting",online:"● Online",send_ph:"Type a message...",search_ph:"Enter name or email...",empty_recent:"No messages yet.\nClick 'Find' to start!",empty_search:"No users found",login_title:"Private Chat",login_sub:"Login to send messages",login_btn:"🔐 Login"}
+  vi:{tab_recent:"Tin nhắn",tab_find:"Tìm bạn",no_chat:"Bấm ☰ để chọn người nhắn tin",online:"● Online",send_ph:"Nhắn tin...",search_ph:"Nhập @username hoặc tên...",empty_recent:"Chưa có tin nhắn.\nBấm 'Tìm bạn' để bắt đầu!",empty_find:"Không tìm thấy người dùng",find_hint:"Nhập @username hoặc tên để tìm 🔍"},
+  kr:{tab_recent:"메시지",tab_find:"친구 찾기",no_chat:"☰ 버튼을 눌러 대화 상대를 선택하세요",online:"● 온라인",send_ph:"메시지 입력...",search_ph:"@사용자명 또는 이름 입력...",empty_recent:"메시지가 없습니다.\n'친구 찾기'를 눌러보세요!",empty_find:"사용자를 찾을 수 없습니다",find_hint:"@사용자명 또는 이름으로 검색 🔍"},
+  en:{tab_recent:"Messages",tab_find:"Find",no_chat:"Tap ☰ to select someone",online:"● Online",send_ph:"Type a message...",search_ph:"Enter @username or name...",empty_recent:"No messages yet.\nTap 'Find' to start!",empty_find:"No users found",find_hint:"Enter @username or name to search 🔍"}
 };
 
-let me=null, peer=null, unsubMsgs=null, lang="vi", currentTab="recent";
+let me=null, meData=null, peer=null, unsubMsgs=null, lang="vi", currentTab="recent";
 let allUsers=[], recentPeers=[];
 
-// Emoji picker
+// Emoji
 const picker=document.getElementById("emojiPicker");
 EMOJIS.forEach(e=>{
-  const s=document.createElement("span");
-  s.className="e-item"; s.textContent=e;
-  s.onclick=()=>{
-    const inp=document.getElementById("msgIn");
-    inp.value+=e; inp.focus();
-  };
+  const s=document.createElement("span");s.className="e-item";s.textContent=e;
+  s.onclick=()=>{document.getElementById("msgIn").value+=e;document.getElementById("msgIn").focus();};
   picker.appendChild(s);
 });
-
 window.toggleEmoji=()=>picker.classList.toggle("show");
-document.addEventListener("click",e=>{
-  if(!e.target.closest(".emoji-btn")&&!e.target.closest(".emoji-picker"))
-    picker.classList.remove("show");
-});
+document.addEventListener("click",e=>{if(!e.target.closest(".emoji-btn")&&!e.target.closest(".emoji-picker"))picker.classList.remove("show");});
 
-window.toggleSb=()=>document.getElementById("sidebar").classList.toggle("open");
+// Panel toggle
+window.togglePanel=()=>{
+  document.getElementById("panel").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+};
+window.closePanel=()=>{
+  document.getElementById("panel").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+};
 
-// Áp dụng ngôn ngữ
+// Lang
 window.setLang=l=>{
   lang=l; localStorage.setItem("site_lang",l);
   const t=I18N[l];
   document.getElementById("tab-recent-lbl").textContent=t.tab_recent;
-  document.getElementById("tab-search-lbl").textContent=t.tab_search;
+  document.getElementById("tab-find-lbl").textContent=t.tab_find;
   document.getElementById("no-chat-txt").textContent=t.no_chat;
   document.getElementById("online-txt").textContent=t.online;
   document.getElementById("msgIn").placeholder=t.send_ph;
   document.getElementById("searchBox").placeholder=t.search_ph;
   ["vi","kr","en"].forEach(x=>document.getElementById("lf-"+x).classList.toggle("on",x===l));
-  // Re-render list theo tab hiện tại
   if(currentTab==="recent") renderRecent();
-  else renderSearch(document.getElementById("searchBox").value);
 };
 
 // Auth
 onAuthStateChanged(auth, async u=>{
   if(!u){
-    document.getElementById("mainLayout").innerHTML=`
+    document.getElementById("mainWrap").innerHTML=`
       <div class="login-wall">
-        <div style="font-size:48px">💬</div>
-        <h2>${I18N[lang].login_title}</h2>
-        <p>${I18N[lang].login_sub}</p>
-        <button class="login-wall-btn" onclick="location.href='login.html'">${I18N[lang].login_btn}</button>
+        <div style="font-size:52px">💬</div>
+        <h2>Chat riêng</h2>
+        <p>Đăng nhập để nhắn tin với mọi người</p>
+        <button class="login-wall-btn" onclick="location.href='login.html'">🔐 Đăng nhập</button>
       </div>`;
     return;
   }
   me=u;
-  // Lấy displayName thật từ Firestore (không phải email)
+  // Lấy data thật từ Firestore
   const uDoc=await getDoc(doc(db,"users",u.uid));
-  const displayName = uDoc.exists() ? (uDoc.data().name || u.displayName || u.email.split("@")[0]) : (u.displayName || u.email.split("@")[0]);
+  if(uDoc.exists()){
+    meData=uDoc.data();
+  } else {
+    // Tạo mới nếu chưa có (tài khoản cũ)
+    const fallbackName=u.displayName||u.email.split("@")[0];
+    meData={name:fallbackName,username:"",email:u.email,uid:u.uid};
+    await setDoc(doc(db,"users",u.uid),meData,{merge:true});
+  }
 
-  document.getElementById("sbMe").textContent="👤 "+displayName+(u.email===ADMIN?" 👑":"");
+  const displayName=meData.name||u.displayName||u.email.split("@")[0];
+  const username=meData.username?"@"+meData.username:"";
+
   document.getElementById("navUser").textContent=displayName+(u.email===ADMIN?" 👑":"");
   document.getElementById("navUser").style.display="block";
-  document.getElementById("topSub").textContent=displayName;
+  document.getElementById("topSub").textContent=displayName+(username?" ("+username+")":"");
 
-  // Sync user
-  await setDoc(doc(db,"users",u.uid),{name:displayName,email:u.email,uid:u.uid},{merge:true});
-
-  // Load tất cả users để tìm kiếm
+  // Load tất cả users
   const snap=await getDocs(collection(db,"users"));
   allUsers=[];
-  snap.forEach(d=>{ if(d.data().uid!==me.uid) allUsers.push({id:d.id,...d.data()}); });
+  snap.forEach(d=>{if(d.data().uid!==me.uid) allUsers.push({id:d.id,...d.data()});});
 
   setLang(localStorage.getItem("site_lang")||"vi");
-
-  // Load recent conversations
   await loadRecent();
 
-  // Auto open peer từ URL
+  // Auto open từ URL
   const params=new URLSearchParams(location.search);
   const peerId=params.get("peer");
-  if(peerId){
-    const found=allUsers.find(x=>x.id===peerId);
-    if(found) openChat(found);
-  }
+  if(peerId){const f=allUsers.find(x=>x.id===peerId);if(f)openChat(f);}
 });
 
-// Load danh sách đã nhắn gần đây
+// Load recent
 async function loadRecent(){
   recentPeers=[];
   for(const u of allUsers){
-    const chatId=getChatId(me.uid, u.id);
+    const chatId=getChatId(me.uid,u.id);
     const q=query(collection(db,"chats",chatId,"messages"),orderBy("createdAt","desc"),limit(1));
     const snap=await getDocs(q);
     if(!snap.empty){
-      const lastMsg=snap.docs[0].data();
-      recentPeers.push({
-        ...u,
-        lastMsg: lastMsg.text||"",
-        lastTime: lastMsg.createdAt?.toDate?lastMsg.createdAt.toDate():new Date(0)
-      });
+      const d=snap.docs[0].data();
+      recentPeers.push({...u,lastMsg:d.text||"",lastTime:d.createdAt?.toDate?d.createdAt.toDate():new Date(0)});
     }
   }
-  // Sắp xếp mới nhất lên đầu
   recentPeers.sort((a,b)=>b.lastTime-a.lastTime);
   if(currentTab==="recent") renderRecent();
 }
@@ -302,72 +297,59 @@ async function loadRecent(){
 window.switchTab=tab=>{
   currentTab=tab;
   document.getElementById("tab-recent").classList.toggle("on",tab==="recent");
-  document.getElementById("tab-search").classList.toggle("on",tab==="search");
-  const sb=document.getElementById("searchBox");
-  if(tab==="search"){
-    sb.style.display="block";
-    sb.focus();
-    renderSearch("");
+  document.getElementById("tab-find").classList.toggle("on",tab==="find");
+  const sw=document.getElementById("searchWrap");
+  if(tab==="find"){
+    sw.style.display="block";
+    renderFindHint();
+    setTimeout(()=>document.getElementById("searchBox").focus(),100);
   } else {
-    sb.style.display="none";
+    sw.style.display="none";
     renderRecent();
   }
 };
 
-// Render tin nhắn gần đây
 function renderRecent(){
-  const ul=document.getElementById("userList");
-  ul.innerHTML="";
-  if(!recentPeers.length){
-    ul.innerHTML=`<div class="empty-sb">${(I18N[lang].empty_recent||"").replace(/\n/g,"<br>")}</div>`;
-    return;
-  }
-  recentPeers.forEach(u=>renderUserItem(u, u.lastMsg));
+  const ul=document.getElementById("userList");ul.innerHTML="";
+  if(!recentPeers.length){ul.innerHTML=`<div class="empty-sb">${(I18N[lang].empty_recent).replace(/\n/g,"<br>")}</div>`;return;}
+  recentPeers.forEach(u=>{
+    const time=u.lastTime?.getTime()>0?u.lastTime.toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
+    renderUserItem(u,u.lastMsg,time);
+  });
 }
 
-// Tìm kiếm người dùng
-window.searchUsers=async q=>{
-  if(currentTab==="search") renderSearch(q);
+function renderFindHint(){
+  document.getElementById("userList").innerHTML=`<div class="empty-sb">${I18N[lang].find_hint}</div>`;
+}
+
+window.doSearch=async q=>{
+  const ul=document.getElementById("userList");
+  if(!q.trim()){renderFindHint();return;}
+  const lq=q.toLowerCase().replace(/^@/,"");
+  const filtered=allUsers.filter(u=>
+    (u.username||"").toLowerCase().includes(lq)||
+    (u.name||"").toLowerCase().includes(lq)
+  );
+  ul.innerHTML="";
+  if(!filtered.length){ul.innerHTML=`<div class="empty-sb">${I18N[lang].empty_find}</div>`;return;}
+  filtered.forEach(u=>renderUserItem(u,"",""));
 };
 
-function renderSearch(q){
-  const ul=document.getElementById("userList");
-  ul.innerHTML="";
-  if(!q.trim()){
-    ul.innerHTML=`<div class="empty-sb">Nhập tên để tìm bạn bè 🔍</div>`;
-    return;
-  }
-  const filtered=allUsers.filter(u=>
-    (u.name||"").toLowerCase().includes(q.toLowerCase())||
-    (u.email||"").toLowerCase().includes(q.toLowerCase())
-  );
-  if(!filtered.length){
-    ul.innerHTML=`<div class="empty-sb">${I18N[lang].empty_search}</div>`;
-    return;
-  }
-  filtered.forEach(u=>renderUserItem(u,""));
-}
-
-function renderUserItem(u, lastMsg){
+function renderUserItem(u,lastMsg,time){
   const ul=document.getElementById("userList");
   const div=document.createElement("div");
   div.className="user-item"+(peer&&peer.id===u.id?" sel":"");
   div.id="ui-"+u.id;
-  // Hiện tên thật, không phải email
   const nm=u.name||u.email?.split("@")[0]||"?";
-  const time=u.lastTime&&u.lastTime.getTime()>0
-    ? u.lastTime.toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})
-    : "";
+  const uid=u.username?"@"+u.username:"";
   div.innerHTML=`
     <div class="u-av">${nm[0].toUpperCase()}</div>
     <div class="u-info">
       <div class="u-name">${nm}${u.email===ADMIN?" 👑":""}</div>
-      <div class="u-last">${lastMsg||time||"Nhấn để nhắn tin"}</div>
+      ${uid?`<div class="u-uid">${uid}</div>`:""}
+      <div class="u-last">${lastMsg||(time||"Nhấn để nhắn tin")}</div>
     </div>`;
-  div.onclick=()=>{
-    openChat(u);
-    if(window.innerWidth<=520) document.getElementById("sidebar").classList.remove("open");
-  };
+  div.onclick=()=>{openChat(u);closePanel();};
   ul.appendChild(div);
 }
 
@@ -375,49 +357,38 @@ function getChatId(a,b){return[a,b].sort().join("_");}
 
 function openChat(u){
   peer=u;
-  document.querySelectorAll(".user-item").forEach(e=>e.classList.remove("sel"));
-  const el=document.getElementById("ui-"+u.id);
-  if(el) el.classList.add("sel");
-
-  // Hiện tên thật
   const nm=u.name||u.email?.split("@")[0]||"?";
+  const uid=u.username?"@"+u.username:"";
   document.getElementById("peerAv").textContent=nm[0].toUpperCase();
   document.getElementById("peerName").textContent=nm+(u.email===ADMIN?" 👑":"");
+  document.getElementById("peerUid").textContent=uid;
   document.getElementById("online-txt").textContent=I18N[lang].online;
 
   document.getElementById("noChat").style.display="none";
   const box=document.getElementById("chatBox");
-  box.style.display="flex";
-  box.style.flexDirection="column";
-  box.style.overflow="hidden";
-  box.style.flex="1";
+  box.style.display="flex";box.style.flexDirection="column";
+  box.style.overflow="hidden";box.style.flex="1";
 
   if(unsubMsgs) unsubMsgs();
-
   const chatId=getChatId(me.uid,u.id);
   const q=query(collection(db,"chats",chatId,"messages"),orderBy("createdAt","asc"),limit(100));
-
-  unsubMsgs=onSnapshot(q, snap=>{
+  unsubMsgs=onSnapshot(q,snap=>{
     const msgs=document.getElementById("msgs");
     msgs.innerHTML="";
     snap.forEach(d=>renderMsg(d.data()));
     msgs.scrollTop=msgs.scrollHeight;
   });
 
-  // Sau khi mở chat → reload recent để cập nhật
-  setTimeout(loadRecent, 500);
-
-  // Fix iOS: blur trước rồi focus lại sau 1 chút
+  setTimeout(loadRecent,500);
+  // Fix iOS zoom: delay focus
   const inp=document.getElementById("msgIn");
   inp.blur();
-  setTimeout(()=>inp.focus(),100);
+  setTimeout(()=>inp.focus(),150);
 }
 
 function renderMsg(d){
   const isMe=d.uid===me.uid;
-  const time=d.createdAt?.toDate
-    ?d.createdAt.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
-  // Hiện tên thật trong bubble
+  const time=d.createdAt?.toDate?d.createdAt.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
   const nm=d.author||"?";
   const row=document.createElement("div");
   row.className="msg-row"+(isMe?" me":"");
@@ -433,28 +404,19 @@ function renderMsg(d){
 window.sendMsg=async()=>{
   const inp=document.getElementById("msgIn");
   const text=inp.value.trim();
-  if(!text||!peer) return;
+  if(!text||!peer)return;
   inp.value="";
   picker.classList.remove("show");
 
   const chatId=getChatId(me.uid,peer.id);
-  // Lấy tên thật từ Firestore để lưu vào message
-  const uDoc=await getDoc(doc(db,"users",me.uid));
-  const authorName=uDoc.exists()?(uDoc.data().name||me.displayName||me.email.split("@")[0]):(me.displayName||me.email.split("@")[0]);
-
+  // Dùng tên thật từ Firestore
+  const authorName=meData?.name||me.displayName||me.email.split("@")[0];
   try{
     await addDoc(collection(db,"chats",chatId,"messages"),{
-      text, uid:me.uid, author:authorName,
-      createdAt:serverTimestamp()
+      text,uid:me.uid,author:authorName,createdAt:serverTimestamp()
     });
-    // Cập nhật lastMsg trong sidebar
-    const el=document.getElementById("last-"+peer.id);
-    if(el) el.textContent=text.length>22?text.slice(0,22)+"...":text;
-    // Reload recent
     await loadRecent();
-  }catch(e){
-    console.error("Send error:",e);
-  }
+  }catch(e){console.error(e);}
 };
 
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
