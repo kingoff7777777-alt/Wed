@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Đăng nhập | iprights.asia</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -11,13 +11,12 @@
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:65px 16px 60px;overflow-x:hidden;}
 body::before{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--purple);filter:blur(120px);opacity:0.1;top:-200px;left:-200px;pointer-events:none;z-index:0;}
 body::after{content:'';position:fixed;width:400px;height:400px;border-radius:50%;background:var(--pink);filter:blur(100px);opacity:0.1;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
-nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-wrap:wrap;}
 .nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:5px 11px;border-radius:50px;transition:all .25s;border:1px solid transparent;white-space:nowrap;}
 .nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
-.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 3px 14px rgba(168,85,247,0.4);}
-.lang-float{display:flex;gap:4px;margin-left:6px;}
-.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;}
-.lf-btn:hover{border-color:var(--purple);transform:scale(1.1);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));}
+.lang-float{display:flex;gap:4px;margin-left:4px;}
+.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
 .lf-btn.on{border-color:var(--purple);background:rgba(168,85,247,0.2);}
 .wrap{position:relative;z-index:1;width:100%;max-width:420px;}
 .hero{text-align:center;margin-bottom:20px;}
@@ -29,13 +28,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 .tab.on{background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(255,110,180,0.2));border-color:rgba(168,85,247,0.4);color:var(--purple);}
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:5px;}
-.field input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:11px;color:var(--text);padding:11px 13px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.field input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:11px;color:var(--text);padding:11px 13px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
 .field input:focus{border-color:rgba(168,85,247,0.5);}
+.field input.err-input{border-color:var(--pink);}
+.field-hint{font-size:11px;color:var(--muted);margin-top:4px;padding-left:2px;}
+.field-hint.ok{color:var(--green);}
+.field-hint.err{color:var(--pink);}
 .btn{width:100%;border:none;padding:13px;border-radius:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:4px;}
 .btn-p{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 5px 18px rgba(168,85,247,0.4);}
 .btn-g{background:linear-gradient(135deg,#10b981,#34d399);color:#fff;box-shadow:0 5px 18px rgba(16,185,129,0.35);}
-.btn:hover{transform:translateY(-1px);}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
 .msg{font-size:13px;font-weight:700;padding:9px 13px;border-radius:10px;margin-bottom:12px;text-align:center;display:none;}
 .msg.ok{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3);display:block;}
 .msg.err{background:rgba(255,110,180,0.15);color:var(--pink);border:1px solid rgba(255,110,180,0.3);display:block;}
@@ -53,6 +55,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
   </div>
 </nav>
+
 <div class="wrap">
   <div class="hero">
     <h1 id="page-title">🔐 Tài khoản</h1>
@@ -64,26 +67,39 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
       <button class="tab" id="t2" onclick="showTab('reg')">Đăng ký</button>
     </div>
     <div id="msg" class="msg"></div>
+
+    <!-- LOGIN -->
     <div id="f-login">
-      <div class="field"><label id="lbl-email">Email</label><input type="email" id="lEmail" placeholder="email@example.com"></div>
+      <div class="field"><label id="lbl-email">Email</label><input type="email" id="lEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="field"><label id="lbl-pw">Mật khẩu</label><input type="password" id="lPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="btn btn-p" id="lBtn" onclick="doLogin()">Đăng nhập</button>
     </div>
+
+    <!-- REGISTER -->
     <div id="f-reg" style="display:none">
-      <div class="field"><label id="lbl-name">Tên hiển thị</label><input type="text" id="rName" placeholder="Tên của bạn..."></div>
-      <div class="field"><label>Email</label><input type="email" id="rEmail" placeholder="email@example.com"></div>
+      <div class="field">
+        <label id="lbl-name">Tên hiển thị</label>
+        <input type="text" id="rName" placeholder="Tên của bạn...">
+      </div>
+      <div class="field">
+        <label id="lbl-uid">Username / ID</label>
+        <input type="text" id="rUid" placeholder="vd: khanh_2010" oninput="checkUid(this.value)">
+        <div class="field-hint" id="uid-hint">Chỉ dùng chữ, số, dấu _ hoặc . (không dấu cách)</div>
+      </div>
+      <div class="field"><label id="lbl-email2">Email</label><input type="email" id="rEmail" placeholder="email@example.com"></div>
       <div class="field"><label id="lbl-pw2">Mật khẩu</label><input type="password" id="rPw" placeholder="Tối thiểu 6 ký tự" onkeydown="if(event.key==='Enter')doReg()"></div>
       <button class="btn btn-g" id="rBtn" onclick="doReg()">Đăng ký</button>
     </div>
   </div>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",authDomain:"ipright-album.firebaseapp.com",projectId:"ipright-album",storageBucket:"ipright-album.firebasestorage.app",messagingSenderId:"920853312130",appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"};
-const app=initializeApp(firebaseConfig);
+const fc={apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",authDomain:"ipright-album.firebaseapp.com",projectId:"ipright-album",storageBucket:"ipright-album.firebasestorage.app",messagingSenderId:"920853312130",appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"};
+const app=initializeApp(fc);
 const auth=getAuth(app);
 const db=getFirestore(app);
 const ADMIN="duykhanhneflickr@copyright-limited.com";
@@ -91,13 +107,14 @@ const ADMIN="duykhanhneflickr@copyright-limited.com";
 onAuthStateChanged(auth,u=>{if(u)location.href="album.html";});
 
 const I18N={
-  vi:{tab_login:"Đăng nhập",tab_reg:"Đăng ký",lbl_email:"Email",lbl_pw:"Mật khẩu",lbl_name:"Tên hiển thị",btn_login:"Đăng nhập",btn_reg:"Đăng ký",nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Đăng nhập"},
-  kr:{tab_login:"로그인",tab_reg:"회원가입",lbl_email:"이메일",lbl_pw:"비밀번호",lbl_name:"표시 이름",btn_login:"로그인",btn_reg:"회원가입",nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_login:"🔐 로그인"},
-  en:{tab_login:"Login",tab_reg:"Sign Up",lbl_email:"Email",lbl_pw:"Password",lbl_name:"Display Name",btn_login:"Login",btn_reg:"Sign Up",nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Login"}
+  vi:{tab_login:"Đăng nhập",tab_reg:"Đăng ký",lbl_email:"Email",lbl_pw:"Mật khẩu",lbl_name:"Tên hiển thị",lbl_uid:"Username / ID",lbl_uid_hint:"Chỉ dùng chữ, số, dấu _ hoặc . (không dấu cách)",btn_login:"Đăng nhập",btn_reg:"Đăng ký",nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Đăng nhập"},
+  kr:{tab_login:"로그인",tab_reg:"회원가입",lbl_email:"이메일",lbl_pw:"비밀번호",lbl_name:"표시 이름",lbl_uid:"사용자 ID",lbl_uid_hint:"영문, 숫자, _, . 만 사용 가능",btn_login:"로그인",btn_reg:"회원가입",nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_login:"🔐 로그인"},
+  en:{tab_login:"Login",tab_reg:"Sign Up",lbl_email:"Email",lbl_pw:"Password",lbl_name:"Display Name",lbl_uid:"Username / ID",lbl_uid_hint:"Letters, numbers, _ or . only (no spaces)",btn_login:"Login",btn_reg:"Sign Up",nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_login:"🔐 Login"}
 };
 
+let lang="vi";
 window.setLang=l=>{
-  localStorage.setItem("site_lang",l);
+  lang=l; localStorage.setItem("site_lang",l);
   const t=I18N[l];
   document.getElementById("nt-home").textContent=t.nav_home;
   document.getElementById("nt-album").textContent=t.nav_album;
@@ -108,15 +125,17 @@ window.setLang=l=>{
   document.getElementById("lbl-email").textContent=t.lbl_email;
   document.getElementById("lbl-pw").textContent=t.lbl_pw;
   document.getElementById("lbl-name").textContent=t.lbl_name;
+  document.getElementById("lbl-uid").textContent=t.lbl_uid;
+  document.getElementById("lbl-email2").textContent=t.lbl_email;
   document.getElementById("lbl-pw2").textContent=t.lbl_pw;
   document.getElementById("lBtn").textContent=t.btn_login;
   document.getElementById("rBtn").textContent=t.btn_reg;
+  document.getElementById("uid-hint").textContent=t.lbl_uid_hint;
   ["vi","kr","en"].forEach(x=>document.getElementById("lf-"+x).classList.toggle("on",x===l));
 };
-
 setLang(localStorage.getItem("site_lang")||"vi");
 
-function msg(type,text){const e=document.getElementById("msg");e.className="msg "+type;e.textContent=text;}
+function showMsg(type,text){const e=document.getElementById("msg");e.className="msg "+type;e.textContent=text;}
 
 window.showTab=tab=>{
   document.getElementById("f-login").style.display=tab==="login"?"block":"none";
@@ -126,31 +145,69 @@ window.showTab=tab=>{
   document.getElementById("msg").className="msg";
 };
 
+// Kiểm tra username hợp lệ
+let uidValid=false;
+window.checkUid=async(val)=>{
+  const hint=document.getElementById("uid-hint");
+  const inp=document.getElementById("rUid");
+  if(!val){hint.className="field-hint";hint.textContent=I18N[lang].lbl_uid_hint;uidValid=false;return;}
+  if(!/^[a-zA-Z0-9_.]{3,20}$/.test(val)){
+    hint.className="field-hint err";hint.textContent="❌ 3-20 ký tự, chỉ dùng a-z 0-9 _ .";
+    inp.classList.add("err-input");uidValid=false;return;
+  }
+  hint.className="field-hint";hint.textContent="⏳ Đang kiểm tra...";
+  // Check trùng username
+  const q=query(collection(db,"users"),where("username","==",val.toLowerCase()));
+  const snap=await getDocs(q);
+  if(!snap.empty){
+    hint.className="field-hint err";hint.textContent="❌ Username đã được dùng!";
+    inp.classList.add("err-input");uidValid=false;
+  } else {
+    hint.className="field-hint ok";hint.textContent="✅ Username có thể dùng!";
+    inp.classList.remove("err-input");uidValid=true;
+  }
+};
+
 window.doLogin=async()=>{
   const email=document.getElementById("lEmail").value.trim();
   const pw=document.getElementById("lPw").value;
-  if(!email||!pw){msg("err","⚠️ Nhập đủ thông tin!");return;}
+  if(!email||!pw){showMsg("err","⚠️ Nhập đủ thông tin!");return;}
   const btn=document.getElementById("lBtn");btn.disabled=true;btn.textContent="⏳...";
-  try{await signInWithEmailAndPassword(auth,email,pw);msg("ok","✅ Thành công!");}
-  catch(e){msg("err","❌ Email hoặc mật khẩu không đúng!");btn.disabled=false;btn.textContent=I18N[localStorage.getItem("site_lang")||"vi"].btn_login;}
+  try{
+    await signInWithEmailAndPassword(auth,email,pw);
+    showMsg("ok","✅ Thành công!");
+  }catch(e){
+    showMsg("err","❌ Email hoặc mật khẩu không đúng!");
+    btn.disabled=false;btn.textContent=I18N[lang].btn_login;
+  }
 };
 
 window.doReg=async()=>{
   const name=document.getElementById("rName").value.trim();
+  const username=document.getElementById("rUid").value.trim().toLowerCase();
   const email=document.getElementById("rEmail").value.trim();
   const pw=document.getElementById("rPw").value;
-  if(!name){msg("err","⚠️ Nhập tên!");return;}
-  if(!email){msg("err","⚠️ Nhập email!");return;}
-  if(pw.length<6){msg("err","⚠️ Mật khẩu tối thiểu 6 ký tự!");return;}
+  if(!name){showMsg("err","⚠️ Nhập tên hiển thị!");return;}
+  if(!username||!uidValid){showMsg("err","⚠️ Username không hợp lệ hoặc đã được dùng!");return;}
+  if(!email){showMsg("err","⚠️ Nhập email!");return;}
+  if(pw.length<6){showMsg("err","⚠️ Mật khẩu tối thiểu 6 ký tự!");return;}
   const btn=document.getElementById("rBtn");btn.disabled=true;btn.textContent="⏳...";
   try{
     const cred=await createUserWithEmailAndPassword(auth,email,pw);
     await updateProfile(cred.user,{displayName:name});
-    await setDoc(doc(db,"users",cred.user.uid),{name,email,role:email===ADMIN?"admin":"user",createdAt:new Date().toISOString(),banned:false});
-    msg("ok","✅ Đăng ký thành công!");
+    await setDoc(doc(db,"users",cred.user.uid),{
+      name,           // Tên hiển thị thật
+      username,       // ID duy nhất kiểu @dkhanhsuy10
+      email,
+      uid:cred.user.uid,
+      role:email===ADMIN?"admin":"user",
+      createdAt:new Date().toISOString(),
+      banned:false
+    });
+    showMsg("ok","✅ Đăng ký thành công!");
   }catch(e){
-    msg("err","❌ "+(e.code==="auth/email-already-in-use"?"Email đã được dùng!":e.message));
-    btn.disabled=false;btn.textContent=I18N[localStorage.getItem("site_lang")||"vi"].btn_reg;
+    showMsg("err","❌ "+(e.code==="auth/email-already-in-use"?"Email đã được dùng!":e.message));
+    btn.disabled=false;btn.textContent=I18N[lang].btn_reg;
   }
 };
 </script>
