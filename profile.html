@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Profile | iprights.asia</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff6eb4;--purple:#a855f7;--blue:#38bdf8;--green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--bg:#0f0a1e;--card:#16112b;--card2:#1c1535;--border:rgba(255,255,255,0.08);--text:#f0eaff;--muted:rgba(240,234,255,0.5);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;width:600px;height:600px;border-radius:50%;background:var(--purple);filter:blur(140px);opacity:0.07;top:-200px;left:-200px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;width:500px;height:500px;border-radius:50%;background:var(--pink);filter:blur(120px);opacity:0.07;bottom:-150px;right:-150px;pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content:center;align-items:center;gap:3px;padding:7px 10px;background:rgba(15,10,30,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.nav-a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:800;padding:5px 11px;border-radius:50px;border:1px solid transparent;white-space:nowrap;transition:all .2s;}
+.nav-a:hover{color:var(--text);background:rgba(255,255,255,0.07);}
+.nav-a.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 3px 14px rgba(168,85,247,0.4);}
+.nav-user{font-size:11px;font-weight:800;color:var(--green);padding:5px 10px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);border-radius:50px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-out{font-size:11px;font-weight:700;color:var(--muted);padding:5px 10px;background:none;border:1px solid var(--border);border-radius:50px;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.nav-out:hover{color:var(--pink);border-color:var(--pink);}
+.lang-float{display:flex;gap:4px;margin-left:4px;}
+.lf-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.lf-btn.on{border-color:var(--purple);background:rgba(168,85,247,0.2);}
+
+/* COVER + AVATAR */
+.cover{height:160px;background:linear-gradient(135deg,#1e0a3c,#2d1155,#1a0a2e);position:relative;overflow:hidden;margin-top:52px;}
+.cover::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(255,110,180,0.2));pointer-events:none;}
+.cover-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:var(--purple);filter:blur(80px);opacity:0.3;top:-100px;right:-50px;}
+
+.profile-section{position:relative;z-index:1;padding:0 16px 0;max-width:640px;margin:0 auto;}
+.avatar-wrap{position:relative;margin-top:-50px;margin-bottom:12px;display:inline-block;}
+.avatar-img{width:96px;height:96px;border-radius:50%;border:4px solid var(--bg);object-fit:cover;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff;overflow:hidden;}
+.avatar-img img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.avatar-edit{position:absolute;bottom:2px;right:2px;width:28px;height:28px;background:linear-gradient(135deg,var(--purple),var(--pink));border:2px solid var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;}
+#avatarInput{display:none;}
+
+.profile-info{margin-bottom:16px;}
+.profile-name{font-size:22px;font-weight:900;margin-bottom:2px;}
+.profile-username{font-size:13px;color:var(--purple);font-weight:700;margin-bottom:6px;}
+.profile-bio{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:10px;white-space:pre-wrap;}
+.profile-stats{display:flex;gap:20px;}
+.stat{text-align:center;}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{font-size:10px;color:var(--muted);font-weight:600;}
+
+/* ACTIONS */
+.profile-actions{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.btn-action{flex:1;min-width:120px;border:none;padding:10px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-edit{background:rgba(255,255,255,0.07);border:1px solid var(--border);color:var(--text);}
+.btn-edit:hover{background:rgba(255,255,255,0.12);}
+.btn-msg{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 4px 14px rgba(168,85,247,0.4);}
+.btn-logout{background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.2);color:rgba(255,120,120,0.8);}
+
+/* EDIT PANEL */
+.edit-panel{background:var(--card);border:1px solid rgba(168,85,247,0.2);border-radius:18px;padding:20px;margin-bottom:20px;display:none;}
+.edit-panel.show{display:block;}
+.ep-title{font-size:12px;font-weight:800;color:var(--purple);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:5px;}
+.field input,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:11px;color:var(--text);padding:11px 13px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.field input:focus,.field textarea:focus{border-color:rgba(168,85,247,0.5);}
+.field textarea{resize:vertical;min-height:80px;}
+.hint{font-size:11px;color:var(--muted);margin-top:4px;}
+.hint.ok{color:var(--green);}
+.hint.err{color:var(--pink);}
+.btn-save{width:100%;border:none;padding:12px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 5px 18px rgba(168,85,247,0.4);margin-top:4px;}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
+.save-msg{font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;margin-top:10px;text-align:center;display:none;}
+.save-msg.ok{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3);display:block;}
+.save-msg.err{background:rgba(255,110,180,0.15);color:var(--pink);border:1px solid rgba(255,110,180,0.3);display:block;}
+
+/* TABS */
+.tabs-row{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.ptab{flex:1;background:none;border:none;color:var(--muted);padding:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.ptab.on{color:var(--purple);border-bottom-color:var(--purple);}
+
+/* POSTS GRID */
+.posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:20px;}
+.grid-item{aspect-ratio:1;position:relative;overflow:hidden;border-radius:8px;cursor:pointer;background:var(--card2);}
+.grid-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.grid-item:hover img{transform:scale(1.05);}
+.grid-no-img{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;}
+.grid-caption{font-size:10px;color:var(--muted);text-align:center;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+
+/* POSTS LIST */
+.posts-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s;}
+.post-card:hover{border-color:rgba(168,85,247,0.3);}
+.post-img{width:100%;max-height:300px;object-fit:cover;display:block;}
+.post-body{padding:12px;}
+.post-date{font-size:10px;color:var(--muted);margin-bottom:6px;}
+.post-caption{font-size:14px;font-weight:800;margin-bottom:4px;}
+.post-text{font-size:13px;color:var(--muted);line-height:1.6;white-space:pre-wrap;}
+.post-likes{font-size:11px;color:var(--pink);margin-top:8px;font-weight:700;}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-icon{font-size:44px;margin-bottom:10px;opacity:.5;}
+.empty-text{font-size:13px;font-weight:600;}
+
+/* LIGHTBOX */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:9999;flex-direction:column;justify-content:center;align-items:center;padding:16px;backdrop-filter:blur(8px);cursor:zoom-out;}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:95vw;max-height:80vh;border-radius:12px;object-fit:contain;}
+#lb-close{position:fixed;top:14px;right:18px;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;}
+
+/* SPINNER */
+.spinner{width:32px;height:32px;border:3px solid rgba(168,85,247,0.2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:30px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ADMIN BADGE */
+.admin-crown{display:inline-block;background:linear-gradient(135deg,var(--yellow),var(--orange));color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:50px;margin-left:6px;vertical-align:middle;}
+
+/* WRAP */
+.page-wrap{max-width:640px;margin:0 auto;padding:0 16px 60px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-a" id="nt-home">🏠 Home</a>
+  <a href="album.html" class="nav-a" id="nt-album">📸 Album</a>
+  <a href="chat.html" class="nav-a" id="nt-chat">💬 Chat</a>
+  <a href="profile.html" class="nav-a active" id="nt-profile">👤 Profile</a>
+  <span id="navUser" class="nav-user" style="display:none"></span>
+  <button class="nav-out" id="navOut" style="display:none" onclick="doLogout()" id="nt-logout">Đăng xuất</button>
+  <div class="lang-float">
+    <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
+    <button class="lf-btn" onclick="setLang('kr')" id="lf-kr">🇰🇷</button>
+    <button class="lf-btn" onclick="setLang('en')" id="lf-en">🇺🇸</button>
+  </div>
+</nav>
+
+<!-- COVER -->
+<div class="cover"><div class="cover-glow"></div></div>
+
+<!-- PROFILE SECTION -->
+<div class="profile-section">
+  <div class="avatar-wrap">
+    <div class="avatar-img" id="avatarCircle">
+      <span id="avatarInitial">?</span>
+      <img id="avatarImg" src="" alt="" style="display:none">
+    </div>
+    <div class="avatar-edit" id="avatarEditBtn" onclick="document.getElementById('avatarInput').click()" style="display:none" title="Đổi ảnh">📷</div>
+    <input type="file" id="avatarInput" accept="image/*" onchange="uploadAvatar(this)">
+  </div>
+
+  <div class="profile-info">
+    <div class="profile-name" id="profileName">...</div>
+    <div class="profile-username" id="profileUsername"></div>
+    <div class="profile-bio" id="profileBio"></div>
+    <div class="profile-stats">
+      <div class="stat"><div class="stat-n" id="statPosts">0</div><div class="stat-l" id="stat-posts-lbl">bài đăng</div></div>
+      <div class="stat"><div class="stat-n" id="statLikes">0</div><div class="stat-l" id="stat-likes-lbl">lượt thích</div></div>
+    </div>
+  </div>
+
+  <div class="profile-actions" id="profileActions">
+    <!-- Filled by JS -->
+  </div>
+
+  <!-- EDIT PANEL -->
+  <div class="edit-panel" id="editPanel">
+    <div class="ep-title" id="ep-title">✏️ Chỉnh sửa hồ sơ</div>
+    <div class="field">
+      <label id="ep-name-lbl">Tên hiển thị</label>
+      <input type="text" id="ep-name" placeholder="Tên của bạn...">
+    </div>
+    <div class="field">
+      <label id="ep-uid-lbl">Username / ID</label>
+      <input type="text" id="ep-uid" placeholder="vd: khanh_2010" oninput="checkUid(this.value)">
+      <div class="hint" id="uid-hint">Chỉ dùng a-z 0-9 _ . (3-20 ký tự)</div>
+    </div>
+    <div class="field">
+      <label id="ep-bio-lbl">Bio / Giới thiệu</label>
+      <textarea id="ep-bio" placeholder="Viết gì đó về bạn..."></textarea>
+    </div>
+    <button class="btn-save" id="saveBtn" onclick="saveProfile()">💾 Lưu thay đổi</button>
+    <div class="save-msg" id="saveMsg"></div>
+  </div>
+</div>
+
+<!-- POSTS -->
+<div class="page-wrap">
+  <div class="tabs-row">
+    <button class="ptab on" id="tab-grid" onclick="switchTab('grid')">⊞ <span id="tab-grid-lbl">Lưới</span></button>
+    <button class="ptab" id="tab-list" onclick="switchTab('list')">☰ <span id="tab-list-lbl">Danh sách</span></button>
+  </div>
+  <div id="postsGrid" class="posts-grid"><div class="spinner"></div></div>
+  <div id="postsList" class="posts-list" style="display:none"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLb()">
+  <button id="lb-close" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<canvas id="canvas" style="display:none"></canvas>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, getDocs, collection, query, where, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const fc={apiKey:"AIzaSyC-diM0ASN1ClurHuz8b2lSuyK48Cop2T0",authDomain:"ipright-album.firebaseapp.com",projectId:"ipright-album",storageBucket:"ipright-album.firebasestorage.app",messagingSenderId:"920853312130",appId:"1:920853312130:web:3320ea05146fa7d5b03a9b"};
+const app=initializeApp(fc);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const ADMIN="duykhanhneflickr@copyright-limited.com";
+
+const I18N={
+  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_profile:"👤 Profile",nav_logout:"Đăng xuất",stat_posts:"bài đăng",stat_likes:"lượt thích",btn_edit:"✏️ Chỉnh sửa",btn_msg:"💬 Nhắn tin",btn_logout:"🚪 Đăng xuất",ep_title:"✏️ Chỉnh sửa hồ sơ",ep_name:"Tên hiển thị",ep_uid:"Username / ID",ep_bio:"Bio / Giới thiệu",ep_uid_hint:"Chỉ dùng a-z 0-9 _ . (3-20 ký tự)",btn_save:"💾 Lưu thay đổi",tab_grid:"Lưới",tab_list:"Danh sách",empty_posts:"Chưa có bài đăng nào",bio_placeholder:"Viết gì đó về bạn...",name_placeholder:"Tên của bạn...",uid_placeholder:"vd: khanh_2010"},
+  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_profile:"👤 프로필",nav_logout:"로그아웃",stat_posts:"게시물",stat_likes:"좋아요",btn_edit:"✏️ 편집",btn_msg:"💬 메시지",btn_logout:"🚪 로그아웃",ep_title:"✏️ 프로필 편집",ep_name:"표시 이름",ep_uid:"사용자명 / ID",ep_bio:"소개",ep_uid_hint:"영문 숫자 _ . 만 사용 (3-20자)",btn_save:"💾 저장",tab_grid:"그리드",tab_list:"목록",empty_posts:"게시물이 없습니다",bio_placeholder:"자기소개를 입력하세요...",name_placeholder:"이름을 입력하세요...",uid_placeholder:"예: khanh_2010"},
+  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_profile:"👤 Profile",nav_logout:"Logout",stat_posts:"posts",stat_likes:"likes",btn_edit:"✏️ Edit Profile",btn_msg:"💬 Message",btn_logout:"🚪 Logout",ep_title:"✏️ Edit Profile",ep_name:"Display Name",ep_uid:"Username / ID",ep_bio:"Bio",ep_uid_hint:"Letters, numbers, _ . only (3-20 chars)",btn_save:"💾 Save Changes",tab_grid:"Grid",tab_list:"List",empty_posts:"No posts yet",bio_placeholder:"Tell something about yourself...",name_placeholder:"Your name...",uid_placeholder:"e.g. khanh_2010"}
+};
+
+let me=null, meData=null, targetUid=null, isOwnProfile=false, uidValid=true, origUid="", lang="vi", userPosts=[], currentTab="grid";
+
+// Lang
+window.setLang=l=>{
+  lang=l; localStorage.setItem("site_lang",l);
+  const t=I18N[l];
+  document.getElementById("nt-home").textContent=t.nav_home;
+  document.getElementById("nt-album").textContent=t.nav_album;
+  document.getElementById("nt-chat").textContent=t.nav_chat;
+  document.getElementById("nt-profile").textContent=t.nav_profile;
+  document.getElementById("navOut").textContent=t.nav_logout;
+  document.getElementById("stat-posts-lbl").textContent=t.stat_posts;
+  document.getElementById("stat-likes-lbl").textContent=t.stat_likes;
+  document.getElementById("ep-title").textContent=t.ep_title;
+  document.getElementById("ep-name-lbl").textContent=t.ep_name;
+  document.getElementById("ep-uid-lbl").textContent=t.ep_uid;
+  document.getElementById("ep-bio-lbl").textContent=t.ep_bio;
+  document.getElementById("uid-hint").textContent=t.ep_uid_hint;
+  document.getElementById("saveBtn").textContent=t.btn_save;
+  document.getElementById("tab-grid-lbl").textContent=t.tab_grid;
+  document.getElementById("tab-list-lbl").textContent=t.tab_list;
+  document.getElementById("ep-name").placeholder=t.name_placeholder;
+  document.getElementById("ep-uid").placeholder=t.uid_placeholder;
+  document.getElementById("ep-bio").placeholder=t.bio_placeholder;
+  ["vi","kr","en"].forEach(x=>document.getElementById("lf-"+x).classList.toggle("on",x===l));
+  renderActions();
+  renderPosts();
+};
+
+// Auth
+onAuthStateChanged(auth, async u=>{
+  if(!u){location.href="login.html";return;}
+  me=u;
+
+  // Xác định xem profile ai
+  const params=new URLSearchParams(location.search);
+  targetUid=params.get("uid")||u.uid;
+  isOwnProfile=targetUid===u.uid;
+
+  // Load target user data
+  const uDoc=await getDoc(doc(db,"users",targetUid));
+  if(!uDoc.exists()&&isOwnProfile){
+    // Tạo mới cho tài khoản cũ
+    const fallback=u.displayName||u.email.split("@")[0];
+    meData={name:fallback,username:"",bio:"",avatar:"",email:u.email,uid:u.uid,role:u.email===ADMIN?"admin":"user",banned:false};
+    await setDoc(doc(db,"users",u.uid),meData);
+  } else {
+    meData=uDoc.data()||{};
+  }
+
+  // Me data cho nav
+  const myDoc=isOwnProfile?uDoc:await getDoc(doc(db,"users",u.uid));
+  const myName=myDoc.exists()?(myDoc.data().name||u.displayName||u.email.split("@")[0]):(u.displayName||u.email.split("@")[0]);
+  document.getElementById("navUser").textContent=myName+(u.email===ADMIN?" 👑":"");
+  document.getElementById("navUser").style.display="block";
+  document.getElementById("navOut").style.display="block";
+
+  // Render profile
+  renderProfileHead();
+  setLang(localStorage.getItem("site_lang")||"vi");
+  await loadPosts();
+});
+
+function renderProfileHead(){
+  const name=meData.name||"?";
+  const username=meData.username||"";
+  const bio=meData.bio||"";
+  const isAdmin=meData.email===ADMIN;
+
+  document.getElementById("profileName").innerHTML=name+(isAdmin?'<span class="admin-crown">👑 Admin</span>':"");
+  document.getElementById("profileUsername").textContent=username?"@"+username:"";
+  document.getElementById("profileBio").textContent=bio;
+  document.getElementById("avatarInitial").textContent=name[0]?.toUpperCase()||"?";
+
+  if(meData.avatar){
+    document.getElementById("avatarImg").src=meData.avatar;
+    document.getElementById("avatarImg").style.display="block";
+    document.getElementById("avatarInitial").style.display="none";
+  }
+
+  if(isOwnProfile){
+    document.getElementById("avatarEditBtn").style.display="flex";
+    document.getElementById("ep-name").value=name;
+    document.getElementById("ep-uid").value=username;
+    document.getElementById("ep-bio").value=bio;
+    origUid=username;
+  }
+}
+
+function renderActions(){
+  const t=I18N[lang];
+  const wrap=document.getElementById("profileActions");
+  if(isOwnProfile){
+    wrap.innerHTML=`
+      <button class="btn-action btn-edit" onclick="toggleEdit()">${t.btn_edit}</button>
+      <button class="btn-action btn-logout" onclick="doLogout()">${t.btn_logout}</button>`;
+  } else {
+    wrap.innerHTML=`
+      <button class="btn-action btn-msg" onclick="goMsg()">${t.btn_msg}</button>`;
+  }
+}
+
+window.toggleEdit=()=>document.getElementById("editPanel").classList.toggle("show");
+
+async function loadPosts(){
+  const q=query(collection(db,"posts"),where("uid","==",targetUid),orderBy("createdAt","desc"));
+  const snap=await getDocs(q);
+  userPosts=[];
+  let totalLikes=0;
+  snap.forEach(d=>{
+    const data=d.data();
+    userPosts.push({id:d.id,...data});
+    totalLikes+=(data.likes||[]).length;
+  });
+  document.getElementById("statPosts").textContent=userPosts.length;
+  document.getElementById("statLikes").textContent=totalLikes;
+  renderPosts();
+}
+
+function renderPosts(){
+  const t=I18N[lang];
+  renderGrid(t);
+  renderList(t);
+}
+
+function renderGrid(t){
+  const grid=document.getElementById("postsGrid");
+  grid.innerHTML="";
+  if(!userPosts.length){
+    grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📭</div><div class="empty-text">${t.empty_posts}</div></div>`;
+    return;
+  }
+  userPosts.forEach((p,i)=>{
+    const div=document.createElement("div");
+    div.className="grid-item";
+    div.style.animationDelay=(i*0.05)+"s";
+    if(p.imageUrl){
+      div.innerHTML=`<img src="${p.imageUrl}" alt="" loading="lazy">`;
+      div.onclick=()=>openLb(p.imageUrl);
+    } else {
+      div.innerHTML=`<div class="grid-no-img"><div style="font-size:20px">📝</div><div class="grid-caption">${p.caption||p.text||""}</div></div>`;
+    }
+    grid.appendChild(div);
+  });
+}
+
+function renderList(t){
+  const list=document.getElementById("postsList");
+  list.innerHTML="";
+  if(!userPosts.length){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">${t.empty_posts}</div></div>`;
+    return;
+  }
+  userPosts.forEach((p,i)=>{
+    const div=document.createElement("div");
+    div.className="post-card";
+    div.style.animationDelay=(i*0.05)+"s";
+    const date=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString("vi-VN",{year:"numeric",month:"long",day:"numeric"}):"";
+    div.innerHTML=`
+      ${p.imageUrl?`<img class="post-img" src="${p.imageUrl}" onclick="openLb('${p.imageUrl}')" alt="">` :""}
+      <div class="post-body">
+        <div class="post-date">🕐 ${date}</div>
+        ${p.caption?`<div class="post-caption">${p.caption}</div>`:""}
+        ${p.text?`<p class="post-text">${p.text}</p>`:""}
+        <div class="post-likes">❤️ ${(p.likes||[]).length}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+window.switchTab=tab=>{
+  currentTab=tab;
+  document.getElementById("tab-grid").classList.toggle("on",tab==="grid");
+  document.getElementById("tab-list").classList.toggle("on",tab==="list");
+  document.getElementById("postsGrid").style.display=tab==="grid"?"grid":"none";
+  document.getElementById("postsList").style.display=tab==="list"?"flex":"none";
+};
+
+// Avatar upload
+window.uploadAvatar=async input=>{
+  if(!input.files[0]) return;
+  const file=input.files[0];
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const img=new Image();
+    img.onload=async()=>{
+      const canvas=document.getElementById("canvas");
+      const size=Math.min(img.width,img.height);
+      canvas.width=200;canvas.height=200;
+      const ctx=canvas.getContext("2d");
+      // Crop hình tròn
+      const sx=(img.width-size)/2, sy=(img.height-size)/2;
+      ctx.drawImage(img,sx,sy,size,size,0,0,200,200);
+      let b64=canvas.toDataURL("image/jpeg",0.8);
+      while(b64.length>150000) b64=canvas.toDataURL("image/jpeg",0.6);
+
+      document.getElementById("avatarImg").src=b64;
+      document.getElementById("avatarImg").style.display="block";
+      document.getElementById("avatarInitial").style.display="none";
+
+      await updateDoc(doc(db,"users",me.uid),{avatar:b64});
+      meData.avatar=b64;
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+// Check username
+let uidTimer=null;
+window.checkUid=val=>{
+  clearTimeout(uidTimer);
+  const hint=document.getElementById("uid-hint");
+  const t=I18N[lang];
+  if(!val){hint.className="hint";hint.textContent=t.ep_uid_hint;uidValid=true;return;}
+  if(!/^[a-zA-Z0-9_.]{3,20}$/.test(val)){hint.className="hint err";hint.textContent="❌ "+t.ep_uid_hint;uidValid=false;return;}
+  if(val===origUid){hint.className="hint ok";hint.textContent="✅";uidValid=true;return;}
+  hint.textContent="⏳...";uidValid=false;
+  uidTimer=setTimeout(async()=>{
+    const q=query(collection(db,"users"),where("username","==",val.toLowerCase()));
+    const snap=await getDocs(q);
+    if(!snap.empty){hint.className="hint err";hint.textContent="❌ Username đã được dùng!";uidValid=false;}
+    else{hint.className="hint ok";hint.textContent="✅ Username khả dụng!";uidValid=true;}
+  },500);
+};
+
+// Save profile
+window.saveProfile=async()=>{
+  const name=document.getElementById("ep-name").value.trim();
+  const username=document.getElementById("ep-uid").value.trim().toLowerCase();
+  const bio=document.getElementById("ep-bio").value.trim();
+  const msg=document.getElementById("saveMsg");
+  const btn=document.getElementById("saveBtn");
+  if(!name){showSaveMsg("err","⚠️ Nhập tên hiển thị!");return;}
+  if(username&&!uidValid){showSaveMsg("err","⚠️ Username không hợp lệ!");return;}
+  btn.disabled=true;btn.textContent="⏳...";
+  try{
+    await updateProfile(me,{displayName:name});
+    await setDoc(doc(db,"users",me.uid),{name,username:username||"",bio,email:me.email,uid:me.uid,role:me.email===ADMIN?"admin":"user",avatar:meData.avatar||""},{merge:true});
+    origUid=username;meData.name=name;meData.username=username;meData.bio=bio;
+    document.getElementById("profileName").innerHTML=name+(me.email===ADMIN?'<span class="admin-crown">👑 Admin</span>':"");
+    document.getElementById("profileUsername").textContent=username?"@"+username:"";
+    document.getElementById("profileBio").textContent=bio;
+    document.getElementById("navUser").textContent=name+(me.email===ADMIN?" 👑":"");
+    document.getElementById("avatarInitial").textContent=name[0]?.toUpperCase()||"?";
+    showSaveMsg("ok","✅ Lưu thành công!");
+    setTimeout(()=>document.getElementById("editPanel").classList.remove("show"),1500);
+  }catch(e){showSaveMsg("err","❌ "+e.message);}
+  btn.disabled=false;btn.textContent=I18N[lang].btn_save;
+};
+
+function showSaveMsg(type,text){const e=document.getElementById("saveMsg");e.className="save-msg "+type;e.textContent=text;setTimeout(()=>e.className="save-msg",3000);}
+window.goMsg=()=>location.href=`chat.html?peer=${targetUid}`;
+window.doLogout=()=>signOut(auth).then(()=>location.href="login.html");
+window.openLb=src=>{document.getElementById("lbImg").src=src;document.getElementById("lightbox").classList.add("show");};
+window.closeLb=()=>document.getElementById("lightbox").classList.remove("show");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLb();});
+</script>
+</body>
+</html>
