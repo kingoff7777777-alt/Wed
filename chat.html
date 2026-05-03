@@ -116,6 +116,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);disp
   <div class="topbar-right">
     <a href="index.html" class="nav-a" title="Home">🏠</a>
     <a href="album.html" class="nav-a" title="Album">📸</a>
+    <a href="profile.html" class="nav-a" title="Profile">👤</a>
     <span class="nav-user-badge" id="navUser" style="display:none"></span>
     <button class="lf-btn" onclick="setLang('vi')" id="lf-vi">🇻🇳</button>
     <button class="lf-btn" onclick="setLang('kr')" id="lf-kr">🇰🇷</button>
@@ -247,12 +248,12 @@ onAuthStateChanged(auth, async u=>{
   me=u;
   // Lấy data thật từ Firestore
   const uDoc=await getDoc(doc(db,"users",u.uid));
-  if(uDoc.exists()){
+  if(uDoc.exists() && uDoc.data().name){
     meData=uDoc.data();
   } else {
-    // Tạo mới nếu chưa có (tài khoản cũ)
+    // Tài khoản cũ hoặc chưa có doc → dùng Firebase displayName
     const fallbackName=u.displayName||u.email.split("@")[0];
-    meData={name:fallbackName,username:"",email:u.email,uid:u.uid};
+    meData={name:fallbackName,username:uDoc.exists()?uDoc.data().username||"":"",email:u.email,uid:u.uid,role:u.email===ADMIN?"admin":"user"};
     await setDoc(doc(db,"users",u.uid),meData,{merge:true});
   }
 
