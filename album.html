@@ -336,3 +336,27 @@ function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g
 </script>
 </body>
 </html>
+  if(!confirm("Xoá trả lời?")) return;
+  await deleteDoc(doc(db,"posts",postId,"comments",cmtId,"replies",replyId));
+};
+
+window.toggleLike=async(id,liked)=>{
+  if(!me){location.href="login.html";return;}
+  const r=doc(db,"posts",id);
+  if(liked) await updateDoc(r,{likes:arrayRemove(me.uid)});
+  else await updateDoc(r,{likes:arrayUnion(me.uid)});
+};
+
+window.delPost=async id=>{
+  if(!confirm("Xoá bài này?")) return;
+  await deleteDoc(doc(db,"posts",id));
+};
+
+window.goChat=uid=>{location.href=`chat.html?peer=${uid}`;};
+window.openLb=src=>{document.getElementById("lbImg").src=src;document.getElementById("lightbox").classList.add("show");};
+window.closeLb=()=>document.getElementById("lightbox").classList.remove("show");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLb();});
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
+</script>
+</body>
+</html>
