@@ -1,0 +1,14 @@
+{
+  "name": "iprights.asia",
+  "short_name": "iprights",
+  "description": "Trang cá nhân của 부이뒤칸 & 문준우",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0a1e",
+  "theme_color": "#a855f7",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "https://i.imgur.com/4AcFg90.webp", "sizes": "192x192", "type": "image/webp"},
+    {"src": "https://i.imgur.com/4AcFg90.webp", "sizes": "512x512", "type": "image/webp"}
+  ]
+}
