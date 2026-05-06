@@ -71,6 +71,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 .dmca img{opacity:.75;}
 .footer{font-size:10px;color:var(--muted);line-height:1.8;text-align:center;border-top:1px solid var(--border);padding:14px 0 0;margin-top:14px;}
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#a855f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="iprights">
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>
 </head>
 <body>
 <h1 class="seo-hidden">부이뒤칸 문준우 2010 Việt Nam 문준우 2011 Korea</h1>
@@ -253,5 +259,6 @@ function openChat(){
   window.location.href='chat.html';
 }
 </script>
+<script src="bot.js"></script>
 </body>
 </html>
