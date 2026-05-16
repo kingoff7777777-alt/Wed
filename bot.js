@@ -3,9 +3,9 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // 1. API KEY VÀ ĐƯỜNG DẪN CHUẨN GEMINI 1.5 FLASH (MỚI NHẤT)
+  // 1. ĐÃ FIX: CHUYỂN ENDPOINT SANG V1 ĐỂ CHẠY ĐƯỢC GEMINI 1.5 FLASH ỔN ĐỊNH
   var KEY = "AIzaSyAhRjCWREfEl3-5MJMkuyG6il1X6Hdc8E8";
-  var API = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + KEY;
+  var API = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + KEY;
 
   var LANG_SYS = {
     vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
@@ -163,7 +163,7 @@
     return b;
   }
 
-  /* ── ĐÃ FIX: CẤU TRÚC PAYLOAD FORMAT CHUẨN GEMINI API MỚI ── */
+  /* ── PAYLOAD FORMAT CHUẨN GEMINI API MỚI ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -173,7 +173,6 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    // Cấu trúc chuẩn theo tài liệu Google Gemini: Tách biệt systemInstruction và contents
     var payload = {
       contents: [
         { parts: [{ text: text }] }
