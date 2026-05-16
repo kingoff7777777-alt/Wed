@@ -237,7 +237,7 @@ setLang(localStorage.getItem(“site_lang”)||“vi”);
 <!-- FLOATING CHAT BUTTON -->
 
 <div id="chatFloat" onclick="openChat()" style="
-  position:fixed; bottom:24px; right:20px; z-index:800;
+  position:fixed; bottom:24px; right:80px; z-index:800;
   width:54px; height:54px; border-radius:50%;
   background:linear-gradient(135deg,#a855f7,#ff6eb4);
   display:flex; align-items:center; justify-content:center;
@@ -286,9 +286,9 @@ function getLang(){return localStorage.getItem("IPRIGHTS_lang")||localStorage.ge
 // CSS
 const s=document.createElement("style");
 s.textContent=`
-#_bot_btn{position:fixed;bottom:20px;right:16px;z-index:99999;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.6);font-size:22px;display:flex;align-items:center;justify-content:center;animation:_botP 2s infinite;}
+#_bot_btn{position:fixed;bottom:84px;right:16px;z-index:99999;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.6);font-size:22px;display:flex;align-items:center;justify-content:center;animation:_botP 2s infinite;}
 @keyframes _botP{0%,100%{box-shadow:0 4px 20px rgba(168,85,247,0.5);}50%{box-shadow:0 4px 30px rgba(56,189,248,0.8);}}
-#_bot_win{position:fixed;bottom:80px;right:12px;z-index:99998;width:300px;max-width:calc(100vw - 24px);background:#16112b;border:1px solid rgba(168,85,247,0.4);border-radius:18px;display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.7);overflow:hidden;max-height:480px;}
+#_bot_win{position:fixed;bottom:144px;right:12px;z-index:99998;width:300px;max-width:calc(100vw - 24px);background:#16112b;border:1px solid rgba(168,85,247,0.4);border-radius:18px;display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.7);overflow:hidden;max-height:480px;}
 #_bot_win.show{display:flex;}
 #_bot_hd{padding:10px 14px;background:rgba(168,85,247,0.15);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:8px;}
 #_bot_av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:16px;}
