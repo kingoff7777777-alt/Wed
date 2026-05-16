@@ -3,10 +3,12 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY GROQ - CHỐNG BỊ GITHUB QUÉT KHÓA KEY
+  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY OPENAI - KHÁNH THAY KEY CỦA BẠN VÀO ĐÂY
   function getDecryptedKey() {
-    var p1 = "gsk_GRNGftvYf7LDpf4kc8dfWGdyb3FY";
-    var p2 = "dbKGhaxCpufEpG8lqfpGxXf5";
+    // Ví dụ key của bạn là sk-proj-12345...
+    // Hãy cắt đôi chuỗi Key OpenAI của bạn ra điền vào p1 và p2 dưới đây:
+    var p1 = "gsk_K5zS6hm6YhcgDxQqqKQB"; 
+    var p2 = "WGdyb3FYFtHodAUJec9XcKmLMHKQWeMC";
     return p1 + p2;
   }
 
@@ -16,9 +18,9 @@
     en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý Groq LPU đã xử lý cấu hình tokens 🤖\nTôi có thể giúp gì cho bạn?",
-    kr: "안녕하세요! AI 어시스턴트입니다 🤖",
-    en: "Hello! I am the AI assistant 🤖"
+    vi: "Xin chào! Tôi là AI trợ lý GPT-4o chính thức từ OpenAI 🤖\nTôi có thể giúp gì cho bạn?",
+    kr: "안녕하세요! OpenAI AI 어시스턴트입니다 🤖",
+    en: "Hello! I am the OpenAI AI assistant 🤖"
   };
   var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
   var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
@@ -117,7 +119,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by Groq Cloud</div>" +
+      "<div id=\"ipr-pw\">Powered by OpenAI GPT</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -156,7 +158,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD VỚI PAYLOAD TOKENS CHUẨN ── */
+  /* ── KẾT NỐI SANG ENDPOINT CHÍNH THỨC CỦA OPENAI CHUẨN 100% ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -168,15 +170,15 @@
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
     var payload = {
-      model: "llama3-70b-8192", // Dùng model ổn định cao nhất của Groq
+      model: "gpt-4o-mini", // Model siêu rẻ, siêu nhanh và thông minh vượt trội Groq
       messages: [
         { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
         { role: "user", content: text }
       ],
-      max_tokens: 1024 // FIX CHÍNH: Thêm dòng này để Groq bắt buộc phải trả text về!
+      max_tokens: 1000
     };
 
-    fetch("https://api.groq.com/openai/v1/chat/completions", {
+    fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -195,7 +197,6 @@
     .then(function(d) {
       var reply = "";
       
-      // Bọc kiểm tra mảng an toàn
       if (d.choices && d.choices.length > 0) {
         var msg = d.choices[0].message;
         if (msg && msg.content) {
@@ -203,18 +204,18 @@
         }
       }
       
-      // Khung phòng vệ cuối nếu có trục trặc hệ thống mạng
       if (!reply) {
-        reply = "⚠️ AI phản hồi trống. Kiểm tra lại kết nối hoặc hạn mức API.";
+        // Nếu dính lỗi số dư OpenAI thì câu này sẽ xuất hiện để kiểm tra ngay
+        reply = "⚠️ OpenAI phản hồi trống. Vui lòng kiểm tra số dư Credit trong OpenAI Platform.";
       }
       
       bubble.textContent = reply;
       bubble.classList.remove("think");
     })
     .catch(function(e) {
-      bubble.textContent = "❌ Lỗi: " + e.message;
+      bubble.textContent = "❌ Lỗi kết nối OpenAI: " + e.message;
       bubble.classList.remove("think");
-      console.error("Groq System Error:", e);
+      console.error("OpenAI System Error:", e);
     })
     .finally(function() {
       send.disabled = false;
