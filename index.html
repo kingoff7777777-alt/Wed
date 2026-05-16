@@ -199,8 +199,12 @@ let ctx,analyser,source,cur=0,unlocked=false;
 function loadTrack(i){cur=i;audio.src=tracks[i].src;document.getElementById(“trackName”).textContent=tracks[i].name;document.querySelectorAll(”.track-dot”).forEach((d,j)=>d.classList.toggle(“active”,j===i));}
 
 function startSite(){
-const w=document.getElementById(“welcome”);w.style.opacity=“0”;setTimeout(()=>w.style.display=“none”,400);
+// Đóng popup NGAY, không phụ thuộc vào audio
+const w=document.getElementById(“welcome”);
+if(w){w.style.opacity=“0”;setTimeout(()=>{w.style.display=“none”;},400);}
 if(unlocked)return;unlocked=true;
+// Khởi động audio trong try/catch
+try{
 ctx=new(window.AudioContext||window.webkitAudioContext)();
 analyser=ctx.createAnalyser();source=ctx.createMediaElementSource(audio);
 source.connect(analyser);analyser.connect(ctx.destination);analyser.fftSize=64;
