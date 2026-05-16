@@ -16,7 +16,7 @@
     en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý Groq LPU 🤖\nTôi có thể giúp gì cho bạn?",
+    vi: "Xin chào! Tôi là AI trợ lý Groq LPU đã sửa lỗi 🤖\nTôi có thể giúp gì cho bạn?",
     kr: "안녕하세요! AI 어시스턴트입니다 🤖",
     en: "Hello! I am the AI assistant 🤖"
   };
@@ -156,7 +156,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD VỚI LOGIC DEBUG ── */
+  /* ── KẾT NỐI API GROQ CLOUD CHUẨN ĐÃ FIX ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -168,7 +168,7 @@
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
     var payload = {
-      model: "llama3-70b-8192", // Sửa model tối ưu và phổ biến nhất của Groq
+      model: "mixtral-8x7b-32768", // Đổi sang dòng model Mixtral siêu ổn định
       messages: [
         { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
         { role: "user", content: text }
@@ -183,7 +183,6 @@
       },
       body: JSON.stringify(payload)
     })
-    // LOGIC DEBUG: Bẫy chuỗi văn bản thuần túy trước để đọc lỗi thô nếu parse thất bại
     .then(async function(r) {
       var txt = await r.text();
       try {
@@ -194,18 +193,25 @@
     })
     .then(function(d) {
       var reply = "";
-      if (d.choices && d.choices[0] && d.choices[0].message) {
-        reply = d.choices[0].message.content || "";
+      
+      // ÁP DỤNG ĐOẠN ĐỔI THÀNH (QUAN TRỌNG) ĐỂ FIX LỖI CONTENT NULL
+      if (d.choices && d.choices.length > 0) {
+        var msg = d.choices[0].message;
+        if (msg && msg.content) {
+          reply = msg.content;
+        }
       }
+      
+      // Fallback nếu chuỗi trả về trống hoàn toàn
       if (!reply) {
-        reply = "⚠️ Phản hồi trống từ hệ thống Groq.";
+        reply = "⚠️ AI không trả nội dung (có thể do lỗi cấu hình hệ thống).";
       }
+      
       bubble.textContent = reply;
       bubble.classList.remove("think");
     })
-    // HIỂN THỊ LỖI THẬT TRỰC TIẾP RA KHUNG CHAT
     .catch(function(e) {
-      bubble.textContent = "❌ " + e.message;
+      bubble.textContent = "❌ Lỗi: " + e.message;
       bubble.classList.remove("think");
       console.error("Groq System Error:", e);
     })
