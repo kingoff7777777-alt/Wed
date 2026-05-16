@@ -3,7 +3,7 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // 1. ĐÃ FIX: CHUYỂN ENDPOINT SANG V1 ĐỂ CHẠY ĐƯỢC GEMINI 1.5 FLASH ỔN ĐỊNH
+  // 1. ĐƯỜNG DẪN API V1 CHUẨN ĐÃ ĐƯỢC TỐI ƯU CẤU TRÚC DỮ LIỆU
   var KEY = "AIzaSyAhRjCWREfEl3-5MJMkuyG6il1X6Hdc8E8";
   var API = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + KEY;
 
@@ -163,7 +163,7 @@
     return b;
   }
 
-  /* ── PAYLOAD FORMAT CHUẨN GEMINI API MỚI ── */
+  /* ── ĐÃ TỐI ƯU: TRÁNH LỖI SYSTEMINSTRUCTION BẰNG CÁCH TRUYỀN THẲNG VÀO TIN NHẮN ĐẦU ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -173,13 +173,13 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
+    // Gộp luật hệ thống và nội dung chat để tương thích 100% mọi phiên bản API ổn định
+    var contextPrompt = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng nhắn: " + text;
+
     var payload = {
       contents: [
-        { parts: [{ text: text }] }
-      ],
-      systemInstruction: {
-        parts: [{ text: LANG_SYS[L] || LANG_SYS.vi }]
-      }
+        { parts: [{ text: contextPrompt }] }
+      ]
     };
 
     fetch(API, {
