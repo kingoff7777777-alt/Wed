@@ -16,7 +16,7 @@
     en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý Groq LPU đã sửa lỗi 🤖\nTôi có thể giúp gì cho bạn?",
+    vi: "Xin chào! Tôi là AI trợ lý Groq LPU đã xử lý cấu hình tokens 🤖\nTôi có thể giúp gì cho bạn?",
     kr: "안녕하세요! AI 어시스턴트입니다 🤖",
     en: "Hello! I am the AI assistant 🤖"
   };
@@ -156,7 +156,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API GROQ CLOUD CHUẨN ĐÃ FIX ── */
+  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD VỚI PAYLOAD TOKENS CHUẨN ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -168,11 +168,12 @@
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
     var payload = {
-      model: "mixtral-8x7b-32768", // Đổi sang dòng model Mixtral siêu ổn định
+      model: "llama3-70b-8192", // Dùng model ổn định cao nhất của Groq
       messages: [
         { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
         { role: "user", content: text }
-      ]
+      ],
+      max_tokens: 1024 // FIX CHÍNH: Thêm dòng này để Groq bắt buộc phải trả text về!
     };
 
     fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -194,7 +195,7 @@
     .then(function(d) {
       var reply = "";
       
-      // ÁP DỤNG ĐOẠN ĐỔI THÀNH (QUAN TRỌNG) ĐỂ FIX LỖI CONTENT NULL
+      // Bọc kiểm tra mảng an toàn
       if (d.choices && d.choices.length > 0) {
         var msg = d.choices[0].message;
         if (msg && msg.content) {
@@ -202,9 +203,9 @@
         }
       }
       
-      // Fallback nếu chuỗi trả về trống hoàn toàn
+      // Khung phòng vệ cuối nếu có trục trặc hệ thống mạng
       if (!reply) {
-        reply = "⚠️ AI không trả nội dung (có thể do lỗi cấu hình hệ thống).";
+        reply = "⚠️ AI phản hồi trống. Kiểm tra lại kết nối hoặc hạn mức API.";
       }
       
       bubble.textContent = reply;
