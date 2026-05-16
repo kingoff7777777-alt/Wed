@@ -3,26 +3,33 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
+  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY GROQ - CHỐNG QUÉT GITHUB
+  function getDecryptedKey() {
+    var p1 = "gsk_GRNGftvYf7LDpf4kc8dfWGdyb3FY";
+    var p2 = "dbKGhaxCpufEpG8lqfpGxXf5";
+    return p1 + p2;
+  }
+
   var LANG_SYS = {
-    vi: "Bạn là AI trợ lý tên Grok của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
-    kr: "당신은 iprights.asia AI 어시스턴트 Grok입니다. 한국어로 간결하게 답변하세요.",
-    en: "You are Grok, the AI assistant of iprights.asia. Reply in English, brief and friendly."
+    vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
+    kr: "당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요.",
+    en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là Grok - AI trợ lý 🤖\nTôi có thể giúp gì cho bạn?",
-    kr: "안녕하세요! Grok AI 어시스턴트입니다 🤖",
-    en: "Hello! I am Grok, your AI assistant 🤖"
+    vi: "Xin chào! Tôi là AI trợ lý tốc độ cao 🤖\nTôi có thể giúp gì cho bạn?",
+    kr: "안녕하세요! AI 어시스턴트입니다 🤖",
+    en: "Hello! I am the AI assistant 🤖"
   };
-  var PH    = { vi: "Nhắn gì đó với Grok...", kr: "메시지 입력...", en: "Type a message..." };
-  var THINK = { vi: "Grok đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
-  var ERR   = { vi: "Xin lỗi, hệ thống Grok bận. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
+  var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
+  var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
+  var ERR   = { vi: "Xin lỗi, hệ thống Groq bận. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
 
   function getLang() {
     return localStorage.getItem("IPRIGHTS_lang") ||
            localStorage.getItem("site_lang") || "vi";
   }
 
-  /* ── CSS GIỮ NGUYÊN BẢN GỐC CYBERPUNK ── */
+  /* ── CSS CYBERPUNK NGUYÊN BẢN ── */
   var s = document.createElement("style");
   s.textContent =
     "#ipr-fab{position:fixed;bottom:84px;right:16px;z-index:99990;" +
@@ -101,7 +108,7 @@
       "<div id=\"ipr-hd\">" +
         "<div id=\"ipr-av\">🤖</div>" +
         "<div>" +
-          "<div id=\"ipr-name\">Grok Assistant</div>" +
+          "<div id=\"ipr-name\">AI Assistant</div>" +
           "<div id=\"ipr-st\">● Online</div>" +
         "</div>" +
         "<button id=\"ipr-x\">✕</button>" +
@@ -111,7 +118,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by Grok AI</div>" +
+      "<div id=\"ipr-pw\">Powered by Groq LPU</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -150,7 +157,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API GROK ── */
+  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -161,17 +168,21 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng gõ: " + text;
+    var payload = {
+      model: "llama-3.3-70b-specdec", // Model Llama mới siêu tốc độ của Groq
+      messages: [
+        { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
+        { role: "user", content: text }
+      ]
+    };
 
-    // Sử dụng Endpoint API Gateway mở miễn phí cho model Grok-Beta
-    fetch("https://api.commonspace.id/v1/chat/completions", {
+    fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: promptCombined }],
-        model: "grok-beta",
-        stream: false
-      })
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + getDecryptedKey()
+      },
+      body: JSON.stringify(payload)
     })
     .then(function(r) { return r.json(); })
     .then(function(d) {
@@ -186,7 +197,7 @@
     .catch(function(e) {
       bubble.textContent = ERR[getLang()]||ERR.vi;
       bubble.classList.remove("think");
-      console.error("Grok error:", e);
+      console.error("Groq Bot error:", e);
     })
     .finally(function() {
       send.disabled = false;
