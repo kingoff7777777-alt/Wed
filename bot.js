@@ -3,16 +3,10 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // LẤY TỪ TRÌNH DUYỆT ĐỂ BẢO MẬT KHÔNG BỊ QUÉT LỖI
-  function getApiKey() {
-    return localStorage.getItem("IPRIGHTS_GEMINI_KEY") || "";
-  }
-
-  // ĐÃ FIX: Chuyển Prompt vào thẳng danh sách contents theo chuẩn API v1 để không lỗi "systemInstruction"
   var LANG_SYS = {
-    vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi. Khách hàng đang nhắn: ",
-    kr: "당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요. 메시지: ",
-    en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly. Message: "
+    vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
+    kr: "당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요.",
+    en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
     vi: "Xin chào! Tôi là AI trợ lý 🤖\nTôi có thể giúp gì cho bạn?",
@@ -21,14 +15,14 @@
   };
   var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
   var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
-  var ERR   = { vi: "Xin lỗi, có lỗi xảy ra!", kr: "오류 발생!", en: "Error! Try again." };
+  var ERR   = { vi: "Xin lỗi, hệ thống bận. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
 
   function getLang() {
     return localStorage.getItem("IPRIGHTS_lang") ||
            localStorage.getItem("site_lang") || "vi";
   }
 
-  /* ── CSS GIỮ NGUYÊN CỦA DUY KHÁNH ── */
+  /* ── CSS GIỮ NGUYÊN ── */
   var s = document.createElement("style");
   s.textContent =
     "#ipr-fab{position:fixed;bottom:84px;right:16px;z-index:99990;" +
@@ -117,7 +111,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by Google Gemini AI</div>" +
+      "<div id=\"ipr-pw\">Powered by DuckDuckGo AI</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -132,12 +126,7 @@
   function toggle() {
     open = !open;
     win.classList.toggle("open", open);
-    if (open) {
-      fab.textContent = "✕";
-      inp.focus();
-    } else {
-      fab.textContent = "🤖";
-    }
+    if (open) { fab.textContent = "✕"; inp.focus(); } else { fab.textContent = "🤖"; }
   }
   fab.addEventListener("click", toggle);
   xBtn.addEventListener("click", toggle);
@@ -156,34 +145,15 @@
     var t = document.createElement("div");
     t.className = "ipr-t";
     t.textContent = new Date().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});
-    bw.appendChild(b);
-    bw.appendChild(t);
-    row.appendChild(ico);
-    row.appendChild(bw);
-    msgs.appendChild(row);
-    msgs.scrollTop = msgs.scrollHeight;
+    bw.appendChild(b); bw.appendChild(t); row.appendChild(ico); row.appendChild(bw);
+    msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight;
     return b;
   }
 
-  /* ── ĐÃ FIX FORMAT SANG DẠNG CHUẨN ĐƯỢC HỖ TRỢ BỞI API V1 ── */
+  /* ── KẾT NỐI API DUCKDUCKGO MỚI - HOÀN TOÀN KHÔNG CẦN KEY ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
-
-    var currentKey = getApiKey();
-
-    if (!currentKey) {
-      if (text.startsWith("AIzaSy")) {
-        localStorage.setItem("IPRIGHTS_GEMINI_KEY", text);
-        inp.value = "";
-        addMsg("Hệ thống đã lưu API Key của Khánh thành công! Bây giờ bạn có thể chat bình thường rồi nhé 🎉", "ai", false);
-        return;
-      } else {
-        inp.value = "";
-        addMsg("⚠️ Bảo mật: Vui lòng dán mã API Key Gemini mới của bạn vào đây và nhấn gửi để kích hoạt Bot (mã bắt đầu bằng AIzaSy...)", "ai", false);
-        return;
-      }
-    }
 
     inp.value = "";
     send.disabled = true;
@@ -191,38 +161,23 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    // Gộp prompt chỉ dẫn hệ thống vào thẳng text tin nhắn để tương thích 100% v1 ổn định
-    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + text;
+    // Gộp chỉ dẫn hệ thống trực tiếp vào tin nhắn
+    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng gõ: " + text;
 
-    var payload = {
-      contents: [
-        { parts: [{ text: promptCombined }] }
-      ]
-    };
-
-    var API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + currentKey;
-
-    fetch(API_URL, {
+    // Sử dụng Reverse Proxy API miễn phí, ổn định cao của DuckDuckGo AI
+    fetch("https://nexra.aryahcr.cc/api/chat/v2", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        messages: [{ role: "user", content: promptCombined }],
+        model: "llama-3.1-70b", // Sử dụng model Llama 3 cực mạnh
+        stream: false
+      })
     })
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      var reply = "";
-      if (d.candidates && d.candidates[0] &&
-          d.candidates[0].content && d.candidates[0].content.parts &&
-          d.candidates[0].content.parts[0]) {
-        reply = d.candidates[0].content.parts[0].text || "";
-      }
-      if (!reply) {
-        if (d.error && d.error.message && d.error.message.includes("API key not valid")) {
-          reply = "❌ Key cũ lỗi/hoặc sai. Hãy nhập lại mã Key chính xác để kích hoạt lại nhé.";
-          localStorage.removeItem("IPRIGHTS_GEMINI_KEY");
-        } else {
-          reply = d.error ? d.error.message : (ERR[getLang()]||ERR.vi);
-        }
-      }
+      var reply = d.gpt || d.text || "";
+      if (!reply) reply = ERR[getLang()]||ERR.vi;
       bubble.textContent = reply;
       bubble.classList.remove("think");
     })
@@ -243,7 +198,4 @@
   });
 
   addMsg(GREET[getLang()]||GREET.vi, "ai", false);
-  if (!getApiKey()) {
-    addMsg("🔑 Để kích hoạt Bot an toàn, Khánh hãy lấy 1 cái API Key mới tinh bên Google AI Studio, dán thẳng mã đó vào ô chat này rồi nhấn gửi nhé!", "ai", false);
-  }
 }());
