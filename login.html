@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -68,28 +69,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     </div>
     <div id="msg" class="msg"></div>
 
-    <!-- LOGIN -->
-    <div id="f-login">
-      <div class="field"><label id="lbl-email">Email</label><input type="email" id="lEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <div class="field"><label id="lbl-pw">Mật khẩu</label><input type="password" id="lPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="btn btn-p" id="lBtn" onclick="doLogin()">Đăng nhập</button>
-    </div>
+```
+<!-- LOGIN -->
+<div id="f-login">
+  <div class="field"><label id="lbl-email">Email</label><input type="email" id="lEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <div class="field"><label id="lbl-pw">Mật khẩu</label><input type="password" id="lPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <button class="btn btn-p" id="lBtn" onclick="doLogin()">Đăng nhập</button>
+</div>
 
-    <!-- REGISTER -->
-    <div id="f-reg" style="display:none">
-      <div class="field">
-        <label id="lbl-name">Tên hiển thị</label>
-        <input type="text" id="rName" placeholder="Tên của bạn...">
-      </div>
-      <div class="field">
-        <label id="lbl-uid">Username / ID</label>
-        <input type="text" id="rUid" placeholder="vd: khanh_2010" oninput="checkUid(this.value)">
-        <div class="field-hint" id="uid-hint">Chỉ dùng chữ, số, dấu _ hoặc . (không dấu cách)</div>
-      </div>
-      <div class="field"><label id="lbl-email2">Email</label><input type="email" id="rEmail" placeholder="email@example.com"></div>
-      <div class="field"><label id="lbl-pw2">Mật khẩu</label><input type="password" id="rPw" placeholder="Tối thiểu 6 ký tự" onkeydown="if(event.key==='Enter')doReg()"></div>
-      <button class="btn btn-g" id="rBtn" onclick="doReg()">Đăng ký</button>
-    </div>
+<!-- REGISTER -->
+<div id="f-reg" style="display:none">
+  <div class="field">
+    <label id="lbl-name">Tên hiển thị</label>
+    <input type="text" id="rName" placeholder="Tên của bạn...">
+  </div>
+  <div class="field">
+    <label id="lbl-uid">Username / ID</label>
+    <input type="text" id="rUid" placeholder="vd: khanh_2010" oninput="checkUid(this.value)">
+    <div class="field-hint" id="uid-hint">Chỉ dùng chữ, số, dấu _ hoặc . (không dấu cách)</div>
+  </div>
+  <div class="field"><label id="lbl-email2">Email</label><input type="email" id="rEmail" placeholder="email@example.com"></div>
+  <div class="field"><label id="lbl-pw2">Mật khẩu</label><input type="password" id="rPw" placeholder="Tối thiểu 6 ký tự" onkeydown="if(event.key==='Enter')doReg()"></div>
+  <button class="btn btn-g" id="rBtn" onclick="doReg()">Đăng ký</button>
+</div>
+```
+
   </div>
 </div>
 
@@ -211,5 +215,8 @@ window.doReg=async()=>{
   }
 };
 </script>
+
+<script src="bot.js"></script>
+
 </body>
 </html>
