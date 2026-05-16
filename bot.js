@@ -3,9 +3,10 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // 1. ĐƯỜNG DẪN API V1 CHUẨN ĐÃ ĐƯỢC TỐI ƯU CẤU TRÚC DỮ LIỆU
-  var KEY = "AIzaSyAhRjCWREfEl3-5MJMkuyG6il1X6Hdc8E8";
-  var API = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + KEY;
+  // ĐÃ KHỬ KEY CÔNG KHAI - LẤY TỪ TRÌNH DUYỆT ĐỂ BẢO MẬT KHÔNG BỊ QUÉT LỖI
+  function getApiKey() {
+    return localStorage.getItem("IPRIGHTS_GEMINI_KEY") || "";
+  }
 
   var LANG_SYS = {
     vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
@@ -163,26 +164,45 @@
     return b;
   }
 
-  /* ── ĐÃ TỐI ƯU: TRÁNH LỖI SYSTEMINSTRUCTION BẰNG CÁCH TRUYỀN THẲNG VÀO TIN NHẮN ĐẦU ── */
+  /* ── ĐÃ BẢO MẬT: HÀM DO_SEND KIỂM TRA KEY THÔNG MINH ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
+
+    var currentKey = getApiKey();
+
+    // Nếu chưa có key trong máy, biến ô chat thành ô nhập mật khẩu key
+    if (!currentKey) {
+      if (text.startsWith("AIzaSy")) {
+        localStorage.setItem("IPRIGHTS_GEMINI_KEY", text);
+        inp.value = "";
+        addMsg("Hệ thống đã lưu API Key của Khánh thành công! Bây giờ bạn có thể chat bình thường rồi nhé 🎉", "ai", false);
+        return;
+      } else {
+        inp.value = "";
+        addMsg("⚠️ Bảo mật: Vui lòng dán mã API Key Gemini mới của bạn vào đây và nhấn gửi để kích hoạt Bot (mã bắt đầu bằng AIzaSy...)", "ai", false);
+        return;
+      }
+    }
+
     inp.value = "";
     send.disabled = true;
     var L = getLang();
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    // Gộp luật hệ thống và nội dung chat để tương thích 100% mọi phiên bản API ổn định
-    var contextPrompt = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng nhắn: " + text;
-
     var payload = {
       contents: [
-        { parts: [{ text: contextPrompt }] }
-      ]
+        { parts: [{ text: text }] }
+      ],
+      systemInstruction: {
+        parts: [{ text: LANG_SYS[L] || LANG_SYS.vi }]
+      }
     };
 
-    fetch(API, {
+    var API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + currentKey;
+
+    fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -196,7 +216,12 @@
         reply = d.candidates[0].content.parts[0].text || "";
       }
       if (!reply) {
-        reply = d.error ? d.error.message : (ERR[getLang()]||ERR.vi);
+        if (d.error && d.error.message && d.error.message.includes("API key not valid")) {
+          reply = "❌ Key của bạn đã bị Google khóa do lộ trước đó. Hãy xóa lịch sử duyệt web hoặc nhập Key mới tinh để chạy lại nhé.";
+          localStorage.removeItem("IPRIGHTS_GEMINI_KEY"); // Xóa key lỗi
+        } else {
+          reply = d.error ? d.error.message : (ERR[getLang()]||ERR.vi);
+        }
       }
       bubble.textContent = reply;
       bubble.classList.remove("think");
@@ -217,5 +242,9 @@
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSend(); }
   });
 
+  // Chào mừng và hướng dẫn nếu chưa có key
   addMsg(GREET[getLang()]||GREET.vi, "ai", false);
+  if (!getApiKey()) {
+    addMsg("🔑 Để kích hoạt Bot an toàn, Khánh hãy lấy 1 cái API Key mới tinh bên Google AI Studio, dán thẳng mã đó vào ô chat này rồi nhấn gửi nhé!", "ai", false);
+  }
 }());
