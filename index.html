@@ -83,6 +83,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 <nav>
   <a href="index.html" class="nav-a active" id="nt-home">🏠 Home</a>
   <a href="album.html" class="nav-a" id="nt-album">📸 Album</a>
+  <a href="watch.html" class="nav-a" id="nt-watch">▶️ Watch</a>
   <a href="chat.html" class="nav-a" id="nt-chat">💬 Chat</a>
   <a href="login.html" class="nav-a" id="nt-login">🔐 Login</a>
   <div class="lang-float">
@@ -275,150 +276,7 @@ function openChat(){
 </script>
 
 
-<script>
-// ── iprights.asia AI Chatbot (inline) ────────────────────
-(function(){
-if(window._iprightsBot) return; // Tránh chạy 2 lần
-window._iprightsBot = true;
 
-const GEMINI_KEY = "AIzaSyCTQMhrF8P3LtJ5i1Jf-UIKhazvAJ8_OOQ";
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + GEMINI_KEY;
-
-const SYSTEM = {
-  vi:"Bạn là AI trợ lý của iprights.asia - trang cá nhân của 부이뒤칸 (2010, Việt Nam) và 문준우 (2011, Hàn Quốc). Trả lời tiếng Việt, thân thiện, ngắn gọn. Web có: Album ảnh, Chat bạn bè, Profile cá nhân.",
-  kr:"당신은 iprights.asia의 AI 어시스턴트입니다. 부이뒤칸(2010, 베트남)과 문준우(2011, 한국)의 개인 사이트입니다. 한국어로 친근하게 답변하세요.",
-  en:"You are the AI assistant of iprights.asia - personal site of 부이뒤칸 (2010, Vietnam) and 문준우 (2011, Korea). Reply in English, friendly and brief."
-};
-const GREET={vi:"Xin chào! Tôi là AI trợ lý 🤖\nTôi có thể giúp gì cho bạn?",kr:"안녕하세요! AI 어시스턴트입니다 🤖\n무엇을 도와드릴까요?",en:"Hello! I'm the AI assistant 🤖\nHow can I help you?"};
-const PH={vi:"Nhắn gì đó...",kr:"메시지 입력...",en:"Type a message..."};
-const ERR={vi:"Xin lỗi, có lỗi xảy ra!",kr:"오류가 발생했습니다!",en:"Sorry, an error occurred!"};
-
-let history=[], open=false;
-function getLang(){return localStorage.getItem("IPRIGHTS_lang")||localStorage.getItem("site_lang")||"vi";}
-
-// CSS
-const s=document.createElement("style");
-s.textContent=`
-#_bot_btn{position:fixed;bottom:84px;right:16px;z-index:99999;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.6);font-size:22px;display:flex;align-items:center;justify-content:center;animation:_botP 2s infinite;}
-@keyframes _botP{0%,100%{box-shadow:0 4px 20px rgba(168,85,247,0.5);}50%{box-shadow:0 4px 30px rgba(56,189,248,0.8);}}
-#_bot_win{position:fixed;bottom:144px;right:12px;z-index:99998;width:300px;max-width:calc(100vw - 24px);background:#16112b;border:1px solid rgba(168,85,247,0.4);border-radius:18px;display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.7);overflow:hidden;max-height:480px;}
-#_bot_win.show{display:flex;}
-#_bot_hd{padding:10px 14px;background:rgba(168,85,247,0.15);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:8px;}
-#_bot_av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:16px;}
-#_bot_nm{font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;color:#f0eaff;}
-#_bot_st{font-family:'Nunito',sans-serif;font-size:10px;color:#34d399;}
-#_bot_cl{margin-left:auto;background:none;border:none;color:rgba(240,234,255,0.5);font-size:16px;cursor:pointer;}
-#_bot_msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;min-height:160px;max-height:300px;}
-._brow{display:flex;gap:6px;align-items:flex-end;}
-._brow._bme{flex-direction:row-reverse;}
-._bav{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
-._bav._bme{background:linear-gradient(135deg,#ff6eb4,#a855f7);}
-._bbl{max-width:78%;padding:7px 11px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:13px;line-height:1.5;word-break:break-word;white-space:pre-wrap;}
-._bbl._bai{background:#1c1535;border-bottom-left-radius:3px;color:#f0eaff;}
-._bbl._bme2{background:linear-gradient(135deg,#a855f7,#ff6eb4);border-bottom-right-radius:3px;color:#fff;}
-._bbl._bthink{color:rgba(240,234,255,0.4);font-style:italic;}
-._btm{font-size:9px;color:rgba(240,234,255,0.3);margin-top:1px;padding:0 2px;}
-._brow._bme ._btm{text-align:right;}
-#_bot_inp_w{padding:8px 10px;background:#0f0a1e;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:6px;align-items:center;}
-#_bot_inp{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:50px;color:#f0eaff;padding:8px 13px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;}
-#_bot_inp:focus{border-color:rgba(168,85,247,0.5);}
-#_bot_send{background:linear-gradient(135deg,#a855f7,#38bdf8);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-#_bot_send:disabled{opacity:.5;cursor:not-allowed;}
-#_bot_pw{font-family:'Nunito',sans-serif;font-size:9px;color:rgba(240,234,255,0.2);text-align:center;padding:4px 0;background:#0f0a1e;}
-`;
-document.head.appendChild(s);
-
-// HTML
-const w=document.createElement("div");
-const lang=getLang();
-w.innerHTML=`
-<button id="_bot_btn">🤖</button>
-<div id="_bot_win">
-  <div id="_bot_hd">
-    <div id="_bot_av">🤖</div>
-    <div><div id="_bot_nm">AI Assistant</div><div id="_bot_st">● Online</div></div>
-    <button id="_bot_cl">✕</button>
-  </div>
-  <div id="_bot_msgs"></div>
-  <div id="_bot_inp_w">
-    <input id="_bot_inp" placeholder="${PH[lang]}">
-    <button id="_bot_send">➤</button>
-  </div>
-  <div id="_bot_pw">Powered by Google Gemini</div>
-</div>`;
-document.body.appendChild(w);
-
-const btn=document.getElementById("_bot_btn");
-const win=document.getElementById("_bot_win");
-const msgs=document.getElementById("_bot_msgs");
-const inp=document.getElementById("_bot_inp");
-const send=document.getElementById("_bot_send");
-document.getElementById("_bot_cl").onclick=toggle;
-btn.onclick=toggle;
-
-function toggle(){
-  open=!open;
-  win.classList.toggle("show",open);
-  btn.textContent=open?"✕":"🤖";
-  if(open) inp.focus();
-}
-
-function addMsg(text,role,thinking=false){
-  const row=document.createElement("div");
-  row.className="_brow"+(role==="user"?" _bme":"");
-  const t=new Date().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});
-  row.innerHTML=`
-    <div class="_bav ${role==="user"?"_bme":""}">
-      ${role==="user"?"👤":"🤖"}
-    </div>
-    <div>
-      <div class="_bbl ${role==="user"?"_bme2":"_bai"}${thinking?" _bthink":""}">${text}</div>
-      <div class="_btm">${t}</div>
-    </div>`;
-  msgs.appendChild(row);
-  msgs.scrollTop=msgs.scrollHeight;
-  return row;
-}
-
-// Tin chào
-const l=getLang();
-addMsg(GREET[l]||GREET.vi,"ai");
-
-async function doSend(){
-  const text=inp.value.trim(); if(!text) return;
-  inp.value=""; send.disabled=true;
-  const l=getLang();
-  addMsg(text,"user");
-  history.push({role:"user",parts:[{text}]});
-  const thinking=addMsg(l==="kr"?"생각 중...":l==="en"?"Thinking...":"Đang suy nghĩ...","ai",true);
-  try{
-    const body={
-      contents:[
-        {role:"user",parts:[{text:SYSTEM[l]||SYSTEM.vi}]},
-        ...history.slice(-8)
-      ],
-      generationConfig:{maxOutputTokens:300,temperature:0.8}
-    };
-    const res=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-    const data=await res.json();
-    const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||ERR[l];
-    const bubble=thinking.querySelector("._bbl");
-    bubble.textContent=reply;
-    bubble.classList.remove("_bthink");
-    history.push({role:"model",parts:[{text:reply}]});
-  }catch(e){
-    const bubble=thinking.querySelector("._bbl");
-    bubble.textContent=ERR[getLang()];
-    bubble.classList.remove("_bthink");
-  }
-  send.disabled=false;
-  msgs.scrollTop=msgs.scrollHeight;
-}
-
-send.onclick=doSend;
-inp.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();doSend();}};
-})();
-</script>
 
 <script src="bot.js"></script>
 </body>
