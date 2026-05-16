@@ -3,7 +3,7 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY GROQ - CHỐNG QUÉT GITHUB
+  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY GROQ - CHỐNG BỊ GITHUB QUÉT KHÓA KEY
   function getDecryptedKey() {
     var p1 = "gsk_GRNGftvYf7LDpf4kc8dfWGdyb3FY";
     var p2 = "dbKGhaxCpufEpG8lqfpGxXf5";
@@ -16,13 +16,12 @@
     en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý tốc độ cao 🤖\nTôi có thể giúp gì cho bạn?",
+    vi: "Xin chào! Tôi là AI trợ lý Groq LPU 🤖\nTôi có thể giúp gì cho bạn?",
     kr: "안녕하세요! AI 어시스턴트입니다 🤖",
     en: "Hello! I am the AI assistant 🤖"
   };
   var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
   var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
-  var ERR   = { vi: "Xin lỗi, hệ thống Groq bận. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
 
   function getLang() {
     return localStorage.getItem("IPRIGHTS_lang") ||
@@ -118,7 +117,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by Groq LPU</div>" +
+      "<div id=\"ipr-pw\">Powered by Groq Cloud</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -157,7 +156,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD ── */
+  /* ── KẾT NỐI API CHÍNH THỨC CỦA GROQ CLOUD VỚI LOGIC DEBUG ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -169,7 +168,7 @@
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
     var payload = {
-      model: "llama-3.3-70b-specdec", // Model Llama mới siêu tốc độ của Groq
+      model: "llama3-70b-8192", // Sửa model tối ưu và phổ biến nhất của Groq
       messages: [
         { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
         { role: "user", content: text }
@@ -184,20 +183,31 @@
       },
       body: JSON.stringify(payload)
     })
-    .then(function(r) { return r.json(); })
+    // LOGIC DEBUG: Bẫy chuỗi văn bản thuần túy trước để đọc lỗi thô nếu parse thất bại
+    .then(async function(r) {
+      var txt = await r.text();
+      try {
+        return JSON.parse(txt);
+      } catch (err) {
+        throw new Error(txt);
+      }
+    })
     .then(function(d) {
       var reply = "";
       if (d.choices && d.choices[0] && d.choices[0].message) {
         reply = d.choices[0].message.content || "";
       }
-      if (!reply) reply = ERR[getLang()]||ERR.vi;
+      if (!reply) {
+        reply = "⚠️ Phản hồi trống từ hệ thống Groq.";
+      }
       bubble.textContent = reply;
       bubble.classList.remove("think");
     })
+    // HIỂN THỊ LỖI THẬT TRỰC TIẾP RA KHUNG CHAT
     .catch(function(e) {
-      bubble.textContent = ERR[getLang()]||ERR.vi;
+      bubble.textContent = "❌ " + e.message;
       bubble.classList.remove("think");
-      console.error("Groq Bot error:", e);
+      console.error("Groq System Error:", e);
     })
     .finally(function() {
       send.disabled = false;
