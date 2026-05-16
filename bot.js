@@ -111,7 +111,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by DuckDuckGo AI</div>" +
+      "<div id=\"ipr-pw\">Powered by Llama 3 AI</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -150,7 +150,7 @@
     return b;
   }
 
-  /* ── KẾT NỐI API DUCKDUCKGO MỚI - HOÀN TOÀN KHÔNG CẦN KEY ── */
+  /* ── ĐỔI SANG ENDPOINT JSDELIVR / FREE CHAT API SIÊU ỔN ĐỊNH ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -161,22 +161,24 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    // Gộp chỉ dẫn hệ thống trực tiếp vào tin nhắn
-    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng gõ: " + text;
+    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nTin nhắn: " + text;
 
-    // Sử dụng Reverse Proxy API miễn phí, ổn định cao của DuckDuckGo AI
-    fetch("https://nexra.aryahcr.cc/api/chat/v2", {
+    // Endpoint API mở, ko chặn CORS, ko cần key
+    fetch("https://api.airforce/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         messages: [{ role: "user", content: promptCombined }],
-        model: "llama-3.1-70b", // Sử dụng model Llama 3 cực mạnh
+        model: "llama-3-70b-instruct",
         stream: false
       })
     })
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      var reply = d.gpt || d.text || "";
+      var reply = "";
+      if (d.choices && d.choices[0] && d.choices[0].message) {
+        reply = d.choices[0].message.content || "";
+      }
       if (!reply) reply = ERR[getLang()]||ERR.vi;
       bubble.textContent = reply;
       bubble.classList.remove("think");
