@@ -4,21 +4,21 @@ if (window._IPR_BOT) return;
 window._IPR_BOT = true;
 
 var KEY = “AIzaSyCTQMhrF8P3LtJ5i1Jf-UIKhazvAJ8_OOQ”;
-var URL_API = “https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=” + KEY;
+var API = “https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=” + KEY;
 
 var SYS = {
-vi: “Ban la AI tro ly cua iprights.asia. Tra loi tieng Viet, ngan gon, than thien.”,
-kr: “당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요.”,
+vi: “Ban la AI tro ly cua iprights.asia - trang ca nhan cua 부이뒤칸 (2010, Viet Nam) va 문준우 (2011, Han Quoc). Tra loi tieng Viet, ngan gon, than thien.”,
+kr: “당신은 iprights.asia의 AI 어시스턴트입니다. 부이뒤칸(2010, 베트남)과 문준우(2011, 한국)의 개인 사이트입니다. 한국어로 답변하세요.”,
 en: “You are the AI assistant of iprights.asia. Reply in English, brief and friendly.”
 };
 var GREET = {
-vi: “Xin chao! Toi la AI tro ly 🤖 Toi co the giup gi cho ban?”,
-kr: “안녕하세요! AI 어시스턴트입니다 🤖 무엇을 도와드릴까요?”,
-en: “Hello! I am the AI assistant 🤖 How can I help you?”
+vi: “Xin chao! Toi la AI tro ly 🤖\nToi co the giup gi cho ban?”,
+kr: “안녕하세요! AI 어시스턴트입니다 🤖\n무엇을 도와드릴까요?”,
+en: “Hello! I am the AI assistant 🤖\nHow can I help you?”
 };
 var PH    = { vi: “Nhan gi do…”, kr: “메시지 입력…”, en: “Type a message…” };
 var THINK = { vi: “Dang suy nghi…”, kr: “생각 중…”, en: “Thinking…” };
-var ERR   = { vi: “Loi ket noi, thu lai nhe!”, kr: “오류! 다시 시도하세요.”, en: “Error! Please try again.” };
+var ERR   = { vi: “Loi! Thu lai nhe.”, kr: “오류! 다시 시도하세요.”, en: “Error! Please try again.” };
 var SUGS  = {
 vi: [“Web nay co gi?”, “부이뒤칸 la ai?”, “Cach dang bai?”],
 kr: [“이 사이트는?”, “부이뒤칸 누구?”, “채팅 방법?”],
@@ -29,13 +29,13 @@ function getLang() {
 return localStorage.getItem(“IPRIGHTS_lang”) || localStorage.getItem(“site_lang”) || “vi”;
 }
 
-/* ── CSS ── */
+/* CSS */
 var s = document.createElement(“style”);
 s.textContent = [
 “#ipr-fab{position:fixed;bottom:84px;right:16px;z-index:99990;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);border:none;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(168,85,247,.6);animation:iprP 2.5s infinite;transition:transform .2s;}”,
 “#ipr-fab:hover{transform:scale(1.1);}”,
 “@keyframes iprP{0%,100%{box-shadow:0 4px 20px rgba(168,85,247,.5)}50%{box-shadow:0 4px 32px rgba(56,189,248,.8)}}”,
-“#ipr-win{position:fixed;bottom:144px;right:12px;z-index:99989;width:300px;max-width:calc(100vw - 24px);background:#16112b;border:1px solid rgba(168,85,247,.4);border-radius:18px;display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.7);overflow:hidden;max-height:calc(100vh - 110px);}”,
+“#ipr-win{position:fixed;bottom:144px;right:12px;z-index:99989;width:300px;max-width:calc(100vw - 24px);background:#16112b;border:1px solid rgba(168,85,247,.4);border-radius:18px;display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.7);overflow:hidden;max-height:calc(100vh - 160px);}”,
 “#ipr-win.open{display:flex;}”,
 “#ipr-hd{padding:10px 14px;background:rgba(168,85,247,.15);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:8px;flex-shrink:0;}”,
 “#ipr-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:16px;}”,
@@ -43,7 +43,7 @@ s.textContent = [
 “#ipr-st{font-family:Nunito,sans-serif;font-size:10px;color:#34d399;}”,
 “#ipr-x{margin-left:auto;background:none;border:none;color:rgba(240,234,255,.5);font-size:18px;cursor:pointer;padding:2px 6px;}”,
 “#ipr-x:hover{color:#f0eaff;}”,
-“#ipr-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px;max-height:300px;}”,
+“#ipr-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px;max-height:280px;}”,
 “.ipr-row{display:flex;gap:6px;align-items:flex-end;}”,
 “.ipr-row.me{flex-direction:row-reverse;}”,
 “.ipr-ico{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}”,
@@ -57,7 +57,7 @@ s.textContent = [
 “.ipr-t{font-size:9px;color:rgba(240,234,255,.3);margin-top:2px;padding:0 2px;}”,
 “.ipr-row.me .ipr-t{text-align:right;}”,
 “#ipr-sugs{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}”,
-“.ipr-sug{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:rgba(240,234,255,.7);border-radius:50px;padding:4px 10px;font-family:Nunito,sans-serif;font-size:11px;cursor:pointer;}”,
+“.ipr-sug{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:rgba(240,234,255,.7);border-radius:50px;padding:4px 10px;font-family:Nunito,sans-serif;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap;}”,
 “.ipr-sug:hover{background:rgba(168,85,247,.2);color:#f0eaff;}”,
 “#ipr-iw{padding:8px 10px;background:#0f0a1e;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:6px;align-items:center;flex-shrink:0;}”,
 “#ipr-inp{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:50px;color:#f0eaff;padding:8px 13px;font-family:Nunito,sans-serif;font-size:16px;outline:none;-webkit-appearance:none;}”,
@@ -68,7 +68,7 @@ s.textContent = [
 ].join(””);
 document.head.appendChild(s);
 
-/* ── HTML ── */
+/* HTML */
 var L = getLang();
 var wrap = document.createElement(“div”);
 wrap.innerHTML =
@@ -156,49 +156,50 @@ history.push({ role: "user", parts: [{ text: text }] });
 
 var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-// Build contents: system + history
-var contents = [];
-// System message sebagai user turn pertama
-contents.push({
-  role: "user",
-  parts: [{ text: SYS[L]||SYS.vi }]
-});
-contents.push({
-  role: "model",
-  parts: [{ text: "OK toi hieu, toi se tra loi theo yeu cau." }]
-});
-// Lich su chat (max 6 tin)
-var slice = history.slice(-6);
-for (var i = 0; i < slice.length; i++) {
-  contents.push(slice[i]);
+// Gửi: system prompt + lịch sử chat
+var allMessages = [];
+// Turn 1: user gửi system prompt
+allMessages.push({ role: "user", parts: [{ text: SYS[L]||SYS.vi }] });
+// Turn 2: model xác nhận
+allMessages.push({ role: "model", parts: [{ text: "OK, toi hieu." }] });
+// Lịch sử chat thực tế (max 8 tin gần nhất)
+var recent = history.slice(-8);
+for (var i = 0; i < recent.length; i++) {
+  allMessages.push(recent[i]);
 }
 
-fetch(URL_API, {
+fetch(API, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    contents: contents,
-    generationConfig: { maxOutputTokens: 300, temperature: 0.7 }
+    contents: allMessages,
+    generationConfig: {
+      maxOutputTokens: 300,
+      temperature: 0.7
+    }
   })
 })
 .then(function(r) {
-  if (!r.ok) throw new Error("HTTP " + r.status);
+  if (!r.ok) {
+    return r.json().then(function(errData) {
+      throw new Error(JSON.stringify(errData));
+    });
+  }
   return r.json();
 })
-.then(function(d) {
-  var reply = d.candidates &&
-              d.candidates[0] &&
-              d.candidates[0].content &&
-              d.candidates[0].content.parts &&
-              d.candidates[0].content.parts[0] &&
-              d.candidates[0].content.parts[0].text;
-  if (!reply) throw new Error("No reply");
+.then(function(data) {
+  var reply = "";
+  try {
+    reply = data.candidates[0].content.parts[0].text;
+  } catch(e) {
+    reply = ERR[getLang()]||ERR.vi;
+  }
   bubble.textContent = reply;
   bubble.classList.remove("think");
   history.push({ role: "model", parts: [{ text: reply }] });
 })
 .catch(function(e) {
-  console.error("Bot error:", e);
+  console.error("Bot API error:", e.message);
   bubble.textContent = ERR[getLang()]||ERR.vi;
   bubble.classList.remove("think");
 })
