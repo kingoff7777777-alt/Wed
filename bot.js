@@ -3,26 +3,19 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY KHÔNG BỊ QUÉT LỖI GITHUB
-  function getDecryptedKey() {
-    var p1 = "sk-proj-9J3L_ucjwtqko3fKMPbnAFA3MgIA2nGZR1LTWoOW6RtqlLO1ud8PAQh4hLtv9l8ziugIgCMfMYT3BlbkF";
-    var p2 = "JPzGHEIGFJgf3Jxs5cOL7M6lCQL8DMllknEEmUmFjDixCZzvwh3xxxAEMJta-XkVAaXGshHGKQA";
-    return p1 + p2;
-  }
-
   var LANG_SYS = {
-    vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
-    kr: "당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요.",
-    en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
+    vi: "Bạn là AI trợ lý tên Grok của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
+    kr: "당신은 iprights.asia AI 어시스턴트 Grok입니다. 한국어로 간결하게 답변하세요.",
+    en: "You are Grok, the AI assistant of iprights.asia. Reply in English, brief and friendly."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý ChatGPT 🤖\nTôi có thể giúp gì cho bạn?",
-    kr: "안녕하세요! ChatGPT AI 어시스턴트입니다 🤖",
-    en: "Hello! I am the ChatGPT AI assistant 🤖"
+    vi: "Xin chào! Tôi là Grok - AI trợ lý 🤖\nTôi có thể giúp gì cho bạn?",
+    kr: "안녕하세요! Grok AI 어시스턴트입니다 🤖",
+    en: "Hello! I am Grok, your AI assistant 🤖"
   };
-  var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
-  var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
-  var ERR   = { vi: "Xin lỗi, hệ thống bận hoặc tài khoản OpenAI hết hạn số dư. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
+  var PH    = { vi: "Nhắn gì đó với Grok...", kr: "메시지 입력...", en: "Type a message..." };
+  var THINK = { vi: "Grok đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
+  var ERR   = { vi: "Xin lỗi, hệ thống Grok bận. Thử lại sau nhé!", kr: "오류 발생!", en: "Error! Try again." };
 
   function getLang() {
     return localStorage.getItem("IPRIGHTS_lang") ||
@@ -108,7 +101,7 @@
       "<div id=\"ipr-hd\">" +
         "<div id=\"ipr-av\">🤖</div>" +
         "<div>" +
-          "<div id=\"ipr-name\">AI Assistant</div>" +
+          "<div id=\"ipr-name\">Grok Assistant</div>" +
           "<div id=\"ipr-st\">● Online</div>" +
         "</div>" +
         "<button id=\"ipr-x\">✕</button>" +
@@ -118,7 +111,7 @@
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by OpenAI ChatGPT</div>" +
+      "<div id=\"ipr-pw\">Powered by Grok AI</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -157,7 +150,7 @@
     return b;
   }
 
-  /* ── GỌI API CHATGPT ── */
+  /* ── KẾT NỐI API GROK ── */
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
@@ -168,21 +161,17 @@
     addMsg(text, "user", false);
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    var payload = {
-      model: "gpt-4o-mini", // Model siêu rẻ, siêu nhanh và thông minh đỉnh cao
-      messages: [
-        { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
-        { role: "user", content: text }
-      ]
-    };
+    var promptCombined = (LANG_SYS[L] || LANG_SYS.vi) + "\n\nNgười dùng gõ: " + text;
 
-    fetch("https://api.openai.com/v1/chat/completions", {
+    // Sử dụng Endpoint API Gateway mở miễn phí cho model Grok-Beta
+    fetch("https://api.commonspace.id/v1/chat/completions", {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + getDecryptedKey()
-      },
-      body: JSON.stringify(payload)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: promptCombined }],
+        model: "grok-beta",
+        stream: false
+      })
     })
     .then(function(r) { return r.json(); })
     .then(function(d) {
@@ -190,20 +179,14 @@
       if (d.choices && d.choices[0] && d.choices[0].message) {
         reply = d.choices[0].message.content || "";
       }
-      if (!reply) {
-        if (d.error && d.error.message) {
-          reply = "❌ OpenAI System Alert: " + d.error.message;
-        } else {
-          reply = ERR[getLang()]||ERR.vi;
-        }
-      }
+      if (!reply) reply = ERR[getLang()]||ERR.vi;
       bubble.textContent = reply;
       bubble.classList.remove("think");
     })
     .catch(function(e) {
       bubble.textContent = ERR[getLang()]||ERR.vi;
       bubble.classList.remove("think");
-      console.error("Bot error:", e);
+      console.error("Grok error:", e);
     })
     .finally(function() {
       send.disabled = false;
