@@ -5,7 +5,7 @@
 
   var GROQ_KEY = "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";
   var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-  var MODEL    = "llama3-8b-8192";
+  var MODEL    = "llama-3.1-8b-instant";
 
   var SYS = {
     vi: "Ban la AI tro ly cua iprights.asia - trang ca nhan cua 부이뒤칸 (sinh 2010, Viet Nam) va 문준우 (sinh 2011, Han Quoc). Tra loi bang tieng Viet, than thien, ngan gon. Web co: Album anh, Chat ban be, Profile ca nhan, trang xem YouTube.",
