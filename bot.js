@@ -3,32 +3,35 @@
   if (window._IPR_BOT) return;
   window._IPR_BOT = true;
 
-  // HỆ THỐNG GIẢI MÃ BẢO MẬT KEY GROQ MỚI - CHIA ĐÔI CHUỖI CHỐNG QUÉT GITHUB
-  function getDecryptedKey() {
-    var p1 = "gsk_K5zS6hm6YhcgDxQqqKQB";
-    var p2 = "WGdyb3FYFtHodAUJec9XcKmLMHKQWeMC";
-    return p1 + p2;
-  }
+  var GROQ_KEY = "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";
+  var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+  var MODEL    = "llama3-8b-8192";
 
-  var LANG_SYS = {
-    vi: "Bạn là AI trợ lý của website iprights.asia. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn, xưng tôi.",
-    kr: "당신은 iprights.asia AI 어시스턴트입니다. 한국어로 간결하게 답변하세요.",
-    en: "You are the AI assistant of iprights.asia. Reply in English, brief and friendly."
+  var SYS = {
+    vi: "Ban la AI tro ly cua iprights.asia - trang ca nhan cua 부이뒤칸 (sinh 2010, Viet Nam) va 문준우 (sinh 2011, Han Quoc). Tra loi bang tieng Viet, than thien, ngan gon. Web co: Album anh, Chat ban be, Profile ca nhan, trang xem YouTube.",
+    kr: "당신은 iprights.asia의 AI 어시스턴트입니다. 부이뒤칸(2010, 베트남)과 문준우(2011, 한국)의 개인 사이트입니다. 한국어로 친근하고 간결하게 답변하세요.",
+    en: "You are the AI assistant of iprights.asia - personal site of 부이뒤칸 (2010, Vietnam) and 문준우 (2011, Korea). Reply in English, friendly and concise."
   };
   var GREET = {
-    vi: "Xin chào! Tôi là AI trợ lý Groq LPU đã cập nhật Key mới 🤖\nTôi có thể giúp gì cho bạn?",
-    kr: "안녕하세요! AI 어시스턴트입니다 🤖",
-    en: "Hello! I am the AI assistant 🤖"
+    vi: "Xin chao! Toi la AI tro ly 🤖\nToi co the giup gi cho ban?",
+    kr: "안녕하세요! AI 어시스턴트입니다 🤖\n무엇을 도와드릴까요?",
+    en: "Hello! I am the AI assistant 🤖\nHow can I help you?"
   };
-  var PH    = { vi: "Nhắn gì đó...", kr: "메시지 입력...", en: "Type a message..." };
-  var THINK = { vi: "Đang suy nghĩ...", kr: "생각 중...", en: "Thinking..." };
+  var PH    = { vi: "Nhan gi do...", kr: "메시지 입력...", en: "Type a message..." };
+  var THINK = { vi: "Dang suy nghi...", kr: "생각 중...", en: "Thinking..." };
+  var ERR   = { vi: "Loi! Thu lai nhe.", kr: "오류! 다시 시도하세요.", en: "Error! Try again." };
+  var SUGS  = {
+    vi: ["Web nay co gi?", "부이뒤칸 la ai?", "Cach dang bai?", "Chat o dau?"],
+    kr: ["이 사이트는?", "부이뒤칸 누구?", "게시물 올리기?", "채팅 방법?"],
+    en: ["What is this site?", "Who is 부이뒤칸?", "How to post?", "How to chat?"]
+  };
 
   function getLang() {
     return localStorage.getItem("IPRIGHTS_lang") ||
            localStorage.getItem("site_lang") || "vi";
   }
 
-  /* ── CSS CYBERPUNK NGUYÊN BẢN ── */
+  /* ── CSS ── */
   var s = document.createElement("style");
   s.textContent =
     "#ipr-fab{position:fixed;bottom:84px;right:16px;z-index:99990;" +
@@ -79,6 +82,14 @@
     ".ipr-b.think{color:rgba(240,234,255,.4);font-style:italic;}" +
     ".ipr-t{font-size:9px;color:rgba(240,234,255,.3);margin-top:2px;padding:0 2px;}" +
     ".ipr-row.me .ipr-t{text-align:right;}" +
+    "#ipr-sugs{display:flex;flex-wrap:wrap;gap:4px;" +
+    "padding:6px 10px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}" +
+    ".ipr-sug{background:rgba(168,85,247,.1);" +
+    "border:1px solid rgba(168,85,247,.25);" +
+    "color:rgba(240,234,255,.7);border-radius:50px;" +
+    "padding:4px 10px;font-family:Nunito,sans-serif;font-size:11px;" +
+    "cursor:pointer;transition:all .15s;white-space:nowrap;}" +
+    ".ipr-sug:hover{background:rgba(168,85,247,.2);color:#f0eaff;}" +
     "#ipr-iw{padding:8px 10px;background:#0f0a1e;" +
     "border-top:1px solid rgba(255,255,255,.06);" +
     "display:flex;gap:6px;align-items:center;flex-shrink:0;}" +
@@ -98,7 +109,7 @@
     "padding:4px 0;background:#0f0a1e;flex-shrink:0;}";
   document.head.appendChild(s);
 
-  /* ── HTML GIAO DIỆN ── */
+  /* ── HTML ── */
   var L = getLang();
   var wrap = document.createElement("div");
   wrap.innerHTML =
@@ -113,11 +124,12 @@
         "<button id=\"ipr-x\">✕</button>" +
       "</div>" +
       "<div id=\"ipr-msgs\"></div>" +
+      "<div id=\"ipr-sugs\"></div>" +
       "<div id=\"ipr-iw\">" +
         "<input id=\"ipr-inp\" placeholder=\"" + (PH[L]||PH.vi) + "\">" +
         "<button id=\"ipr-send\">➤</button>" +
       "</div>" +
-      "<div id=\"ipr-pw\">Powered by Groq Cloud</div>" +
+      "<div id=\"ipr-pw\">Powered by Groq AI</div>" +
     "</div>";
   document.body.appendChild(wrap);
 
@@ -125,14 +137,17 @@
   var win  = document.getElementById("ipr-win");
   var xBtn = document.getElementById("ipr-x");
   var msgs = document.getElementById("ipr-msgs");
+  var sugs = document.getElementById("ipr-sugs");
   var inp  = document.getElementById("ipr-inp");
   var send = document.getElementById("ipr-send");
-  var open = false;
+  var isOpen = false;
+  var history = [];
 
   function toggle() {
-    open = !open;
-    win.classList.toggle("open", open);
-    if (open) { fab.textContent = "✕"; inp.focus(); } else { fab.textContent = "🤖"; }
+    isOpen = !isOpen;
+    win.classList.toggle("open", isOpen);
+    fab.textContent = isOpen ? "✕" : "🤖";
+    if (isOpen) { inp.placeholder = PH[getLang()]||PH.vi; inp.focus(); }
   }
   fab.addEventListener("click", toggle);
   xBtn.addEventListener("click", toggle);
@@ -151,72 +166,83 @@
     var t = document.createElement("div");
     t.className = "ipr-t";
     t.textContent = new Date().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});
-    bw.appendChild(b); bw.appendChild(t); row.appendChild(ico); row.appendChild(bw);
-    msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight;
+    bw.appendChild(b); bw.appendChild(t);
+    row.appendChild(ico); row.appendChild(bw);
+    msgs.appendChild(row);
+    msgs.scrollTop = msgs.scrollHeight;
     return b;
   }
 
-  /* ── KẾT NỐI API CHÍNH THỨC VỚI ĐẦY ĐỦ THAM SỐ FIXED TOKENS ── */
+  function renderSugs() {
+    sugs.innerHTML = "";
+    if (history.length > 2) return;
+    var L = getLang();
+    (SUGS[L]||SUGS.vi).forEach(function(s) {
+      var btn = document.createElement("button");
+      btn.className = "ipr-sug";
+      btn.textContent = s;
+      btn.onclick = function() { inp.value = s; doSend(); };
+      sugs.appendChild(btn);
+    });
+  }
+
   function doSend() {
     var text = inp.value.trim();
     if (!text) return;
-
     inp.value = "";
     send.disabled = true;
+    sugs.innerHTML = "";
     var L = getLang();
+
     addMsg(text, "user", false);
+    history.push({ role: "user", content: text });
+
     var bubble = addMsg(THINK[L]||THINK.vi, "ai", true);
 
-    var payload = {
-      model: "llama3-70b-8192", // Dùng dòng model ổn định và nhanh nhất của Groq
-      messages: [
-        { role: "system", content: LANG_SYS[L] || LANG_SYS.vi },
-        { role: "user", content: text }
-      ],
-      max_tokens: 1024 // Đảm bảo bắt buộc phải trả dữ liệu text về khung chat
-    };
+    // Build messages: system + history (max 8)
+    var messages = [
+      { role: "system", content: SYS[L]||SYS.vi }
+    ];
+    var recent = history.slice(-8);
+    for (var i = 0; i < recent.length; i++) {
+      messages.push(recent[i]);
+    }
 
-    fetch("https://api.groq.com/openai/v1/chat/completions", {
+    fetch(GROQ_URL, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + getDecryptedKey()
+        "Authorization": "Bearer " + GROQ_KEY
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        model: MODEL,
+        messages: messages,
+        max_tokens: 350,
+        temperature: 0.7
+      })
     })
-    .then(async function(r) {
-      var txt = await r.text();
-      try {
-        return JSON.parse(txt);
-      } catch (err) {
-        throw new Error(txt);
-      }
-    })
+    .then(function(r) { return r.json(); })
     .then(function(d) {
       var reply = "";
-      
-      if (d.choices && d.choices.length > 0) {
-        var msg = d.choices[0].message;
-        if (msg && msg.content) {
-          reply = msg.content;
-        }
+      if (d.choices && d.choices[0] && d.choices[0].message) {
+        reply = d.choices[0].message.content || "";
       }
-      
-      if (!reply) {
-        reply = "⚠️ AI phản hồi trống. Vui lòng thử lại sau.";
-      }
-      
+      if (!reply && d.error) reply = d.error.message || (ERR[getLang()]||ERR.vi);
+      if (!reply) reply = ERR[getLang()]||ERR.vi;
+
       bubble.textContent = reply;
       bubble.classList.remove("think");
+      history.push({ role: "assistant", content: reply });
     })
     .catch(function(e) {
-      bubble.textContent = "❌ Lỗi: " + e.message;
+      bubble.textContent = ERR[getLang()]||ERR.vi;
       bubble.classList.remove("think");
-      console.error("Groq System Error:", e);
+      console.error("Bot error:", e);
     })
     .finally(function() {
       send.disabled = false;
       msgs.scrollTop = msgs.scrollHeight;
+      inp.focus();
     });
   }
 
@@ -226,4 +252,5 @@
   });
 
   addMsg(GREET[getLang()]||GREET.vi, "ai", false);
+  renderSugs();
 }());
