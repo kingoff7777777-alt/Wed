@@ -40,8 +40,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 /* PLAYER */
 .player-wrap{display:none;margin-bottom:24px;background:var(--card);border:1px solid rgba(168,85,247,0.2);border-radius:18px;overflow:hidden;}
 .player-wrap.show{display:block;}
-.player-frame{position:relative;padding-top:56.25%;width:100%;}
-.player-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.player-frame{position:relative;padding-top:56.25%;width:100%;background:#000;}
+.player-frame video{position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:#000;object-fit:contain;}
+.player-loader-box{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,10,30,0.85);z-index:10;}
+.player-loader-text{font-size:12px;color:var(--muted);margin-top:8px;font-weight:700;}
+
 .player-info{padding:14px 16px;}
 .player-title{font-size:15px;font-weight:900;margin-bottom:4px;line-height:1.4;}
 .player-channel{font-size:12px;color:var(--purple);font-weight:700;}
@@ -122,12 +125,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 
   <div class="player-wrap" id="playerWrap">
     <div class="player-frame">
-      <iframe id="playerFrame" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      <div class="player-loader-box" id="playerLoader">
+        <div class="spinner"></div>
+        <div class="player-loader-text" id="loader-text">Đang thiết lập tuyến truyền tải ẩn danh...</div>
+      </div>
+      <video id="playerVideo" controls autoplay playsinline></video>
     </div>
     <div class="player-info">
       <button class="player-close" onclick="closePlayer()" id="close-lbl">✕ Đóng</button>
-      <button class="player-close" onclick="openNewTab()" style="margin-right:8px; border-color:var(--blue); color:var(--blue); float:right;">🌐 Tab mới</button>
-      <select id="serverSelect" onchange="changeServer()" style="background:var(--card); color:var(--text); border:1px solid var(--border); padding:4px 12px; border-radius:50px; font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; margin-right:8px; float:right; outline:none; cursor:pointer; max-width:150px;"></select>
+      <button class="player-close" onclick="openExternal()" style="margin-right:8px; border-color:var(--blue); color:var(--blue); float:right;">🌐 Dự phòng</button>
+      <select id="serverSelect" onchange="changeServer()" style="background:var(--card); color:var(--text); border:1px solid var(--border); padding:4px 12px; border-radius:50px; font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; margin-right:8px; float:right; outline:none; cursor:pointer; max-width:140px;"></select>
       <div class="player-title" id="playerTitle"></div>
       <div class="player-channel" id="playerChannel"></div>
     </div>
@@ -155,15 +162,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 var YT_API_KEY = "AIzaSyDhcDJQi0dnmeSfM9kHVQjPeAKAbLkKuLw";
 var YT_SEARCH  = "https://www.googleapis.com/youtube/v3/search";
 
-// 🚀 HỆ THỐNG ĐA SERVER PROXY BYPASS ĐEN HÌNH TRƯỜNG HỌC
-var SERVERS = [
-  { name: "⚡ Server 1 (Tux)", url: "https://inv.tux.digital/embed/" },
-  { name: "⚡ Server 2 (Yewtu)", url: "https://yewtu.be/embed/" },
-  { name: "⚡ Server 3 (Cloudflare)", url: "https://cf.piped.video/embed/" },
-  { name: "⚡ Server 4 (PrivacyDev)", url: "https://piped.privacydev.net/embed/" },
-  { name: "⚡ Server 5 (NerdVPN)", url: "https://invidious.nerdvpn.de/embed/" },
-  { name: "⚡ Server 6 (Segfault)", url: "https://piped.projectsegfau.lt/embed/" },
-  { name: "⚡ Server 7 (Melmac)", url: "https://iv.melmac.space/embed/" }
+// 🚀 HỆ THỐNG API GIẢI MÃ STREAM ẨN DANH (BYPASS TOÀN BỘ BỘ LỌC TRƯỜNG HỌC)
+var API_SERVERS = [
+  { name: "⚡ Tuyến ẩn danh 1", url: "https://pipedapi.kavin.rocks" },
+  { name: "⚡ Tuyến ẩn danh 2", url: "https://piped-api.privacydev.net" },
+  { name: "⚡ Tuyến ẩn danh 3", url: "https://api.piped.projectsegfau.lt" },
+  { name: "⚡ Tuyến ẩn danh 4", url: "https://pipedapi.oxymis.com" }
 ];
 var currentVideoId = "";
 
@@ -200,11 +204,10 @@ function setLang(l) {
   });
 }
 
-// Khởi tạo danh sách Server vào Dropdown
 function initServers() {
   var select = document.getElementById("serverSelect");
   select.innerHTML = "";
-  SERVERS.forEach(function(srv, idx) {
+  API_SERVERS.forEach(function(srv, idx) {
     var opt = document.createElement("option");
     opt.value = idx;
     opt.textContent = srv.name;
@@ -328,39 +331,77 @@ function renderResults(items) {
   });
 }
 
-// Hàm chạy video chính thức
+// HÀM GỌI LUỒNG VIDEO KHÔNG THÔNG QUA IFRAME
 function playVideo(videoId, title, channel) {
   currentVideoId = videoId;
-  var select = document.getElementById("serverSelect");
-  var srvUrl = SERVERS[select.value].url;
-
-  document.getElementById("playerFrame").src = srvUrl + videoId;
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
   document.getElementById("playerWrap").classList.add("show");
   document.getElementById("playerWrap").scrollIntoView({behavior:"smooth"});
+  
+  loadStreamUrl(videoId);
 }
 
-// Khi người dùng tự tay đổi server trên menu dropdown
+function loadStreamUrl(videoId) {
+  var videoElement = document.getElementById("playerVideo");
+  var loader = document.getElementById("playerLoader");
+  var select = document.getElementById("serverSelect");
+  
+  videoElement.pause();
+  videoElement.src = "";
+  loader.style.display = "flex";
+
+  var baseApi = API_SERVERS[select.value].url;
+  var apiUrl = baseApi + "/streams/" + videoId;
+
+  fetch(apiUrl)
+    .then(function(res) { 
+      if(!res.ok) throw new Error();
+      return res.json(); 
+    })
+    .then(function(data) {
+      loader.style.display = "none";
+      var finalStreamUrl = "";
+      
+      // Ưu tiên 1: Luồng HLS (.m3u8) được proxy trung gian (Cực tốt cho iPhone/iPad máy trường)
+      if (data.hls) {
+        finalStreamUrl = data.hls;
+      } 
+      // Ưu tiên 2: Luồng MP4 tích hợp sẵn tiếng
+      else if (data.videoStreams && data.videoStreams.length > 0) {
+        var combined = data.videoStreams.find(function(s) { return !s.videoOnly; });
+        finalStreamUrl = combined ? combined.url : data.videoStreams[0].url;
+      }
+
+      if (finalStreamUrl) {
+        videoElement.src = finalStreamUrl;
+        videoElement.load();
+        videoElement.play().catch(function(){});
+      } else {
+        alert("Tuyến này không trả về luồng video sạch. Hãy chuyển sang Tuyến ẩn danh khác!");
+      }
+    })
+    .catch(function() {
+      loader.style.display = "none";
+      alert("Tuyến ẩn danh này bị quá tải hoặc bị chặn. Vui lòng chuyển sang Tuyến khác ở ô lựa chọn bên dưới!");
+    });
+}
+
 function changeServer() {
   if (!currentVideoId) return;
-  var select = document.getElementById("serverSelect");
-  var srvUrl = SERVERS[select.value].url;
-  document.getElementById("playerFrame").src = srvUrl + currentVideoId;
+  loadStreamUrl(currentVideoId);
 }
 
-// Tuyệt chiêu cuối: Mở thẳng link server sang Tab mới nếu trường chặn Iframe hoàn toàn
-function openNewTab() {
+// NÚT DỰ PHÒNG HOÀN HẢO
+function openExternal() {
   if (!currentVideoId) return;
-  var select = document.getElementById("serverSelect");
-  var srvUrl = SERVERS[select.value].url;
-  var watchUrl = srvUrl.replace("/embed/", "/watch?v=") + currentVideoId;
-  window.open(watchUrl, '_blank');
+  window.open("https://yewtu.be/watch?v=" + currentVideoId, '_blank');
 }
 
 function closePlayer() {
-  document.getElementById("playerFrame").src = "";
-  document.getElementById("playerWrap").classList.remove("remove");
+  var videoElement = document.getElementById("playerVideo");
+  videoElement.pause();
+  videoElement.src = "";
   document.getElementById("playerWrap").classList.remove("show");
 }
 
