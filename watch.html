@@ -62,6 +62,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 .error-box{background:rgba(255,110,180,0.1);border:1px solid rgba(255,110,180,0.3);border-radius:14px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--pink);display:none;}
 .error-box.show{display:block;}
 .info-bar{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--blue);font-weight:700;}
+.load-more-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:10px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:none;}
+.load-more-btn:hover{background:rgba(255,255,255,0.1);}
 </style>
 </head>
 <body>
@@ -83,8 +85,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     <p id="page-sub">Tìm kiếm và xem video</p>
   </div>
 
+  <!-- Thông báo dùng Invidious -->
   <div class="info-bar" id="info-bar">
-    🛰️ Đang dùng <strong>Piped API Proxy</strong> — Không lo sập mạng, xem thả ga ở trường!
+    📡 Đang dùng <strong>Invidious proxy</strong> — xem được cả trên mạng trường!
   </div>
 
   <div class="search-wrap">
@@ -94,6 +97,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
 
   <div class="error-box" id="errorBox"></div>
 
+  <!-- PLAYER -->
   <div class="player-wrap" id="playerWrap">
     <div class="player-frame">
       <iframe id="playerFrame" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
@@ -114,19 +118,28 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     <p class="empty-text" id="empty-text">Tìm video bạn muốn xem!</p>
   </div>
   <div class="results-grid" id="resultsGrid"></div>
+
+  <div style="text-align:center;margin-top:20px;">
+    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">
+      <span id="load-more-lbl">Xem thêm</span>
+    </button>
+  </div>
 </div>
 
 <script>
-// Chuyển toàn bộ sang API Piped bảo mật, tự động bypass tường lửa và không cần Google Key
-var PIPED_API = "https://pipedapi.kavin.rocks/search";
+// YouTube API để tìm kiếm (có CORS) + Invidious để PHÁT video (bypass trường)
+var YT_KEY    = "AIzaSyDhcDJQi0dnmeSfM9kHVQjPeAKAbLkKuLw";
+var YT_SEARCH = "https://www.googleapis.com/youtube/v3/search";
+var INVIDIOUS = "https://inv.nadeko.net"; // Chỉ dùng để embed player
 var lang = localStorage.getItem("IPRIGHTS_lang") || localStorage.getItem("site_lang") || "vi";
 var currentQ = "";
+var nextPageToken = "";
 var isLoading = false;
 
 var I18N = {
-  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Tìm kiếm và xem video",search_ph:"🔍 Tìm kiếm video...",search_lbl:"Tìm",close:"✕ Đóng",empty:"Tìm video bạn muốn xem!",no_results:"Không tìm thấy video nào",err_net:"Lỗi kết nối hoặc server đang bận, thử lại sau nhé!",results:"kết quả"},
-  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_watch:"▶️ 시청",nav_profile:"👤 프로필",page_title:"▶️ 시청",page_sub:"동영상 검색 및 시청",search_ph:"🔍 동영상 검색...",search_lbl:"검색",close:"✕ 닫기",empty:"보고 싶은 동영상을 검색하세요!",no_results:"동영상을 찾을 수 없습니다",err_net:"연결 오류! 다시 시도하세요.",results:"결과"},
-  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Search and watch videos",search_ph:"🔍 Search videos...",search_lbl:"Search",close:"✕ Close",empty:"Search for videos!",no_results:"No videos found",err_net:"Connection error! Try again.",results:"results"}
+  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Tìm kiếm và xem video",search_ph:"🔍 Tìm kiếm video...",search_lbl:"Tìm",load_more:"Xem thêm",close:"✕ Đóng",empty:"Tìm video bạn muốn xem!",no_results:"Không tìm thấy video nào",err_net:"Lỗi kết nối! Thử lại sau.",results:"kết quả"},
+  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_watch:"▶️ 시청",nav_profile:"👤 프로필",page_title:"▶️ 시청",page_sub:"동영상 검색 및 시청",search_ph:"🔍 동영상 검색...",search_lbl:"검색",load_more:"더 보기",close:"✕ 닫기",empty:"보고 싶은 동영상을 검색하세요!",no_results:"동영상을 찾을 수 없습니다",err_net:"연결 오류! 다시 시도하세요.",results:"결과"},
+  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Search and watch videos",search_ph:"🔍 Search videos...",search_lbl:"Search",load_more:"Load more",close:"✕ Close",empty:"Search for videos!",no_results:"No videos found",err_net:"Connection error! Try again.",results:"results"}
 };
 
 function setLang(l) {
@@ -145,6 +158,7 @@ function setLang(l) {
   document.getElementById("search-lbl").textContent = t.search_lbl;
   document.getElementById("close-lbl").textContent = t.close;
   document.getElementById("empty-text").textContent = t.empty;
+  document.getElementById("load-more-lbl").textContent = t.load_more;
   ["vi","kr","en"].forEach(function(x) {
     document.getElementById("lf-"+x).classList.toggle("on", x===l);
   });
@@ -160,10 +174,17 @@ function doSearch() {
   var q = document.getElementById("searchInp").value.trim();
   if (!q) return;
   currentQ = q;
+  nextPageToken = "";
   document.getElementById("resultsGrid").innerHTML = "";
+  document.getElementById("loadMoreBtn").style.display = "none";
   document.getElementById("resultsHead").style.display = "none";
   document.getElementById("emptyState").style.display = "none";
   document.getElementById("errorBox").classList.remove("show");
+  fetchVideos();
+}
+
+function loadMore() {
+  if (isLoading || !nextPageToken) return;
   fetchVideos();
 }
 
@@ -173,11 +194,17 @@ function fetchVideos() {
   var btn = document.getElementById("searchBtn");
   btn.disabled = true;
   document.getElementById("loading").style.display = "block";
+  document.getElementById("loadMoreBtn").style.display = "none";
 
-  var url = PIPED_API + "?q=" + encodeURIComponent(currentQ) + "&filter=videos";
+  // Dùng YouTube Data API để search (có CORS đầy đủ)
+  var url = YT_SEARCH + "?part=snippet&type=video&maxResults=12" +
+    "&q=" + encodeURIComponent(currentQ) +
+    "&key=" + YT_KEY;
+  if (nextPageToken) url += "&pageToken=" + nextPageToken;
 
   fetch(url)
     .then(function(r) {
+      if (r.status === 403) throw new Error("quota");
       if (!r.ok) throw new Error("net");
       return r.json();
     })
@@ -186,38 +213,54 @@ function fetchVideos() {
       btn.disabled = false;
       isLoading = false;
 
-      var items = data.items || [];
-      if (items.length === 0) {
-        document.getElementById("emptyState").style.display = "block";
-        document.getElementById("empty-text").textContent = I18N[lang].no_results;
+      if (!data.items || !data.items.length) {
+        if (!nextPageToken) {
+          document.getElementById("emptyState").style.display = "block";
+          document.getElementById("empty-text").textContent = I18N[lang].no_results;
+        }
         return;
       }
 
-      document.getElementById("resultsHead").style.display = "flex";
-      document.getElementById("resultsCount").textContent = items.length + " " + I18N[lang].results;
+      nextPageToken = data.nextPageToken || "";
 
-      renderResults(items);
+      document.getElementById("resultsHead").style.display = "flex";
+      var total = data.pageInfo && data.pageInfo.totalResults
+        ? data.pageInfo.totalResults.toLocaleString() : "";
+      document.getElementById("resultsCount").textContent =
+        total ? total + " " + I18N[lang].results : "";
+
+      renderResults(data.items);
+
+      document.getElementById("loadMoreBtn").style.display =
+        nextPageToken ? "inline-block" : "none";
     })
     .catch(function(e) {
       document.getElementById("loading").style.display = "none";
       btn.disabled = false;
       isLoading = false;
-      showError(I18N[lang].err_net);
+      showError(e.message === "quota" ? "Hết quota API hôm nay!" : I18N[lang].err_net);
     });
 }
 
-function renderResults(items) {
+function renderResults(videos) {
   var grid = document.getElementById("resultsGrid");
-  items.forEach(function(item, i) {
-    if (!item.url) return;
-    var vid = item.url.split("v=")[1];
-    if (!vid) return;
-
-    var title = item.title || "";
-    var channel = item.uploaderName || "";
-    var thumb = item.thumbnail || "";
-    var duration = item.duration ? formatDuration(item.duration) : "";
-    var views = item.views ? formatViews(item.views) : "";
+  videos.forEach(function(v, i) {
+    var vid = v.videoId;
+    var title = v.title || "";
+    var channel = v.author || "";
+    // Thumbnail từ Invidious
+    var thumb = "";
+    if (v.videoThumbnails && v.videoThumbnails.length) {
+      // Lấy thumbnail medium
+      var mid = v.videoThumbnails.find(function(t) { return t.quality === "medium"; });
+      thumb = mid ? mid.url : v.videoThumbnails[0].url;
+      // Fix URL nếu là relative
+      if (thumb && thumb.startsWith("/")) {
+        thumb = INVIDIOUS + thumb;
+      }
+    }
+    var duration = v.lengthSeconds ? formatDuration(v.lengthSeconds) : "";
+    var views = v.viewCount ? formatViews(v.viewCount) : "";
 
     var card = document.createElement("div");
     card.className = "video-card";
@@ -240,8 +283,8 @@ function renderResults(items) {
 }
 
 function playVideo(videoId, title, channel) {
-  // Trình phát Piped Proxy cực sạch, chạy mượt và không bị lỗi chặn embed
-  var embedUrl = "https://piped.video/embed/" + videoId;
+  // Nhúng qua Invidious — bypass được filter trường
+  var embedUrl = INVIDIOUS + "/embed/" + videoId + "?autoplay=1&local=true";
   document.getElementById("playerFrame").src = embedUrl;
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
@@ -260,22 +303,19 @@ function showError(msg) {
   box.classList.add("show");
 }
 
-function formatDuration(sec) {
-  if (typeof sec !== 'number') return sec;
-  var h = Math.floor(sec/3600);
-  var m = Math.floor((sec%3600)/60);
-  var s = sec%60;
-  if (h > 0) return h + ":" + (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
-  return m + ":" + (s < 10 ? "0"+s : s);
+function formatDuration(s) {
+  var h = Math.floor(s/3600);
+  var m = Math.floor((s%3600)/60);
+  var sec = s%60;
+  if (h > 0) return h + ":" + pad(m) + ":" + pad(sec);
+  return m + ":" + pad(sec);
 }
-
+function pad(n) { return n < 10 ? "0"+n : ""+n; }
 function formatViews(n) {
-  if (typeof n !== 'number') return n;
   if (n >= 1000000) return (n/1000000).toFixed(1) + "M";
   if (n >= 1000) return (n/1000).toFixed(0) + "K";
   return n;
 }
-
 function escHtml(s) {
   return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
