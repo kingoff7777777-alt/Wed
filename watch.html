@@ -304,11 +304,10 @@ function renderResults(items) {
   });
 }
 
-// FIX CHỐT: DÙNG INVIDIOUS PROXY NADEKO ĐÃ TEST CHẠY NGON Ở TRƯỜNG
+// SỬA ĐỔI: DÙNG SERVER NERDVPN CHẤT LƯỢNG CAO ĐỂ KHÔNG BỊ BÁO LỖI FORBIDDEN
 function playVideo(videoId, title, channel) {
-  // Gọi video qua embed của server nadeko mà trường không chặn
   document.getElementById("playerFrame").src =
-    "https://inv.nadeko.net/embed/" + videoId + "?autoplay=1";
+    "https://invidious.nerdvpn.de/embed/" + videoId + "?autoplay=1";
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
   document.getElementById("playerWrap").classList.add("show");
