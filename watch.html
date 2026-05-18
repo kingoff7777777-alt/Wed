@@ -304,10 +304,10 @@ function renderResults(items) {
   });
 }
 
-// SỬA ĐỔI: DÙNG SERVER NERDVPN CHẤT LƯỢNG CAO ĐỂ KHÔNG BỊ BÁO LỖI FORBIDDEN
+// CHỐT HẠ: CHUYỂN SANG PIPED PROXY PLAYER - KHÔNG LO BỊ KHÓA EMBED TRÊN TRÌNH DUYỆT
 function playVideo(videoId, title, channel) {
   document.getElementById("playerFrame").src =
-    "https://invidious.nerdvpn.de/embed/" + videoId + "?autoplay=1";
+    "https://piped.video/embed/" + videoId;
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
   document.getElementById("playerWrap").classList.add("show");
