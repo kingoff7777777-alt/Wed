@@ -304,10 +304,11 @@ function renderResults(items) {
   });
 }
 
-// ĐÃ FIX: Đường dẫn nhúng YouTube chuan xac thay vi googleusercontent
+// FIX CHỐT: DÙNG INVIDIOUS PROXY NADEKO ĐÃ TEST CHẠY NGON Ở TRƯỜNG
 function playVideo(videoId, title, channel) {
+  // Gọi video qua embed của server nadeko mà trường không chặn
   document.getElementById("playerFrame").src =
-    "https://www.youtube.com/embed/" + videoId + "?autoplay=1&rel=0";
+    "https://inv.nadeko.net/embed/" + videoId + "?autoplay=1";
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
   document.getElementById("playerWrap").classList.add("show");
@@ -326,7 +327,7 @@ function showError(msg) {
 }
 
 function escHtml(s) {
-  return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return (s||"").replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">");
 }
 
 // Search on Enter
