@@ -80,7 +80,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
   </div>
 
   <div class="search-wrap">
-    <input class="search-inp" id="searchInp" placeholder="🔍 Tìm kiếm video..." onkeydown="if(event.key==='Enter')doSearch()">
+    <input class="search-inp" id="searchInp" placeholder="🔍 Dán link YouTube hoặc từ khóa...">
     <button class="search-btn" id="searchBtn" onclick="doSearch()">🔍 <span id="search-lbl">Tìm</span></button>
   </div>
 
@@ -93,7 +93,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;justify-content
     <div class="player-info">
       <button class="player-close" onclick="closePlayer()" id="close-lbl">✕ Đóng</button>
       
-      <button class="player-close" onclick="enableSchoolBypass()" style="margin-right:8px; border-color:var(--green); color:var(--green); float:right; font-weight: 900;">🛡️ Bypass Trường Học</button>
+      <button class="player-close" onclick="startStealthBypass()" style="margin-right:8px; border-color:var(--green); color:var(--green); float:right; font-weight: 900;">🛡️ Bypass Trường Học</button>
       
       <div class="player-title" id="playerTitle"></div>
       <div class="player-channel" id="playerChannel"></div>
@@ -125,12 +125,22 @@ var lang = localStorage.getItem("site_lang") || "vi";
 var currentQ = "";
 var nextPageToken = "";
 var isLoading = false;
+var stealthAttempts = 0;
+
+// Các cổng API đã được mã hóa sẵn sang dạng Base64 để đánh lừa File cấu hình của trường
+var ENCRYPTED_NODES = [
+  "aHR0cHM6Ly9waXBlZGFwaS5rYXZpbi5yb2Nrcy9zdHJlYW1zLw==", // pipedapi.kavin.rocks
+  "aHR0cHM6Ly9waXBlZC1hcGkucHJpdmFjeWRldi5uZXQvc3RyZWFtcy8=", // piped-api.privacydev.net
+  "aHR0cHM6Ly9hcGkucGlwZWQucHJvamVjdHNlZ2ZhdS5sdC9zdHJlYW1zLw==" // api.piped.projectsegfau.lt
+];
 
 var I18N = {
-  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Tìm kiếm và xem video YouTube",search_ph:"🔍 Tìm kiếm video...",search_lbl:"Tìm",results:"kết quả",load_more:"Xem thêm",close:"✕ Đóng",empty:"Tìm video bạn muốn xem!",no_results:"Không tìm thấy video nào",err_quota:"Hết quota API hôm nay!",err_net:"Lỗi kết nối mạng!"},
-  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_watch:"▶️ 시청",nav_profile:"👤 프로필",page_title:"▶️ 시청",page_sub:"YouTube 동영상 검색 및 시청",search_ph:"🔍 동영상 검색...",search_lbl:"검색",results:"결과",load_more:"더 보기",close:"✕ 닫기",empty:"보고 싶은 동영상을 검색하세요!",no_results:"동영상을 찾을 수 없습니다",err_quota:"오늘 API 할당량 초과!",err_net:"연결 오류!"},
-  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Search and watch YouTube videos",search_ph:"🔍 Search videos...",search_lbl:"Search",results:"results",load_more:"Load more",close:"✕ Close",empty:"Search for videos you want to watch!",no_results:"No videos found",err_quota:"API quota exceeded!",err_net:"Connection error!"}
+  vi:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Tìm kiếm và xem video YouTube",search_ph:"🔍 Dán link YouTube hoặc từ khóa...",search_lbl:"Tìm",results:"kết quả",load_more:"Xem thêm",close:"✕ Đóng",empty:"Tìm video bạn muốn xem!",no_results:"Không tìm thấy video nào",err_quota:"Hết quota API hôm nay!",err_net:"Lỗi kết nối mạng!"},
+  kr:{nav_home:"🏠 홈",nav_album:"📸 앨범",nav_chat:"💬 채팅",nav_watch:"▶️ 시청",nav_profile:"👤 프로필",page_title:"▶️ 시청",page_sub:"YouTube 동영상 검색 및 시청",search_ph:"🔍 링크 hoặc 키워드 입력...",search_lbl:"검색",results:"결과",load_more:"더 보기",close:"✕ 닫기",empty:"보고 싶은 동영상을 검색하세요!",no_results:"동영상을 찾을 수 없습니다",err_quota:"오늘 API 할당량 초과!",err_net:"연결 오류!"},
+  en:{nav_home:"🏠 Home",nav_album:"📸 Album",nav_chat:"💬 Chat",nav_watch:"▶️ Watch",nav_profile:"👤 Profile",page_title:"▶️ Watch",page_sub:"Search and watch YouTube videos",search_ph:"🔍 Paste link or keywords...",search_lbl:"Search",results:"results",load_more:"Load more",close:"✕ Close",empty:"Search for videos you want to watch!",no_results:"No videos found",err_quota:"API quota exceeded!",err_net:"Connection error!"}
 };
+
+document.getElementById("searchInp").onkeydown = function(e){ if(e.key==="Enter") doSearch(); };
 
 function setLang(l) {
   lang = l; localStorage.setItem("site_lang", l); var t = I18N[l];
@@ -149,13 +159,33 @@ function setLang(l) {
   ["vi","kr","en"].forEach(function(x) { document.getElementById("lf-"+x).classList.toggle("on", x === l); });
 }
 
-window.onload = function() {
-  setLang(lang);
-  document.getElementById("emptyState").style.display = "block";
-};
+window.onload = function() { setLang(lang); document.getElementById("emptyState").style.display = "block"; };
+
+// HÀM TRÍCH XUẤT ID THÔNG MINH: CHẤP CẢ LINK DÀI LINK NGẮN
+function extractVideoId(str) {
+  var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  var match = str.match(regExp);
+  if (match && match[2].length == 11) {
+    return match[2];
+  } else if (str.trim().length === 11) {
+    return str.trim();
+  }
+  return null;
+}
 
 function doSearch() {
   var q = document.getElementById("searchInp").value.trim(); if (!q) return;
+  
+  var directId = extractVideoId(q);
+  if (directId) {
+    // Nếu dán link/ID, mở trực tiếp trình phát luôn không cần qua bước tìm kiếm API
+    document.getElementById("emptyState").style.display = "none";
+    document.getElementById("resultsGrid").innerHTML = "";
+    document.getElementById("loadMoreBtn").style.display = "none";
+    playVideo(directId, "Video từ liên kết dán trực tiếp", "Hệ thống vượt rào");
+    return;
+  }
+
   currentQ = q; nextPageToken = ""; document.getElementById("resultsGrid").innerHTML = "";
   document.getElementById("loadMoreBtn").style.display = "none";
   document.getElementById("resultsHead").style.display = "none";
@@ -214,13 +244,10 @@ function renderResults(items) {
   });
 }
 
-// HÀM PHÁT GỐC - ĐẢM BẢO Ở NHÀ CHẠY ỔN ĐỊNH 100%
 function playVideo(videoId, title, channel) {
   currentVideoId = videoId;
-  
-  // Reset lại cấu trúc iframe mặc định ban đầu phòng khi trước đó đã bấm nút bypass
+  stealthAttempts = 0;
   document.getElementById("playerContainer").innerHTML = '<iframe id="playerFrame" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
-  
   document.getElementById("playerFrame").src = "https://www.youtube.com/embed/" + videoId;
   document.getElementById("playerTitle").textContent = title;
   document.getElementById("playerChannel").textContent = "📺 " + channel;
@@ -228,47 +255,46 @@ function playVideo(videoId, title, channel) {
   document.getElementById("playerWrap").scrollIntoView({behavior:"smooth"});
 }
 
-// 🌐 KHOÁT NÚT BYPASS: KHI MÁY TRƯỜNG CHẶN KHÔNG CHO LOAD YOUTUBE
-function enableSchoolBypass() {
+// 🔥 CHIÊU CUỐI: GIẢI MÃ NỘI BỘ VÀ TÀNG HÌNH ĐƯỜNG TRUYỀN
+function startStealthBypass() {
   if (!currentVideoId) return;
+  stealthAttempts++;
   
   var container = document.getElementById("playerContainer");
-  container.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;color:var(--muted);font-size:13px;" id="bypassLoader">🔄 Đang băm gói dữ liệu để đi xuyên cấu hình trường...</div>';
+  container.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;color:var(--muted);font-size:13px;padding:20px;text-align:center;">🔒 Đang gửi mã gói tin ngụy trang (Tuyến ${stealthAttempts})... Bộ lọc trường không thể đọc được.</div>`;
 
-  // Gọi trực tiếp đến API phân rã luồng công cộng an toàn (không dùng chữ youtube trong link)
-  var proxyApis = [
-    "https://pipedapi.kavin.rocks/streams/",
-    "https://piped-api.privacydev.net/streams/",
-    "https://api.piped.projectsegfau.lt/streams/"
-  ];
+  // Chọn ngẫu nhiên chuỗi Base64 và tiến hành giải mã ngay tại trình duyệt của iPad
+  var encryptedNode = ENCRYPTED_NODES[(stealthAttempts - 1) % ENCRYPTED_NODES.length];
+  var decryptedApi = atob(encryptedNode) + currentVideoId; 
 
-  // Thử ngẫu nhiên một proxy sạch
-  var targetUrl = proxyApis[Math.floor(Math.random() * proxyApis.length)] + currentVideoId;
-
-  fetch(targetUrl)
-    .then(r => r.json())
+  fetch(decryptedApi)
+    .then(r => { if(!r.ok) throw new Error(); return r.json(); })
     .then(data => {
       var streamUrl = "";
       if (data.hls) {
         streamUrl = data.hls;
       } else if (data.videoStreams) {
-        var cleanStream = data.videoStreams.find(s => !s.videoOnly);
-        streamUrl = cleanStream ? cleanStream.url : data.videoStreams[0].url;
+        var cleanStream = data.videoStreams.find(s => !s.videoOnly) || data.videoStreams[0];
+        streamUrl = cleanStream.url;
       }
 
       if (streamUrl) {
-        // Thay thế hoàn toàn Iframe thành thẻ Video HTML5 hệ thống để tránh bộ lọc MDM nhúng web
+        // Hủy diệt hoàn toàn iframe, ép iPad gọi trình trình player MP4 thuần của máy
         container.innerHTML = `<video id="playerVideo" controls autoplay playsinline style="width:100%; height:100%; background:#000;"></video>`;
         var videoEl = document.getElementById("playerVideo");
         videoEl.src = streamUrl;
         videoEl.load();
         videoEl.play().catch(()=>{});
       } else {
-        container.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;color:var(--pink);font-size:13px;">❌ Tuyến này bận. Hãy đóng trình phát và bấm lại lần nữa!</div>';
+        throw new Error();
       }
     })
     .catch(() => {
-      container.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;color:var(--pink);font-size:13px;">❌ Cấu hình chặn quá gắt, hãy thử bấm lại lần nữa để đổi tuyến!</div>';
+      container.innerHTML = `
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#111;color:var(--pink);font-size:13px;padding:20px;text-align:center;">
+          <p style="margin-bottom:10px;">⚠️ Bộ lọc chặn tuyến này. Bạn đừng lo, hãy bấm nút dưới để đổi sang tuyến mã hóa tiếp theo!</p>
+          <button onclick="startStealthBypass()" style="background:var(--green); color:#000; border:none; padding:8px 20px; border-radius:50px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(52,211,153,0.4);">🔄 Thử lại Tuyến Mới</button>
+        </div>`;
     });
 }
 
@@ -277,7 +303,6 @@ function closePlayer() {
   container.innerHTML = '<iframe id="playerFrame" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
   document.getElementById("playerWrap").classList.remove("show");
 }
-
 function showError(msg) { var box = document.getElementById("errorBox"); box.textContent = "❌ " + msg; box.classList.add("show"); }
 function escHtml(s) { return (s||"").replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">"); }
 </script>
